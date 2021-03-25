@@ -14,10 +14,14 @@ namespace DAL
             this.HasKey(m => m.Id);
 
             this.HasRequired(i => i.Client)
-                .WithRequiredPrincipal(i => i.MessageClient);
+                .WithMany(c => c.MessagesClient)
+                .HasForeignKey(i => i.ClientId)
+                .WillCascadeOnDelete(false);
 
             this.HasRequired(i => i.Chat)
-                .WithRequiredPrincipal(i => i.MessageChat);
+                .WithMany(c => c.MessagesChat)
+                .HasForeignKey(i => i.ChatId)
+                .WillCascadeOnDelete(false);
 
         }
     }

@@ -70,7 +70,9 @@
     <Compile Include="Configurations\IdentifierConfig.cs" />
     <Compile Include="Configurations\MessageConfig.cs" />
     <Compile Include="Configurations\ProfileConfig.cs" />
+    <Compile Include="Repositories\GenericRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\UnitOfWork.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

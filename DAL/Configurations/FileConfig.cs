@@ -20,7 +20,7 @@ namespace DAL
             this.HasOptional(f => f.Message)
                 .WithMany(m => m.Files)
                 .HasForeignKey(f => f.MessageId)
-                .WillCascadeOnDelete();
+                .WillCascadeOnDelete(false);
 
         }
     }
