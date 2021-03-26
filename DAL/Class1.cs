@@ -8,5 +8,6 @@ namespace DAL
 {
     public class Class1
     {
+        public MessangerModel messanger = new MessangerModel();
     }
 }
