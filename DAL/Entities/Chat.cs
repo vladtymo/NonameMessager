@@ -12,11 +12,10 @@ namespace DAL
         public bool IsPM { get; set; }
 
         // FOREIGN KEYS
-        public int ChatNameId { get; set; }
+        public int ChatInfoId { get; set; }
 
         // NAVIGATION PROPERTIES
-        public virtual Identifier ChatName { get; set; }
-        public virtual ICollection<Message> Messages { get; set; }
+        public virtual Identifier ChatInfo { get; set; }
         public virtual ICollection<Identifier> Clients { get; set; }
     }
 }

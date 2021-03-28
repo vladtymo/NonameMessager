@@ -13,10 +13,8 @@ namespace DAL
         {
             this.HasKey(c => c.Id);
 
-            this.HasRequired(c => c.ChatName)
-                .WithMany(c => c.Chats)
-                .HasForeignKey(c => c.ChatNameId)
-                .WillCascadeOnDelete(false);
+            this.HasMany(c => c.Clients)
+                .WithMany(c => c.Chats);
         }
     }
 }

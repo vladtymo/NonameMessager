@@ -17,6 +17,9 @@ namespace DAL
                 .HasMaxLength(50)
                 .IsRequired();
 
+            this.HasOptional(i => i.Profile)
+                .WithRequired(i => i.File);
+
             this.HasOptional(f => f.Message)
                 .WithMany(m => m.Files)
                 .HasForeignKey(f => f.MessageId)

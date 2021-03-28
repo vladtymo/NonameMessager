@@ -16,8 +16,8 @@ namespace DAL
         public int? FileId { get; set; }
 
         // NAVIGATION PROPERTIES
-        public virtual File File { get; set; }
         public virtual Identifier Identifier { get; set; }
+        public virtual File File { get; set; }
 
     }
 }

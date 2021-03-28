@@ -8,11 +8,12 @@ namespace DAL
         [Required]
         [MaxLength(50)]
         public string Name { get; set; }
+        public bool IsProfile { get; set; }
         public byte[] Data { get; set; }
 
         // FOREIGN KEYS
         public int? MessageId { get; set; }
-        public int ProfileId { get; set; }
+        public int? ProfileId { get; set; }
 
         // NAVIGATION PROPERTIES
         public virtual Message Message { get; set; }

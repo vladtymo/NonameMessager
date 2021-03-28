@@ -18,14 +18,10 @@ namespace DAL
                 .IsRequired();
 
             this.HasOptional(i => i.Client)
-                .WithMany(c => c.Contacts)
-                .HasForeignKey(i => i.ClientId)
-                .WillCascadeOnDelete(false);
+                .WithRequired(c => c.ClientInfo);
 
             this.HasOptional(i => i.Chat)
-                .WithMany(c => c.Clients)
-                .HasForeignKey(i => i.ChatId)
-                .WillCascadeOnDelete(false);
+                .WithRequired(c => c.ChatInfo);
 
         }
     }
