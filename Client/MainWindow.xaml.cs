@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Net.Sockets;
+using System.Net;
 
 namespace Client
 {
@@ -20,9 +22,23 @@ namespace Client
     /// </summary>
     public partial class MainWindow : Window
     {
+        private static string remoteIPAddress = "127.0.0.1";
+        private static int remotePort = 8080;
+        TcpClient client = new TcpClient(); 
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void ConnectServer()
+        {
+            IPEndPoint iPEndPoint = new IPEndPoint(IPAddress.Parse(remoteIPAddress), remotePort);
+            client.Connect(iPEndPoint);
+        }
+
+        private void DisconnectServer()
+        {
+            if(!client.Close()) client.Close();
         }
     }
 }
