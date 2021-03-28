@@ -12,12 +12,12 @@ namespace DAL
         public string Name { get; set; }
 
         // FOREIGN KEYS
-        public int IdentifierId { get; set; }
         public int AccountId { get; set; }
+        public int IdentifierId { get; set; }
 
         // NAVIGATION PROPERTIES
-        public virtual Identifier Identifier { get; set; }
         public virtual Account Account { get; set; }
+        public virtual Identifier ClientInfo { get; set; }
         public virtual ICollection<Identifier> Contacts { get; set; }
     }
 }

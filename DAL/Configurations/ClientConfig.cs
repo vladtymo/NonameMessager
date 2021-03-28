@@ -17,10 +17,8 @@ namespace DAL
                 .HasMaxLength(50)
                 .IsRequired();
 
-            this.HasRequired(c => c.Identifier)
-                .WithMany(i => i.Clients)
-                .HasForeignKey(c => c.IdentifierId)
-                .WillCascadeOnDelete(false);
+            this.HasMany(c => c.Contacts)
+                .WithMany(i => i.Clients);
         }
     }
 }

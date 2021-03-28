@@ -17,8 +17,8 @@ namespace DAL
                 .HasMaxLength(50)
                 .IsRequired();
 
-            this.HasOptional(i => i.File)
-                .WithRequired(i => i.Profile);
+            this.HasRequired(i => i.Identifier)
+               .WithRequiredPrincipal(i => i.Profile);
 
         }
     }

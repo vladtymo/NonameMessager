@@ -14,14 +14,16 @@ namespace DAL
         // FOREIGN KEYS
         public int? ClientId { get; set; }
         public int? ChatId { get; set; }
+        public int ProfileId { get; set; }
 
         // NAVIGATION PROPERTIES
         public virtual Client Client { get; set; }
         public virtual Chat Chat { get; set; }
+        public virtual Profile Profile { get; set; }
+        public virtual ICollection<Client> Clients { get; set; }
+        public virtual ICollection<Chat> Chats { get; set; }
         public virtual ICollection<Message> MessagesClient { get; set; }
         public virtual ICollection<Message> MessagesChat { get; set; }
-        public virtual ICollection<Chat> Chats { get; set; }
-        public virtual ICollection<Client> Clients { get; set; }
 
     }
 }
