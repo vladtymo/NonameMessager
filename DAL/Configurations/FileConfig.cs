@@ -11,16 +11,7 @@ namespace DAL
     {
         public FileConfig()
         {
-            this.HasKey(f => f.Id);
-
-            this.Property(f => f.Name)
-                .HasMaxLength(50)
-                .IsRequired();
-
-            this.HasOptional(i => i.Profile)
-                .WithRequired(i => i.File);
-
-            this.HasOptional(f => f.Message)
+            this.HasRequired(f => f.Message)
                 .WithMany(m => m.Files)
                 .HasForeignKey(f => f.MessageId)
                 .WillCascadeOnDelete(false);

@@ -11,20 +11,6 @@ namespace DAL
     {
         public AccountConfig()
         {
-            this.HasKey(a => a.Id);
-
-            this.Property(t => t.Email)
-                .HasMaxLength(50)
-                .IsRequired();
-
-            this.Property(t => t.Phone)
-                .HasMaxLength(50)
-                .IsRequired();
-            
-            this.Property(t => t.Password)
-                .HasMaxLength(50)
-                .IsRequired();
-
             this.HasRequired(a => a.Client)
                 .WithRequiredPrincipal(c => c.Account);
         }

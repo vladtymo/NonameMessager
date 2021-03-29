@@ -15,20 +15,18 @@ namespace DAL
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Configurations.Add(new AccountConfig());
-            modelBuilder.Configurations.Add(new ChatConfig());
-            modelBuilder.Configurations.Add(new ClientConfig());
+            modelBuilder.Configurations.Add(new ChatMemberConfig());
+            modelBuilder.Configurations.Add(new ContactConfig());
             modelBuilder.Configurations.Add(new FileConfig());
-            modelBuilder.Configurations.Add(new IdentifierConfig());
             modelBuilder.Configurations.Add(new MessageConfig());
-            modelBuilder.Configurations.Add(new ProfileConfig());
         }
 
-        public virtual DbSet<Identifier> Identifiers { get; set; }
         public virtual DbSet<Account> Accounts { get; set; }
-        public virtual DbSet<Client> Clients { get; set; }
         public virtual DbSet<Chat> Chats { get; set; }
-        public virtual DbSet<Message> Messages { get; set; }
+        public virtual DbSet<ChatMember> ChatMembers { get; set; }
+        public virtual DbSet<Client> Clients { get; set; }
+        public virtual DbSet<Contact> Contacts { get; set; }
         public virtual DbSet<File> Files { get; set; }
-        public virtual DbSet<Profile> Profiles { get; set; }
+        public virtual DbSet<Message> Messages { get; set; }
     }
 }

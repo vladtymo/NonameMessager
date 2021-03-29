@@ -7,16 +7,12 @@ namespace DAL
         public int Id { get; set; }
         [Required]
         [MaxLength(50)]
-        public string Name { get; set; }
-        public bool IsProfile { get; set; }
-        public byte[] Data { get; set; }
+        public string FilePath { get; set; }
 
         // FOREIGN KEYS
-        public int? MessageId { get; set; }
-        public int? ProfileId { get; set; }
+        public int MessageId { get; set; }
 
         // NAVIGATION PROPERTIES
         public virtual Message Message { get; set; }
-        public virtual Profile Profile { get; set; }
     }
 }
