@@ -20,7 +20,86 @@
         </Grid.ColumnDefinitions>
         <GridSplitter Grid.Column="1" ShowsPreview="False" Width="3" VerticalAlignment="Stretch" HorizontalAlignment="Center"></GridSplitter>
 
-        
+        <!--Login dialog-->
+        <materialDesign:DialogHost Grid.Column="1" 
+                         HorizontalAlignment="Center" 
+                            VerticalAlignment="Center" DialogTheme="Light" >
+           
+            <materialDesign:DialogHost.DialogContent>
+                <Grid >
+                    <materialDesign:Flipper  Style="{StaticResource MaterialDesignCardFlipper}"   >
+                        <materialDesign:Flipper.FrontContent>
+                            <Grid  Width="200" Height="200" Margin="20,10">
+
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition></RowDefinition>
+                                    <RowDefinition></RowDefinition>
+                                    <RowDefinition></RowDefinition>
+                                    <RowDefinition ></RowDefinition>
+
+                                </Grid.RowDefinitions>
+
+                                <TextBlock FontSize="24" HorizontalAlignment="Center"  Grid.ColumnSpan="3" VerticalAlignment="Bottom" Margin="5" Foreground="{StaticResource PrimaryHueMidBrush}">Login</TextBlock>
+
+                                <TextBox Grid.Row="1"  materialDesign:HintAssist.Hint="Email/Phone" VerticalAlignment="Bottom"      Margin="5,0"></TextBox>
+                                <PasswordBox Grid.Row="2"  VerticalAlignment="Bottom"  materialDesign:HintAssist.Hint="Password" Margin="5,5"></PasswordBox>
+
+                                <Button Grid.Row="3" Margin="5,0">
+                                       Log in
+                                    </Button>
+                                <Button Grid.Row="4" Margin="5,5" Style="{StaticResource MaterialDesignFlatButton}"
+                                     Command="{x:Static materialDesign:Flipper.FlipCommand}">Don't have an account
+                                    </Button>
+                            </Grid>
+                                      
+                        </materialDesign:Flipper.FrontContent>
+                        
+                        
+                        
+                        <materialDesign:Flipper.BackContent >
+                            <Grid Margin="20,10"  Width="400" Height="400">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition  Height="Auto"></RowDefinition>
+
+                                    <RowDefinition ></RowDefinition>
+                                    <RowDefinition ></RowDefinition>
+                                    <RowDefinition ></RowDefinition>
+                                    <RowDefinition ></RowDefinition>
+                                    <RowDefinition ></RowDefinition>
+                                    <RowDefinition ></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+
+
+
+                                </Grid.RowDefinitions>
+
+                                <TextBlock FontSize="24" HorizontalAlignment="Center"  Grid.ColumnSpan="3" VerticalAlignment="Bottom" Margin="5" Foreground="{StaticResource PrimaryHueMidBrush}">Sign up</TextBlock>
+
+                                <TextBox Grid.Row="1"  materialDesign:HintAssist.Hint="Email" VerticalAlignment="Bottom"         Margin="5,0"></TextBox>
+                                <TextBox Grid.Row="2" VerticalAlignment="Bottom" materialDesign:HintAssist.Hint="Phone"          Margin="5,0"></TextBox>
+                                <TextBox Grid.Row="3" VerticalAlignment="Bottom" materialDesign:HintAssist.Hint="Unique name"    Margin="5,0"></TextBox>
+                                <TextBox Grid.Row="4" VerticalAlignment="Bottom" materialDesign:HintAssist.Hint="Name"           Margin="5,0"></TextBox>
+                                <PasswordBox Grid.Row="5"  VerticalAlignment="Bottom"  materialDesign:HintAssist.Hint="Password" Margin="5,0"></PasswordBox>
+
+                                <Button Grid.Row="6"  Margin="5,5" VerticalAlignment="Center">
+                                    Sign up
+                                </Button>
+                                <Button Grid.Row="7" Margin="5,5" Style="{StaticResource MaterialDesignFlatButton}"
+                                     Command="{x:Static materialDesign:Flipper.FlipCommand}">
+                                    Already have an account
+                                </Button>
+
+                            </Grid>
+                        </materialDesign:Flipper.BackContent>
+                    </materialDesign:Flipper>
+                </Grid>
+                       
+            </materialDesign:DialogHost.DialogContent>
+
+        </materialDesign:DialogHost>
+
+          
 
         <!--_______________________Left panel____________________-->
 
