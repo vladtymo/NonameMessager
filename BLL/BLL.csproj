@@ -47,7 +47,7 @@
     <Compile Include="DataTransferObjects\AccountDTO.cs" />
     <Compile Include="DataTransferObjects\ChatDTO.cs" />
     <Compile Include="DataTransferObjects\ChatMemberDTO.cs" />
-    <Compile Include="Class1.cs" />
+    <Compile Include="Services\ClientService.cs" />
     <Compile Include="DataTransferObjects\ClientDTO.cs" />
     <Compile Include="DataTransferObjects\ContactDTO.cs" />
     <Compile Include="DataTransferObjects\FileDTO.cs" />
