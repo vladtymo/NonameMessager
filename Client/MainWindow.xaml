@@ -99,7 +99,83 @@
 
         </materialDesign:DialogHost>
 
-          
+            <!--Eidt profile dialog-->
+        
+        <materialDesign:DialogHost Grid.Column="1" 
+                         HorizontalAlignment="Center" 
+                            VerticalAlignment="Center" DialogTheme="Light"  >
+
+            <materialDesign:DialogHost.DialogContent >
+                <Grid Width="300" Height="400">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"></RowDefinition>
+
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+
+                    <Border Grid.ColumnSpan="3"  Background="{DynamicResource PrimaryHueMidBrush }" TextBlock.Foreground="{StaticResource MaterialDesignBackground}">
+                            <Grid Margin="10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition></ColumnDefinition>
+                                    <ColumnDefinition></ColumnDefinition>
+
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+
+
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                     <RowDefinition></RowDefinition>
+
+
+
+
+                            </Grid.RowDefinitions>
+                            <Ellipse Width="70" Height="70" Grid.ColumnSpan="2" Margin="10,0" Grid.RowSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" >
+                                <Ellipse.Fill>
+                                    <ImageBrush  Stretch="UniformToFill"/>
+                                </Ellipse.Fill>
+                            </Ellipse>
+                            <Button Grid.Row="3" Grid.ColumnSpan="2" VerticalAlignment="Center" Margin="10"  HorizontalAlignment="Center" Background="{StaticResource SecondaryHueMidBrush}" materialDesign:ButtonAssist.CornerRadius="15" BorderBrush="#FF663737">Set profile photo</Button>
+                        </Grid>
+                        </Border>
+                    
+                    <materialDesign:PackIcon  Grid.Row="1" VerticalAlignment="Bottom" Margin="10,0,5,0"
+                                 Kind="AccountOutline"
+                                 Height="30"
+                                 Width="30" />
+                    <TextBox Grid.Row="1" Grid.Column="1" Margin="15,10" VerticalAlignment="Bottom" materialDesign:HintAssist.HelperText="Name"></TextBox>
+                    <materialDesign:PackIcon  Grid.Row="2" VerticalAlignment="Bottom" Margin="10,0,5,0"
+                                 Kind="PhoneOutline"
+                                 Height="30"
+                                 Width="30" />
+                    <TextBox Grid.Row="2" Grid.Column="1" Margin="15,10" VerticalAlignment="Bottom" materialDesign:HintAssist.HelperText="Phone"></TextBox>
+                    <materialDesign:PackIcon  Grid.Row="3" VerticalAlignment="Bottom" Margin="10,0,5,0"
+                                 Kind="EmailOutline"
+                                 Height="30"
+                                 Width="30" />
+                    <TextBox Grid.Row="3" Grid.Column="1" Margin="15,10" VerticalAlignment="Bottom" materialDesign:HintAssist.HelperText="Email"></TextBox>
+                    <materialDesign:PackIcon  Grid.Row="4" VerticalAlignment="Bottom" Margin="10,0,5,0"
+                                 Kind="At"
+                                 Height="30"
+                                 Width="30" />
+                    <TextBox Grid.Row="4" Grid.Column="1" Margin="15,10" VerticalAlignment="Bottom" materialDesign:HintAssist.HelperText="Unique name"></TextBox>
+                    <DockPanel  Grid.Row="5" Grid.ColumnSpan="2" LastChildFill="False" Margin="15,20,15,0" VerticalAlignment="Bottom">
+                    <Button Width="100">Accept</Button>
+                    <Button Width="100" DockPanel.Dock="Right">Cancel</Button>
+                    </DockPanel>
+                </Grid>
+            </materialDesign:DialogHost.DialogContent>
+        </materialDesign:DialogHost>
 
         <!--_______________________Left panel____________________-->
 
