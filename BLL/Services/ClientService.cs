@@ -9,7 +9,12 @@ using System.Threading.Tasks;
 
 namespace BLL
 {
-    public class ClientService
+    public interface IClientService
+    {
+        IEnumerable<ClientDTO> GetAllClients();
+        void CreateNewClient(ClientDTO clientDTO);
+    }
+    public class ClientService : IClientService
     {
         private IUnitOfWork repositories;
         private IMapper mapper;
@@ -41,6 +46,7 @@ namespace BLL
         public void CreateNewClient(ClientDTO clientDTO)
         {
             repositories.ClientRepos.Insert(mapper.Map<Client>(clientDTO));
+            repositories.Save();
         }
         static string ComputeSha256Hash(string rawData)
         {
