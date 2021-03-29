@@ -1,22 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace DAL
 {
-    public class Message
+    public class ChatMember
     {
         public int Id { get; set; }
-        public string Text { get; set; }
-        public DateTime SendingTime { get; set; }
-
+        public DateTime DateLastReadMessage { get; set; }
+        public bool IsAdmin { get; set; }
 
         // FOREIGN KEYS
-        public int ClientId { get; set; }
         public int ChatId { get; set; }
+        public int ClientId { get; set; }
 
         // NAVIGATION PROPERTIES
         public virtual Client Client { get; set; }
         public virtual Chat Chat { get; set; }
-        public virtual ICollection<File> Files { get; set; }
     }
 }

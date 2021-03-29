@@ -11,15 +11,13 @@ namespace DAL
     {
         public MessageConfig()
         {
-            this.HasKey(m => m.Id);
-
             this.HasRequired(i => i.Client)
-                .WithMany(c => c.MessagesClient)
+                .WithMany(c => c.Messages)
                 .HasForeignKey(i => i.ClientId)
                 .WillCascadeOnDelete(false);
 
             this.HasRequired(i => i.Chat)
-                .WithMany(c => c.MessagesChat)
+                .WithMany(c => c.Messages)
                 .HasForeignKey(i => i.ChatId)
                 .WillCascadeOnDelete(false);
 

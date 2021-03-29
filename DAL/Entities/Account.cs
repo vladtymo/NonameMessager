@@ -1,10 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DAL
 {
     public class Account
     {
-        public int Id { get; set; }
+        [ForeignKey(nameof(Client)),Key]
+        public int ClientId { get; set; }
         [Required]
         [MaxLength(50)]
         [EmailAddress]
@@ -14,11 +16,8 @@ namespace DAL
         [Phone]
         public string Phone { get; set; }
         [Required]
-        [MaxLength(100)]
+        [MaxLength(200)]
         public string Password { get; set; }
-
-        // FOREIGN KEYS
-        public int ClientId { get; set; }
 
         // NAVIGATION PROPERTIES
         public virtual Client Client { get; set; }

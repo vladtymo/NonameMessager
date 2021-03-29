@@ -53,22 +53,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Configurations\ChatConfig.cs" />
-    <Compile Include="Configurations\ClientConfig.cs" />
+    <Compile Include="Configurations\ChatMemberConfig.cs" />
+    <Compile Include="Configurations\ContactConfig.cs" />
+    <Compile Include="Entities\Contact.cs" />
+    <Compile Include="Entities\ChatMember.cs" />
     <Compile Include="Configurations\AccountConfig.cs" />
     <Compile Include="Entities\Account.cs" />
     <Compile Include="Entities\Chat.cs" />
     <Compile Include="Entities\Client.cs" />
     <Compile Include="Entities\File.cs" />
-    <Compile Include="Entities\Identifier.cs" />
     <Compile Include="EF\Initializer.cs" />
     <Compile Include="Entities\Message.cs" />
     <Compile Include="EF\MessangerModel.cs" />
-    <Compile Include="Entities\Profile.cs" />
     <Compile Include="Configurations\FileConfig.cs" />
-    <Compile Include="Configurations\IdentifierConfig.cs" />
     <Compile Include="Configurations\MessageConfig.cs" />
-    <Compile Include="Configurations\ProfileConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
