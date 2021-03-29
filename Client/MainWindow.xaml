@@ -4,9 +4,111 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Client"
+          xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="MainWindow" Height="500" Width="800"
+           TextElement.FontSize="15" >
+
+
+    <Grid >
         
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" MinWidth="200"></ColumnDefinition>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition Width="*" MinWidth="400"></ColumnDefinition>
+
+        </Grid.ColumnDefinitions>
+        <GridSplitter Grid.Column="1" ShowsPreview="False" Width="3" VerticalAlignment="Stretch" HorizontalAlignment="Center"></GridSplitter>
+
+        
+
+        <!--_______________________Left panel____________________-->
+
+        <materialDesign:DrawerHost  HorizontalAlignment="Stretch" 
+                VerticalAlignment="Stretch"
+                BorderThickness="0"
+                BorderBrush="{DynamicResource MaterialDesignDivider}" Margin="0">
+
+
+            <materialDesign:DrawerHost.LeftDrawerContent >
+
+                <StackPanel Width="275" >
+                    <Border Height="80" Background="{DynamicResource PrimaryHueMidBrush }" TextBlock.Foreground="{StaticResource MaterialDesignBackground}">
+                        <Grid >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+
+
+                                <RowDefinition></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                                <RowDefinition></RowDefinition>
+
+                                <RowDefinition></RowDefinition>
+                                <RowDefinition></RowDefinition>
+
+
+                            </Grid.RowDefinitions>
+                            <Ellipse Width="50" Height="50" Margin="10,0" Grid.RowSpan="4" Grid.Row="1">
+                                <Ellipse.Fill>
+                                    <ImageBrush  Stretch="UniformToFill"/>
+                                </Ellipse.Fill>
+                            </Ellipse>
+
+                            <TextBlock Grid.Column="1"  Grid.RowSpan="3" Margin="5,0"  TextAlignment="Center"    TextWrapping="Wrap" VerticalAlignment="Bottom"></TextBlock>
+                            <TextBlock Grid.Column="1" Grid.Row="3" Margin="5,0" Grid.RowSpan="2" VerticalAlignment="Bottom"  TextAlignment="Center" ></TextBlock>
+                        </Grid>
+                    </Border>
+
+                  
+                    <Button Style="{StaticResource MaterialDesignFlatButton}"  HorizontalContentAlignment="Stretch"  Margin="0,5">
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+
+
+                            </Grid.ColumnDefinitions>
+                            <materialDesign:PackIcon 
+                                 Kind="AccountEditOutline"
+                                 Height="24"
+                                 Width="24" />
+
+                            <TextBlock Grid.Column="2" Margin="15,0"   VerticalAlignment="Center">Edit profile</TextBlock>
+                        </Grid>
+
+                    </Button>
+
+                </StackPanel>
+
+
+            </materialDesign:DrawerHost.LeftDrawerContent>
+
+
+            <!--______________Window______________-->
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition></RowDefinition>
+
+                </Grid.RowDefinitions>
+                <DockPanel>
+                    <Button x:Name="ButtonOpen" HorizontalAlignment="Left" VerticalAlignment="Center" 
+                                        Background="{x:Null}" BorderBrush="{x:Null}" Width="40" Height="40" Padding="0"
+                                        Command="{x:Static materialDesign:DrawerHost.OpenDrawerCommand}"
+                                        CommandParameter="{x:Static Dock.Left}" >
+                        <materialDesign:PackIcon Kind="Menu" Foreground="{StaticResource PrimaryHueMidBrush}"  Width="30" Height="30" />
+                    </Button>
+                    <TextBox  Margin="5"   materialDesign:HintAssist.Hint="Search"   materialDesign:TextFieldAssist.HasClearButton="True"  ></TextBox>
+                </DockPanel>
+                <ListBox Grid.Row="1"></ListBox>
+            </Grid>
+        </materialDesign:DrawerHost>
     </Grid>
+
 </Window>
