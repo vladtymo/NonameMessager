@@ -104,7 +104,7 @@
         
         <materialDesign:DialogHost Grid.Column="1" 
                          HorizontalAlignment="Center" 
-                            VerticalAlignment="Center" DialogTheme="Light"  >
+                            VerticalAlignment="Center" DialogTheme="Light" IsOpen="{Binding IsOpenProfileDialog }" >
 
             <materialDesign:DialogHost.DialogContent >
                 <Grid Width="300" Height="400">
@@ -154,26 +154,55 @@
                                  Kind="AccountOutline"
                                  Height="30"
                                  Width="30" />
-                    <TextBox Grid.Row="1" Grid.Column="1" Margin="15,10" VerticalAlignment="Bottom" materialDesign:HintAssist.HelperText="Name"></TextBox>
+                    <TextBox Grid.Row="1" Grid.Column="1" Margin="15,10" VerticalAlignment="Bottom" materialDesign:HintAssist.HelperText="Name" Text="{Binding ClientForChange.Name}"></TextBox>
                     <materialDesign:PackIcon  Grid.Row="2" VerticalAlignment="Bottom" Margin="10,0,5,0"
                                  Kind="PhoneOutline"
                                  Height="30"
                                  Width="30" />
-                    <TextBox Grid.Row="2" Grid.Column="1" Margin="15,10" VerticalAlignment="Bottom" materialDesign:HintAssist.HelperText="Phone"></TextBox>
+                    <TextBox Grid.Row="2" Grid.Column="1" Margin="15,10" VerticalAlignment="Bottom" materialDesign:HintAssist.HelperText="Phone" Text="{Binding ClientForChange.Account.Phone}"></TextBox>
                     <materialDesign:PackIcon  Grid.Row="3" VerticalAlignment="Bottom" Margin="10,0,5,0"
                                  Kind="EmailOutline"
                                  Height="30"
                                  Width="30" />
-                    <TextBox Grid.Row="3" Grid.Column="1" Margin="15,10" VerticalAlignment="Bottom" materialDesign:HintAssist.HelperText="Email"></TextBox>
+                    <TextBox Grid.Row="3" Grid.Column="1" Margin="15,10" VerticalAlignment="Bottom" materialDesign:HintAssist.HelperText="Email" Text="{Binding ClientForChange.Account.Email}"></TextBox>
                     <materialDesign:PackIcon  Grid.Row="4" VerticalAlignment="Bottom" Margin="10,0,5,0"
                                  Kind="At"
                                  Height="30"
                                  Width="30" />
-                    <TextBox Grid.Row="4" Grid.Column="1" Margin="15,10" VerticalAlignment="Bottom" materialDesign:HintAssist.HelperText="Unique name"></TextBox>
+                    <TextBox Grid.Row="4" Grid.Column="1" Margin="15,10" VerticalAlignment="Bottom" materialDesign:HintAssist.HelperText="Unique name" Text="{Binding ClientForChange.UniqueName}"></TextBox>
                     <DockPanel  Grid.Row="5" Grid.ColumnSpan="2" LastChildFill="False" Margin="15,20,15,0" VerticalAlignment="Bottom">
-                    <Button Width="100">Accept</Button>
-                    <Button Width="100" DockPanel.Dock="Right">Cancel</Button>
+                        <Button Width="100"  Command="{Binding SetProfileCommand}">Accept</Button>
+                        <Button Width="100" DockPanel.Dock="Right" IsCancel="True" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}">Cancel</Button>
                     </DockPanel>
+                </Grid>
+            </materialDesign:DialogHost.DialogContent>
+        </materialDesign:DialogHost>
+
+        <!--Information dialog-->
+        <materialDesign:DialogHost Grid.Column="1" 
+                         HorizontalAlignment="Center" 
+                            VerticalAlignment="Center" DialogTheme="Light" IsOpen="{Binding IsOpenInfoDialog}">
+
+            <materialDesign:DialogHost.DialogContent>
+                <Grid Width="200" Height="200" >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+
+                    </Grid.ColumnDefinitions>
+                    <Border Height="40" Background="{DynamicResource PrimaryHueMidBrush }" TextBlock.Foreground="{StaticResource MaterialDesignBackground}" Grid.ColumnSpan="2" >
+                        <TextBlock FontSize="20" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center">Information diolog</TextBlock>
+                    </Border>
+
+                    <TextBlock Margin="5" Grid.Row="1" Grid.ColumnSpan="2"  FontWeight="DemiBold" HorizontalAlignment="Center" TextWrapping="Wrap"  Text="{Binding TextForInfoDialog}"></TextBlock>
+                    <Button Grid.Row="2" Margin="5"  Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}">OK</Button>
+                    <Button Grid.Row="2" Grid.Column="1" Margin="5" IsCancel="True" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}">Cancel</Button>
                 </Grid>
             </materialDesign:DialogHost.DialogContent>
         </materialDesign:DialogHost>
@@ -220,8 +249,8 @@
                         </Grid>
                     </Border>
 
-                  
-                    <Button Style="{StaticResource MaterialDesignFlatButton}"  HorizontalContentAlignment="Stretch"  Margin="0,5">
+
+                    <Button Style="{StaticResource MaterialDesignFlatButton}"  HorizontalContentAlignment="Stretch"  Margin="0,5" Command="{Binding SetProfileDiologOpenCommand}">
 
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -235,7 +264,7 @@
                                  Height="24"
                                  Width="24" />
 
-                            <TextBlock Grid.Column="2" Margin="15,0"   VerticalAlignment="Center">Edit profile</TextBlock>
+                            <TextBlock Grid.Column="2" Margin="15,0"   VerticalAlignment="Center" >Edit profile</TextBlock>
                         </Grid>
 
                     </Button>
