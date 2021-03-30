@@ -23,7 +23,7 @@
         <!--Login dialog-->
         <materialDesign:DialogHost Grid.Column="1" 
                          HorizontalAlignment="Center" 
-                            VerticalAlignment="Center" DialogTheme="Light" >
+                            VerticalAlignment="Center" DialogTheme="Light" IsOpen="{Binding IsOpenLoginRegistrationDialog}">
            
             <materialDesign:DialogHost.DialogContent>
                 <Grid >
@@ -215,8 +215,8 @@
                                 </Ellipse.Fill>
                             </Ellipse>
 
-                            <TextBlock Grid.Column="1"  Grid.RowSpan="3" Margin="5,0"  TextAlignment="Center"    TextWrapping="Wrap" VerticalAlignment="Bottom"></TextBlock>
-                            <TextBlock Grid.Column="1" Grid.Row="3" Margin="5,0" Grid.RowSpan="2" VerticalAlignment="Bottom"  TextAlignment="Center" ></TextBlock>
+                            <TextBlock Grid.Column="1"  Grid.RowSpan="3" Margin="5,0"  TextAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Bottom" Text="{Binding CurrentClient.Name}"></TextBlock>
+                            <TextBlock Grid.Column="1" Grid.Row="3" Margin="5,0" Grid.RowSpan="2" VerticalAlignment="Bottom"  TextAlignment="Center" Text="{Binding CurrentClient.Account.Phone}"></TextBlock>
                         </Grid>
                     </Border>
 
