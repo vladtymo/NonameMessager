@@ -20,9 +20,11 @@ namespace Client
     /// </summary>
     public partial class MainWindow : Window
     {
+        MainViewModel mainViewModel = new MainViewModel();
         public MainWindow()
         {
             InitializeComponent();
+            this.DataContext = mainViewModel;
         }
     }
 }
