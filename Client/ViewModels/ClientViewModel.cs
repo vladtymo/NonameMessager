@@ -13,5 +13,10 @@
         public string UniqueName { get => uniqueName; set => SetProperty(ref uniqueName, value); }
         public string PhotoPath { get => photoPath; set => SetProperty(ref photoPath, value); }
         public AccountViewModel Account { get => account; set => SetProperty(ref account, value); }
+
+        public ClientViewModel Clone()
+        {
+            return new ClientViewModel() { Account = new AccountViewModel() { Email = Account.Email, Password = Account.Password, Phone = Account.Phone, Id=Account.Id }, Name = Name, PhotoPath =PhotoPath, UniqueName = UniqueName, Id=Id };
+        }
     }
 }

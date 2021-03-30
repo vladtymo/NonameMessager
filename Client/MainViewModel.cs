@@ -13,11 +13,29 @@ namespace Client
 {
     class MainViewModel : ViewModelBase
     {
+        #region Properties
         private IClientService clientService = new ClientService();
         private IMapper mapper;
 
         private ClientViewModel currentClient;
         private ClientViewModel clientForChange;
+
+
+        private bool isOpenLoginRegistrationDialog;
+        private bool isOpenProfileDialog;
+        private bool isOpenInfoDialog;
+        private string textForInfoDialog;
+
+
+        public bool IsOpenLoginRegistrationDialog { get { return isOpenLoginRegistrationDialog; } set { SetProperty(ref isOpenLoginRegistrationDialog, value); } }
+        public bool IsOpenProfileDialog { get { return isOpenProfileDialog; } set { SetProperty(ref isOpenProfileDialog, value); } }
+        public bool IsOpenInfoDialog { get { return isOpenInfoDialog; } set { SetProperty(ref isOpenInfoDialog, value); } }
+
+        public string TextForInfoDialog { get { return textForInfoDialog; } set { SetProperty(ref textForInfoDialog, value); } }
+
+        public ClientViewModel CurrentClient { get { return currentClient; } set { SetProperty(ref currentClient, value); } }
+        public ClientViewModel ClientForChange { get { return clientForChange; } set { SetProperty(ref clientForChange, value); } }
+        #endregion
 
         public MainViewModel()
         {
@@ -32,16 +50,31 @@ namespace Client
                 });
 
             mapper = new Mapper(config);
-            loginCommand = new DelegateCommand(Login);
-            IsOpenLoginRegistrationDialog = true;
-            signUpCommand = new DelegateCommand(SignUp);
+
             currentClient = new ClientViewModel() { Account = new AccountViewModel() };
+            clientForChange = new ClientViewModel() { Account = new AccountViewModel() };
+            PropertyChanged += (sender, args) =>
+            {
+
+
+                if (args.PropertyName == nameof(CurrentClient))
+                {
+                    ClientForChange = CurrentClient.Clone();
+                   
+                }
+
+            };
+
+            loginCommand = new DelegateCommand(Login);
+            signUpCommand = new DelegateCommand(SignUp);
+            setProfileCommand = new DelegateCommand(SetProfile);
+            setProfileDiologOpenCommand = new DelegateCommand(ShowSetProfileDialog);
+
+            IsOpenLoginRegistrationDialog = true;
         }
 
 
-        public ClientViewModel CurrentClient { get { return currentClient; } set { SetProperty(ref currentClient, value); } }
-        public ClientViewModel ClientForChange { get { return clientForChange; } set { SetProperty(ref clientForChange, value); } }
-
+      
         public void Login()
         {
             CurrentClient.Account.Phone = CurrentClient.Account.Email;
@@ -50,6 +83,13 @@ namespace Client
             {
                 CurrentClient = result;
                 IsOpenLoginRegistrationDialog = false;
+                OpenInfoDialog($"Login successful. Hi, {CurrentClient.Name}");
+
+            }
+            else
+            {
+                OpenInfoDialog($"It looks like our system does not have a user with enetered data. Please, try again.");
+
             }
         }
 
@@ -61,19 +101,59 @@ namespace Client
             {
                 CurrentClient = result;
                 IsOpenLoginRegistrationDialog = false;
+                OpenInfoDialog($"Registration successful. Welcome, {CurrentClient.Name}");
+
+            }
+            else
+            {
+                OpenInfoDialog($"Registration problems. Try to change data.");
+               
             }
         }
 
+        public void SetProfile()
+        {
+            if (clientService.SetProperties(mapper.Map<ClientDTO>(ClientForChange)))
+            {
+                OpenInfoDialog($"Data changed successfully.");
+                CurrentClient = ClientForChange.Clone();
+
+            }
+            else
+            {
+                OpenInfoDialog($"The data has not been changed.");
+
+                ClientForChange = CurrentClient.Clone();
+            }
+        }
+        public void OpenInfoDialog(string text)
+        {
+            TextForInfoDialog = text;
+            IsOpenInfoDialog = true;
+        }
+        public void ShowSetProfileDialog()
+        {
+            ClientForChange = CurrentClient.Clone();
+        
+            IsOpenProfileDialog = true;
+        }
+
+        #region Commands
+        private Command setProfileDiologOpenCommand;
+
+
         private Command loginCommand;
         private Command signUpCommand;
-        
+        private Command setProfileCommand;
 
-        private bool isOpenLoginRegistrationDialog;
-        public bool IsOpenLoginRegistrationDialog { get { return isOpenLoginRegistrationDialog; } set { SetProperty(ref isOpenLoginRegistrationDialog, value); } }
-       
+        public ICommand SetProfileDiologOpenCommand => setProfileDiologOpenCommand;
+
         public ICommand LoginCommand => loginCommand;
         public ICommand SignUpCommand => signUpCommand;
+        public ICommand SetProfileCommand => setProfileCommand;
 
+
+        #endregion
 
     }
 }

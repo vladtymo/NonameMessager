@@ -53,6 +53,14 @@ namespace BLL
             else
                 return null;
         }
+        private int IsNotExistClient(ClientDTO clientDTO)
+        {
+            var client = repositories.ClientRepos.Get().Where(c => c.Id != clientDTO.Id && (c.UniqueName == clientDTO.UniqueName || c.Account.Email == clientDTO.Account.Email|| c.Account.Phone == clientDTO.Account.Phone)).FirstOrDefault();
+            if (client == null)
+                return -1;
+            else
+                return client.Id;
+        }
         private int IsExistClient(ClientDTO clientDTO)
         {
             var client = repositories.ClientRepos.Get().Where(c => c.UniqueName == clientDTO.UniqueName || c.Account.Email == clientDTO.Account.Email || c.Account.Phone == clientDTO.Account.Phone).FirstOrDefault();
@@ -87,10 +95,10 @@ namespace BLL
         }
         public bool SetProperties(ClientDTO clientDTO)
         {
-            var id = IsExistClient(clientDTO);
-            if (id != -1)
+            var id = IsNotExistClient(clientDTO);
+            if (id == -1)
             {
-                var client = repositories.ClientRepos.Get().Where(c => c.Id == id).FirstOrDefault();
+                var client = repositories.ClientRepos.Get().Where(c => c.Id == clientDTO.Id).FirstOrDefault();
                 client.Name = clientDTO.Name;
                 client.UniqueName = clientDTO.UniqueName;
                 client.Account.Email = clientDTO.Account.Email;
