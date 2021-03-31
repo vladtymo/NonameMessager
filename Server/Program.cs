@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DAL;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,6 +11,9 @@ namespace Server
     {
         static void Main(string[] args)
         {
+            MessangerModel messangerModel = new MessangerModel();
+
+            messangerModel.Contacts.FirstOrDefault();
         }
     }
 }
