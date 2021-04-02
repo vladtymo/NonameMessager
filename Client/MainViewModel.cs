@@ -48,9 +48,11 @@ namespace Client
                 {
                     cfg.CreateMap<AccountDTO, AccountViewModel>();
                     cfg.CreateMap<ClientDTO, ClientViewModel>();
+                    cfg.CreateMap<ChatDTO, ChatViewModel>();
 
                     cfg.CreateMap<AccountViewModel, AccountDTO>();
                     cfg.CreateMap<ClientViewModel, ClientDTO>();
+                    cfg.CreateMap<ChatViewModel, ChatDTO>();
                 });
 
             mapper = new Mapper(config);
