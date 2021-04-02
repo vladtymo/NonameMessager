@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DAL
 {
-    internal class Initializer : DropCreateDatabaseIfModelChanges<MessangerModel>
+    internal class Initializer : CreateDatabaseIfNotExists<MessangerModel>
     {
         protected override void Seed(MessangerModel context)
         {

@@ -44,7 +44,7 @@
 
                                 <TextBox Grid.Row="1"  materialDesign:HintAssist.Hint="Email/Phone" VerticalAlignment="Bottom" Margin="5,0" Text="{Binding CurrentClient.Account.Email}"></TextBox>
                                 <!--<PasswordBox Grid.Row="2"  VerticalAlignment="Bottom"  materialDesign:HintAssist.Hint="Password" Margin="5,5" ></PasswordBox>-->
-                                <TextBox  Grid.Row="2"  VerticalAlignment="Bottom"  materialDesign:HintAssist.Hint="Password" Margin="5,5" Text="{Binding  CurrentClient.Account.Password}" ></TextBox>
+                                <TextBox  Grid.Row="2"  VerticalAlignment="Bottom"  materialDesign:HintAssist.Hint="Password" Margin="5,5" Text="{Binding Password}" ></TextBox>
 
                                 <Button Grid.Row="3" Margin="5,0"  Command="{Binding LoginCommand}">Log in</Button>
                                 <Button Grid.Row="4" Margin="5,5" Style="{StaticResource MaterialDesignFlatButton}"
@@ -81,7 +81,7 @@
                                 <TextBox Grid.Row="4" VerticalAlignment="Bottom" materialDesign:HintAssist.Hint="Name"           Margin="5,0" Text="{Binding CurrentClient.Name}"></TextBox>
                                 <!--<PasswordBox  Grid.Row="5"  VerticalAlignment="Bottom"  materialDesign:HintAssist.Hint="Password" Margin="5,0" ></PasswordBox>-->
 
-                                <TextBox  Grid.Row="5"  VerticalAlignment="Bottom"  materialDesign:HintAssist.Hint="Password" Margin="5,0" Text="{Binding  CurrentClient.Account.Password}" ></TextBox>
+                                <TextBox  Grid.Row="5"  VerticalAlignment="Bottom"  materialDesign:HintAssist.Hint="Password" Margin="5,0" Text="{Binding Password}" ></TextBox>
 
                                 <Button Grid.Row="6"  Margin="5,5" VerticalAlignment="Center" Command="{Binding SignUpCommand}">
                                     Sign up
