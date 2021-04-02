@@ -47,7 +47,7 @@ namespace BLL
         }
         private Client GetClientByAccount(AccountDTO accountDTO)
         {
-            var client = repositories.ClientRepos.Get().Where(c => c.Account.Email == accountDTO.Email || c.Account.Phone == accountDTO.Phone && c.Account.Password == ComputeSha256Hash(accountDTO.Password)).FirstOrDefault();
+            var client = repositories.ClientRepos.Get().Where(c => (c.Account.Email == accountDTO.Email || c.Account.Phone == accountDTO.Phone) && c.Account.Password == ComputeSha256Hash(accountDTO.Password)).FirstOrDefault();
             if (client != null)
                 return client;
             else
