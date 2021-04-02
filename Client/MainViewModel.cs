@@ -25,6 +25,7 @@ namespace Client
         private bool isOpenProfileDialog;
         private bool isOpenInfoDialog;
         private string textForInfoDialog;
+        private string password;
 
 
         public bool IsOpenLoginRegistrationDialog { get { return isOpenLoginRegistrationDialog; } set { SetProperty(ref isOpenLoginRegistrationDialog, value); } }
@@ -32,6 +33,9 @@ namespace Client
         public bool IsOpenInfoDialog { get { return isOpenInfoDialog; } set { SetProperty(ref isOpenInfoDialog, value); } }
 
         public string TextForInfoDialog { get { return textForInfoDialog; } set { SetProperty(ref textForInfoDialog, value); } }
+
+        public string Password { get => password; set => SetProperty(ref password, value); }
+
 
         public ClientViewModel CurrentClient { get { return currentClient; } set { SetProperty(ref currentClient, value); } }
         public ClientViewModel ClientForChange { get { return clientForChange; } set { SetProperty(ref clientForChange, value); } }
@@ -78,7 +82,7 @@ namespace Client
         public void Login()
         {
             CurrentClient.Account.Phone = CurrentClient.Account.Email;
-            var result = mapper.Map<ClientViewModel>(clientService.GetClient(mapper.Map<AccountDTO>(CurrentClient.Account)));
+            var result = mapper.Map<ClientViewModel>(clientService.GetClient(mapper.Map<AccountDTO>(CurrentClient.Account), this.Password));
             if (result != null)
             {
                 CurrentClient = result;
@@ -96,7 +100,7 @@ namespace Client
         public void SignUp()
         {
 
-            var result = mapper.Map<ClientViewModel>(clientService.CreateNewClient(mapper.Map<ClientDTO>(CurrentClient)));
+            var result = mapper.Map<ClientViewModel>(clientService.CreateNewClient(mapper.Map<ClientDTO>(CurrentClient), this.Password));
             if (result != null)
             {
                 CurrentClient = result;
