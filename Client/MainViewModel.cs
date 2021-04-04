@@ -20,6 +20,7 @@ namespace Client
 
         private ClientViewModel currentClient;
         private ClientViewModel clientForChange;
+        private ChatViewModel currentChat;
 
 
         private bool isOpenLoginRegistrationDialog;
@@ -40,6 +41,7 @@ namespace Client
 
         public ClientViewModel CurrentClient { get { return currentClient; } set { SetProperty(ref currentClient, value); } }
         public ClientViewModel ClientForChange { get { return clientForChange; } set { SetProperty(ref clientForChange, value); } }
+        public ChatViewModel CurrentChat { get { return currentChat; } set { SetProperty(ref currentChat, value); } }
         #endregion
 
         public MainViewModel()
@@ -133,6 +135,22 @@ namespace Client
                 ClientForChange = CurrentClient.Clone();
             }
         }
+        public void CreateNewChat()
+        {
+            var result = mapper.Map<ChatViewModel>(chatService.CreateNewChat(mapper.Map<ChatDTO>(CurrentChat)));
+            if (result != null)
+            {
+                CurrentChat = result;
+                //IsOpenLoginRegistrationDialog = false;
+                //OpenInfoDialog($"");
+
+            }
+            else
+            {
+                OpenInfoDialog($"");
+
+            }
+        }
         public void OpenInfoDialog(string text)
         {
             TextForInfoDialog = text;
@@ -145,12 +163,6 @@ namespace Client
             IsOpenProfileDialog = true;
         }
 
-        public void CreateNewChat()
-        {
-
-            var chat = mapper.Map<ChatViewModel>(chatService.CreateNewChat(mapper.Map<ChatDTO>(new ChatViewModel() { Name = "n", IsPM = false, IsPrivate = true, MaxUsers = 5, UniqueName = "noName" })));
-
-        }
 
 
         #region Commands
