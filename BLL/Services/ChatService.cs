@@ -10,6 +10,7 @@ namespace BLL
 {
     public interface IChatService
     {
+        ChatDTO CreateNewChat(ChatDTO newChatDTO);
     }
     public class ChatService : IChatService
     {
@@ -31,6 +32,27 @@ namespace BLL
                 });
 
             mapper = new Mapper(config);
+        }
+
+        private int IsExistChat(ChatDTO chatDTO)
+        {
+            var chat = repositories.ChatRepos.Get().Where(ch => ch.UniqueName == chatDTO.UniqueName).FirstOrDefault();
+            if (chat == null) return -1;
+            else
+                return chat.Id;
+        }
+
+        public ChatDTO CreateNewChat(ChatDTO newChatDTO)
+        {
+            var id = IsExistChat(newChatDTO);
+            if (id == -1)
+            {
+                repositories.ChatRepos.Insert(mapper.Map<Chat>(newChatDTO));
+                repositories.Save();
+                return mapper.Map<ChatDTO>(repositories.ChatRepos.Get().LastOrDefault());
+            }
+            else
+                return null;
         }
     }
 }

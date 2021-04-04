@@ -15,6 +15,7 @@ namespace Client
     {
         #region Properties
         private IClientService clientService = new ClientService();
+        private IChatService chatService = new ChatService();
         private IMapper mapper;
 
         private ClientViewModel currentClient;
@@ -143,6 +144,14 @@ namespace Client
         
             IsOpenProfileDialog = true;
         }
+
+        public void CreateNewChat()
+        {
+
+            var chat = mapper.Map<ChatViewModel>(chatService.CreateNewChat(mapper.Map<ChatDTO>(new ChatViewModel() { Name = "n", IsPM = false, IsPrivate = true, MaxUsers = 5, UniqueName = "noName" })));
+
+        }
+
 
         #region Commands
         private Command setProfileDiologOpenCommand;
