@@ -15,6 +15,7 @@ namespace Client
     {
         #region Properties
         private IClientService clientService = new ClientService();
+        private IContactService contactService = new ContactService();
         private IMapper mapper;
 
         private ClientViewModel currentClient;
@@ -26,6 +27,7 @@ namespace Client
         private bool isOpenInfoDialog;
         private string textForInfoDialog;
         private string password;
+        private string uniqueNameContact;
 
 
         public bool IsOpenLoginRegistrationDialog { get { return isOpenLoginRegistrationDialog; } set { SetProperty(ref isOpenLoginRegistrationDialog, value); } }
@@ -35,6 +37,7 @@ namespace Client
         public string TextForInfoDialog { get { return textForInfoDialog; } set { SetProperty(ref textForInfoDialog, value); } }
 
         public string Password { get => password; set => SetProperty(ref password, value); }
+        public string UniqueNameContact { get => uniqueNameContact; set => SetProperty(ref uniqueNameContact, value); }
 
 
         public ClientViewModel CurrentClient { get { return currentClient; } set { SetProperty(ref currentClient, value); } }
@@ -132,6 +135,20 @@ namespace Client
                 ClientForChange = CurrentClient.Clone();
             }
         }
+
+        public void AddContact()
+        {
+            var result = mapper.Map<ClientViewModel>(contactService.AddContact(CurrentClient.Id, UniqueNameContact));
+            if (result != null)
+            {
+
+            }
+            else
+            {
+
+            }
+        }
+
         public void OpenInfoDialog(string text)
         {
             TextForInfoDialog = text;

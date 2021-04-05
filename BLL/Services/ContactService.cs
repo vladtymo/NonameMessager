@@ -10,6 +10,7 @@ namespace BLL
 {
     public interface IContactService
     {
+        ClientDTO AddContact(int clientID, string uniqueNameContact);
     }
     public class ContactService : IContactService
     {
@@ -38,6 +39,26 @@ namespace BLL
                 });
 
             mapper = new Mapper(config);
+        }
+        private bool IsContactExist(int clientID, string uniqueNameContact)
+        {
+            var contact = repositories.ContactRepos.Get().Where(c => c.ClientId == clientID && c.ContactClient.UniqueName == uniqueNameContact).FirstOrDefault();
+            if (contact == null)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public ClientDTO AddContact(int clientID, string uniqueNameContact)
+        {
+            if (!IsContactExist(clientID, uniqueNameContact))
+            {
+                var contactClient = repositories.ClientRepos.Get().Where(c => c.UniqueName == uniqueNameContact).FirstOrDefault();
+                repositories.ContactRepos.Insert(new Contact() { ClientId = clientID, ContactClientId = contactClient.Id });
+                return mapper.Map<ClientDTO>(contactClient);
+            }
+            return null;
         }
     }
 }
