@@ -25,6 +25,9 @@ namespace Client
 
         private bool isOpenLoginRegistrationDialog;
         private bool isOpenProfileDialog;
+
+        private bool isOpenContactsDialog;
+
         private bool isOpenInfoDialog;
         private string textForInfoDialog;
         private string password;
@@ -32,6 +35,10 @@ namespace Client
 
         public bool IsOpenLoginRegistrationDialog { get { return isOpenLoginRegistrationDialog; } set { SetProperty(ref isOpenLoginRegistrationDialog, value); } }
         public bool IsOpenProfileDialog { get { return isOpenProfileDialog; } set { SetProperty(ref isOpenProfileDialog, value); } }
+
+        public bool IsOpenContactsDialog { get { return isOpenContactsDialog; } set { SetProperty(ref isOpenContactsDialog, value); } }
+
+
         public bool IsOpenInfoDialog { get { return isOpenInfoDialog; } set { SetProperty(ref isOpenInfoDialog, value); } }
 
         public string TextForInfoDialog { get { return textForInfoDialog; } set { SetProperty(ref textForInfoDialog, value); } }
@@ -69,21 +76,23 @@ namespace Client
                 if (args.PropertyName == nameof(CurrentClient))
                 {
                     ClientForChange = CurrentClient.Clone();
-                   
+
                 }
 
             };
 
             loginCommand = new DelegateCommand(Login);
             signUpCommand = new DelegateCommand(SignUp);
+            exitCommand = new DelegateCommand(Exit);
             setProfileCommand = new DelegateCommand(SetProfile);
-            setProfileDiologOpenCommand = new DelegateCommand(ShowSetProfileDialog);
+            setProfileDialogOpenCommand = new DelegateCommand(ShowSetProfileDialog);
+            contactsDialogOpenCommand = new DelegateCommand(ShowContactsDialog);
 
             IsOpenLoginRegistrationDialog = true;
         }
 
 
-      
+
         public void Login()
         {
             CurrentClient.Account.Phone = CurrentClient.Account.Email;
@@ -116,8 +125,15 @@ namespace Client
             else
             {
                 OpenInfoDialog($"Registration problems. Try to change data.");
-               
+
             }
+        }
+        public void Exit()
+        {
+            CurrentClient = new ClientViewModel() { Account = new AccountViewModel() };
+            ClientForChange = new ClientViewModel() { Account = new AccountViewModel() };
+            Password = String.Empty;
+            IsOpenLoginRegistrationDialog = true;
         }
 
         public void SetProfile()
@@ -141,8 +157,7 @@ namespace Client
             if (result != null)
             {
                 CurrentChat = result;
-                //IsOpenLoginRegistrationDialog = false;
-                //OpenInfoDialog($"");
+
 
             }
             else
@@ -159,24 +174,35 @@ namespace Client
         public void ShowSetProfileDialog()
         {
             ClientForChange = CurrentClient.Clone();
-        
+
             IsOpenProfileDialog = true;
+        }
+        public void ShowContactsDialog()
+        {
+
+            IsOpenContactsDialog = true;
         }
 
 
-
         #region Commands
-        private Command setProfileDiologOpenCommand;
+        private Command setProfileDialogOpenCommand;
+        private Command contactsDialogOpenCommand;
 
 
         private Command loginCommand;
         private Command signUpCommand;
+        private Command exitCommand;
+
         private Command setProfileCommand;
 
-        public ICommand SetProfileDiologOpenCommand => setProfileDiologOpenCommand;
+        public ICommand SetProfileDialogOpenCommand => setProfileDialogOpenCommand;
+        public ICommand ContactsDialogOpenCommand => contactsDialogOpenCommand;
+
 
         public ICommand LoginCommand => loginCommand;
         public ICommand SignUpCommand => signUpCommand;
+        public ICommand ExitCommand => exitCommand;
+
         public ICommand SetProfileCommand => setProfileCommand;
 
 
