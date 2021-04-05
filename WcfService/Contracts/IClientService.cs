@@ -11,8 +11,6 @@ namespace WcfService
     public interface IClientService
     {
         [OperationContract]
-        IEnumerable<ClientDTO> GetAllClients();
-        [OperationContract]
         ClientDTO CreateNewClient(ClientDTO clientDTO, string password);
         [OperationContract]
         ClientDTO GetClient(AccountDTO accountDTO, string password);
