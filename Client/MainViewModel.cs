@@ -161,8 +161,9 @@ namespace Client
             if (result != null)
             {
                 CurrentChat = result;
-
-
+            }
+        }
+        
         public void AddContact()
         {
             var result = mapper.Map<ClientViewModel>(contactService.AddContact(CurrentClient.Id, UniqueNameContact));
@@ -176,7 +177,18 @@ namespace Client
 
             }
         }
+        public void DeleteContact()
+        {
+            if (contactService.DeleteContact(CurrentClient.Id, UniqueNameContact))
+            {
 
+            }
+            else
+            {
+                OpenInfoDialog($"");
+
+            }
+        }
         public void OpenInfoDialog(string text)
         {
             TextForInfoDialog = text;

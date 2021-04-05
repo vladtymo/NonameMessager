@@ -11,6 +11,7 @@ namespace BLL
     public interface IContactService
     {
         ClientDTO AddContact(int clientID, string uniqueNameContact);
+        bool DeleteContact(int clientID, string uniqueNameContact);
     }
     public class ContactService : IContactService
     {
@@ -60,5 +61,17 @@ namespace BLL
             }
             return null;
         }
+
+        public bool DeleteContact(int clientID, string uniqueNameContact)
+        {
+            if (IsContactExist(clientID, uniqueNameContact))
+            {
+                var contactClient = repositories.ContactRepos.Get().Where(c => c.ClientId == clientID && c.ContactClient.UniqueName == uniqueNameContact).FirstOrDefault();
+                repositories.ContactRepos.Delete(contactClient);
+                return true;
+            }
+            return false;
+        }
+
     }
 }
