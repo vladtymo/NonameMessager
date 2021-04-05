@@ -165,6 +165,7 @@ namespace WcfService
             {
                 var contactClient = repositories.ClientRepos.Get().Where(c => c.UniqueName == uniqueNameContact).FirstOrDefault();
                 repositories.ContactRepos.Insert(new Contact() { ClientId = clientID, ContactClientId = contactClient.Id });
+                repositories.Save();
                 return contactMapper.Map<ClientDTO>(contactClient);
             }
             return null;
@@ -175,6 +176,7 @@ namespace WcfService
             {
                 var contactClient = repositories.ContactRepos.Get().Where(c => c.ClientId == clientID && c.ContactClient.UniqueName == uniqueNameContact).FirstOrDefault();
                 repositories.ContactRepos.Delete(contactClient);
+                repositories.Save();
                 return true;
             }
             return false;

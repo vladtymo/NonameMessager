@@ -8,10 +8,20 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Client.MessangerServices;
+using System.Collections.ObjectModel;
+
 namespace Client
 {
     class MainViewModel : ViewModelBase
     {
+        #region
+
+        private readonly ICollection<ClientViewModel> contacts = new ObservableCollection<ClientViewModel>();
+
+
+        public IEnumerable<ClientViewModel> Contacts => contacts;
+
+        #endregion
         #region Properties
         private ClientServiceClient clientService = new ClientServiceClient();
         private ChatServiceClient chatService = new ChatServiceClient();
@@ -90,6 +100,8 @@ namespace Client
             setProfileCommand = new DelegateCommand(SetProfile);
             setProfileDialogOpenCommand = new DelegateCommand(ShowSetProfileDialog);
             contactsDialogOpenCommand = new DelegateCommand(ShowContactsDialog);
+            addContactCommand = new DelegateCommand(AddContact);
+            deleteContactCommand = new DelegateCommand(DeleteContact);
 
             IsOpenLoginRegistrationDialog = true;
         }
@@ -168,23 +180,24 @@ namespace Client
             var result = mapper.Map<ClientViewModel>(contactService.AddContact(CurrentClient.Id, UniqueNameContact));
             if (result != null)
             {
-
+                contacts.Add(result);
+                OpenInfoDialog($"successfully added");
             }
             else
             {
-                OpenInfoDialog($"");
-
+                OpenInfoDialog($"ne dodano");
             }
         }
         public void DeleteContact()
         {
             if (contactService.DeleteContact(CurrentClient.Id, UniqueNameContact))
             {
-
+                contacts.Remove(contacts.Where(c => c.UniqueName == UniqueNameContact).FirstOrDefault());
+                OpenInfoDialog($"successfully delete");
             }
             else
             {
-                OpenInfoDialog($"");
+                OpenInfoDialog($"ne delete");
 
             }
         }
@@ -217,6 +230,10 @@ namespace Client
 
         private Command setProfileCommand;
 
+        private Command addContactCommand;
+        private Command deleteContactCommand;
+
+
         public ICommand SetProfileDialogOpenCommand => setProfileDialogOpenCommand;
         public ICommand ContactsDialogOpenCommand => contactsDialogOpenCommand;
 
@@ -227,6 +244,8 @@ namespace Client
 
         public ICommand SetProfileCommand => setProfileCommand;
 
+        public ICommand AddContactCommand => addContactCommand;
+        public ICommand DeleteContactCommand => deleteContactCommand;
 
         #endregion
 
