@@ -7,15 +7,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-
+using Client.MessangerServices;
 namespace Client
 {
     class MainViewModel : ViewModelBase
     {
         #region Properties
-        private IClientService clientService = new ClientService();
-        private IChatService chatService = new ChatService();
-        private IContactService contactService = new ContactService();
+        private ClientServiceClient clientService = new ClientServiceClient();
+        private ChatServiceClient chatService = new ChatServiceClient();
+        private ContactServiceClient contactService = new ContactServiceClient();
 
         private IMapper mapper;
 
