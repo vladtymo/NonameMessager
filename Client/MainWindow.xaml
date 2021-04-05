@@ -343,10 +343,11 @@
                          Grid.Column="1"                         
                          materialDesign:HintAssist.Hint="Search"
                          materialDesign:TextFieldAssist.HasClearButton="True"                                  
-                         VerticalAlignment="Center" FontSize="15"/>
+                         VerticalAlignment="Center" FontSize="15"
+                                    Text="{Binding UniqueNameContact, Mode=OneWayToSource}"/>
 
                             </Grid>
-                            <ListBox Grid.ColumnSpan="2" Grid.Row="2" Margin="25,10" >
+                            <ListBox Grid.ColumnSpan="2" Grid.Row="2" Margin="25,10" ItemsSource="{Binding Contacts}">
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
                                         <Border TextBlock.FontSize="15">
@@ -375,9 +376,10 @@
                                                     </Ellipse.Fill>
                                                 </Ellipse>
 
-                                                <TextBlock Grid.Column="1" FontWeight="SemiBold"  Grid.RowSpan="3" Margin="15,0"  TextAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Bottom" ></TextBlock>
-                                                <TextBlock Grid.Column="1" Grid.Row="3" Margin="15,0" Grid.RowSpan="2" VerticalAlignment="Bottom"  TextAlignment="Left" >
-                                                <Run Text="@"/><Run/>
+                                                <TextBlock Grid.Column="1" FontWeight="SemiBold"  Grid.RowSpan="3" Margin="15,0"  TextAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Bottom" Text="{Binding Name}"></TextBlock>
+                                                <TextBlock Grid.Column="1" Grid.Row="3" Margin="15,0" Grid.RowSpan="2" VerticalAlignment="Bottom"  TextAlignment="Left">
+                                                    <Run Text="@"/>
+                                                    <Run Text="{Binding UniqueName}"/>
                                                 </TextBlock>
                                             </Grid>
                                         </Border>
@@ -386,8 +388,8 @@
 
                             </ListBox>
 
-                            <Button  Grid.Row="3" Margin="10,5" Content="Add contact"></Button>
-                            <Button Grid.Row="3" Grid.Column="1" Margin="10,5" Content="Delete contact"></Button>
+                            <Button  Grid.Row="3" Margin="10,5" Content="Add contact" Command="{Binding AddContactCommand}"></Button>
+                            <Button Grid.Row="3" Grid.Column="1" Margin="10,5" Content="Delete contact" Command="{Binding DeleteContactCommand}"></Button>
 
 
                         </Grid>
