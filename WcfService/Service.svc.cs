@@ -16,13 +16,15 @@ namespace WcfService
     public class Service : IChatService, IClientService, IContactService
     {
         private IUnitOfWork repositories;
-        private IMapper mapper;
+        private IMapper clientMapper;
+        private IMapper chatMapper;
+        private IMapper contactMapper;
 
         public Service()
         {
             this.repositories = new UnitOfWork();
 
-            IConfigurationProvider config = new MapperConfiguration(
+            IConfigurationProvider clientConfig = new MapperConfiguration(
                 cfg =>
                 {
                     // Entity to DTO
@@ -34,8 +36,36 @@ namespace WcfService
 
                     cfg.CreateMap<AccountDTO, Account>().ForMember(dst => dst.Password, opt => opt.MapFrom(src => ComputeSha256Hash(src.Password)));
                 });
+            clientMapper = new Mapper(clientConfig);
 
-            mapper = new Mapper(config);
+            IConfigurationProvider chatConfig = new MapperConfiguration(
+                cfg =>
+                {
+                    // Entity to DTO
+                    cfg.CreateMap<Chat, ChatDTO>();
+
+                    cfg.CreateMap<ChatDTO, Chat>();
+
+                });
+            chatMapper = new Mapper(chatConfig);
+
+            IConfigurationProvider contactConfig = new MapperConfiguration(
+                cfg =>
+                {
+                    // Entity to DTO
+                    cfg.CreateMap<Contact, ContactDTO>();
+
+                    cfg.CreateMap<Client, ClientDTO>();
+
+                    cfg.CreateMap<Account, AccountDTO>().ForMember(dst => dst.Password, opt => opt.Ignore());
+
+                    cfg.CreateMap<ContactDTO, Contact>();
+
+                    cfg.CreateMap<ClientDTO, Client>();
+
+                    cfg.CreateMap<AccountDTO, Account>().ForMember(dst => dst.Password, opt => opt.Ignore());
+                });
+            contactMapper = new Mapper(contactConfig);
         }
         //--------------------------Client Methods--------------------//
         private Client GetClientByAccount(AccountDTO accountDTO, string password)
@@ -68,11 +98,11 @@ namespace WcfService
             if (id == -1)
             {
                 clientDTO.Account.Password = password;
-                repositories.ClientRepos.Insert(mapper.Map<Client>(clientDTO));
+                repositories.ClientRepos.Insert(clientMapper.Map<Client>(clientDTO));
                 repositories.Save();
                 repositories.ClientRepos.Get().LastOrDefault().AccountId = repositories.AccountRepos.Get().LastOrDefault().ClientId;
                 repositories.Save();
-                return mapper.Map<ClientDTO>(repositories.ClientRepos.Get().LastOrDefault());
+                return clientMapper.Map<ClientDTO>(repositories.ClientRepos.Get().LastOrDefault());
             }
             else
                 return null;
@@ -82,7 +112,7 @@ namespace WcfService
             var client = GetClientByAccount(accountDTO, password);
             if (client != null)
             {
-                return mapper.Map<ClientDTO>(client);
+                return clientMapper.Map<ClientDTO>(client);
             }
             else
                 return null;
@@ -135,7 +165,7 @@ namespace WcfService
             {
                 var contactClient = repositories.ClientRepos.Get().Where(c => c.UniqueName == uniqueNameContact).FirstOrDefault();
                 repositories.ContactRepos.Insert(new Contact() { ClientId = clientID, ContactClientId = contactClient.Id });
-                return mapper.Map<ClientDTO>(contactClient);
+                return contactMapper.Map<ClientDTO>(contactClient);
             }
             return null;
         }
@@ -163,9 +193,9 @@ namespace WcfService
             var id = IsExistChat(newChatDTO);
             if (id == -1)
             {
-                repositories.ChatRepos.Insert(mapper.Map<Chat>(newChatDTO));
+                repositories.ChatRepos.Insert(chatMapper.Map<Chat>(newChatDTO));
                 repositories.Save();
-                return mapper.Map<ChatDTO>(repositories.ChatRepos.Get().LastOrDefault());
+                return chatMapper.Map<ChatDTO>(repositories.ChatRepos.Get().LastOrDefault());
             }
             else
                 return null;
