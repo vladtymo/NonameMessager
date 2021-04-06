@@ -32,4 +32,11 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="AccountDTO" nillable="true" type="tns:AccountDTO" />
+  <xs:complexType name="InfoFile">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Data" nillable="true" type="xs:base64Binary" />
+      <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="InfoFile" nillable="true" type="tns:InfoFile" />
 </xs:schema>

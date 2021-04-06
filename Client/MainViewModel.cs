@@ -9,6 +9,8 @@ using System.Windows;
 using System.Windows.Input;
 using Client.MessangerServices;
 using System.Collections.ObjectModel;
+using Microsoft.Win32;
+using System.IO;
 
 namespace Client
 {
@@ -44,6 +46,9 @@ namespace Client
         private string password;
         private string uniqueNameContact;
 
+        private string pathToPhoto;
+       
+
 
         public bool IsOpenLoginRegistrationDialog { get { return isOpenLoginRegistrationDialog; } set { SetProperty(ref isOpenLoginRegistrationDialog, value); } }
         public bool IsOpenProfileDialog { get { return isOpenProfileDialog; } set { SetProperty(ref isOpenProfileDialog, value); } }
@@ -62,6 +67,8 @@ namespace Client
         public ClientViewModel CurrentClient { get { return currentClient; } set { SetProperty(ref currentClient, value); } }
         public ClientViewModel ClientForChange { get { return clientForChange; } set { SetProperty(ref clientForChange, value); } }
         public ChatViewModel CurrentChat { get { return currentChat; } set { SetProperty(ref currentChat, value); } }
+
+
         #endregion
 
         public MainViewModel()
@@ -98,12 +105,18 @@ namespace Client
             signUpCommand = new DelegateCommand(SignUp);
             exitCommand = new DelegateCommand(Exit);
             setProfileCommand = new DelegateCommand(SetProfile);
+            setPhotoCommand = new DelegateCommand(SetPhoto);
             setProfileDialogOpenCommand = new DelegateCommand(ShowSetProfileDialog);
             contactsDialogOpenCommand = new DelegateCommand(ShowContactsDialog);
             addContactCommand = new DelegateCommand(AddContact);
             deleteContactCommand = new DelegateCommand(DeleteContact);
 
             IsOpenLoginRegistrationDialog = true;
+            
+             
+            pathToPhoto = Path.Combine(Directory.GetParent(Directory.GetParent(Environment.CurrentDirectory).FullName).FullName, "ClientsPhoto");
+
+            clientService.GetPathToPhoto(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(Environment.CurrentDirectory).FullName).FullName).FullName, "WcfService", "ClientsPhoto"));
         }
 
 
@@ -116,8 +129,8 @@ namespace Client
             {
                 CurrentClient = result;
                 IsOpenLoginRegistrationDialog = false;
+                GetPhoto();
                 OpenInfoDialog($"Login successful. Hi, {CurrentClient.Name}");
-
             }
             else
             {
@@ -150,11 +163,53 @@ namespace Client
             Password = String.Empty;
             IsOpenLoginRegistrationDialog = true;
         }
+        public string FreePath(string path)
+        {
+            int index = 0;
+            string tmp;
+            do
+            {
+                tmp = Path.Combine(Path.GetDirectoryName(path), Path.GetFileNameWithoutExtension(path) + (index == 0 ? null : $"({index})") + Path.GetExtension(path));
+                index++;
+            } while (System.IO.File.Exists(tmp));
+            return tmp;
+        }
+        public void GetPhoto()
+        {
+            InfoFile info = clientService.GetPhoto(CurrentClient.Id);
+            if (info != null)
+            {
+                string path = FreePath(Path.Combine(pathToPhoto, clientForChange.Id.ToString() + Path.GetExtension(info.Name)));
 
+                using (FileStream fs = new FileStream(path, FileMode.Create, FileAccess.Write))
+                {
+                    fs.Write(info.Data, 0, info.Data.Length);
+                }
+                CurrentClient.PhotoPath = Path.Combine(pathToPhoto, clientForChange.Id.ToString() + Path.GetExtension(info.Name));
+            }
+            
+        }
         public void SetProfile()
         {
             if (clientService.SetProperties(mapper.Map<ClientDTO>(ClientForChange)))
             {
+                if (CurrentClient.PhotoPath != ClientForChange.PhotoPath)
+                {
+
+                   
+                    InfoFile info = new InfoFile() { Name = ClientForChange.PhotoPath };
+                    using (FileStream fs = new FileStream(clientForChange.PhotoPath, FileMode.Open, FileAccess.Read))
+                    {
+                        byte[] fileData = new byte[fs.Length];
+                        fs.Read(fileData, 0, fileData.Length);
+                        info.Data = fileData;
+                    }
+                    clientService.SetPhoto(clientForChange.Id, info);
+
+                    string path =FreePath( Path.Combine( pathToPhoto, clientForChange.Id.ToString() + Path.GetExtension(info.Name)));
+                    File.Copy(clientForChange.PhotoPath, path, true);
+                    ClientForChange.PhotoPath = path;              
+                }
                 OpenInfoDialog($"Data changed successfully.");
                 CurrentClient = ClientForChange.Clone();
 
@@ -166,26 +221,36 @@ namespace Client
                 ClientForChange = CurrentClient.Clone();
             }
         }
+    
+        public void SetPhoto()
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Filter = "Image files (*.jpg, *.jpeg, *.jpe, *.jfif, *.png) | *.jpg; *.jpeg; *.jpe; *.jfif; *.png";
+            if (ofd.ShowDialog() == true)
+            {
+                ClientForChange.PhotoPath = ofd.FileName;
+            }
+        }
         public void CreateNewChat()
         {
             var result = mapper.Map<ChatViewModel>(chatService.CreateNewChat(mapper.Map<ChatDTO>(CurrentChat)));
             if (result != null)
             {
-                CurrentChat = result;
+                CurrentChat = result;               
             }
         }
-        
+
         public void AddContact()
         {
             var result = mapper.Map<ClientViewModel>(contactService.AddContact(CurrentClient.Id, UniqueNameContact));
             if (result != null)
             {
                 contacts.Add(result);
-                OpenInfoDialog($"successfully added");
+                OpenInfoDialog($"Contact added successfully.");
             }
             else
             {
-                OpenInfoDialog($"ne dodano");
+                OpenInfoDialog($"Contact could not be added.");
             }
         }
         public void DeleteContact()
@@ -193,11 +258,11 @@ namespace Client
             if (contactService.DeleteContact(CurrentClient.Id, UniqueNameContact))
             {
                 contacts.Remove(contacts.Where(c => c.UniqueName == UniqueNameContact).FirstOrDefault());
-                OpenInfoDialog($"successfully delete");
+                OpenInfoDialog($"Contact successfully delete.");
             }
             else
             {
-                OpenInfoDialog($"ne delete");
+                OpenInfoDialog($"Failed to delete contact.");
 
             }
         }
@@ -233,6 +298,7 @@ namespace Client
         private Command addContactCommand;
         private Command deleteContactCommand;
 
+        private Command setPhotoCommand;
 
         public ICommand SetProfileDialogOpenCommand => setProfileDialogOpenCommand;
         public ICommand ContactsDialogOpenCommand => contactsDialogOpenCommand;
@@ -247,6 +313,7 @@ namespace Client
         public ICommand AddContactCommand => addContactCommand;
         public ICommand DeleteContactCommand => deleteContactCommand;
 
+        public ICommand SetPhotoCommand => setPhotoCommand;
         #endregion
 
     }
