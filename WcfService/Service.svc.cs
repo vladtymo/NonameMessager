@@ -153,8 +153,8 @@ namespace WcfService
             DirectoryInfo di = new DirectoryInfo(pathToPhoto);
             string path = repositories.ClientRepos.Get().Where(c => c.Id == clientId).Select(c => c.PhotoPath).FirstOrDefault();
             if (path == null) return null;
-            var result = di.GetFiles().Where(f => f.FullName==path);
-            if (result.Count() == 0)
+            var result = di.GetFiles().Where(f => f.FullName==path).FirstOrDefault();
+            if (result == null)
             {
                 repositories.ClientRepos.Get().Where(c => c.Id == clientId).FirstOrDefault().PhotoPath = null;
                 repositories.Save();             
