@@ -2,6 +2,7 @@
 using DAL;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Security.Cryptography;
@@ -20,6 +21,7 @@ namespace WcfService
         private IMapper chatMapper;
         private IMapper contactMapper;
 
+        private string pathToPhoto;
         public Service()
         {
             this.repositories = new UnitOfWork();
@@ -66,6 +68,8 @@ namespace WcfService
                     cfg.CreateMap<AccountDTO, Account>().ForMember(dst => dst.Password, opt => opt.Ignore());
                 });
             contactMapper = new Mapper(contactConfig);
+            
+
         }
         //--------------------------Client Methods--------------------//
         private Client GetClientByAccount(AccountDTO accountDTO, string password)
@@ -117,6 +121,54 @@ namespace WcfService
             else
                 return null;
         }
+        public string FreePath(string path)
+        {
+            int index = 0;
+            string tmp;
+            do
+            {
+                tmp = Path.Combine(Path.GetDirectoryName(path), Path.GetFileNameWithoutExtension(path) + (index == 0 ? null : $"({index})") + Path.GetExtension(path));
+                index++;
+            } while (System.IO.File.Exists(tmp));
+            return tmp;
+        }
+        public void SetPhoto(int clientId, InfoFile info)
+        {
+            string path = FreePath(Path.Combine(pathToPhoto, clientId.ToString() + Path.GetExtension(info.Name)));
+      
+            using (FileStream fs = new FileStream(path, FileMode.Create, FileAccess.Write))
+            {
+                fs.Write(info.Data, 0, info.Data.Length);
+            }
+            repositories.ClientRepos.Get().Where(c => c.Id == clientId).FirstOrDefault().PhotoPath=path;
+            repositories.Save();
+           
+        }
+        public void GetPathToPhoto(string pathToPhoto)
+        {
+            this.pathToPhoto = pathToPhoto;
+        }
+        public InfoFile GetPhoto(int clientId)
+        {
+            DirectoryInfo di = new DirectoryInfo(pathToPhoto);
+            string path = repositories.ClientRepos.Get().Where(c => c.Id == clientId).Select(c => c.PhotoPath).FirstOrDefault();
+            if (path == null) return null;
+            var result = di.GetFiles().Where(f => f.FullName==path);
+            if (result.Count() == 0)
+            {
+                repositories.ClientRepos.Get().Where(c => c.Id == clientId).FirstOrDefault().PhotoPath = null;
+                repositories.Save();             
+                return null;
+            }
+            InfoFile info = new InfoFile() { Name = path };
+            using (FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read))
+            {
+                byte[] fileData = new byte[fs.Length];
+                fs.Read(fileData, 0, fileData.Length);
+                info.Data = fileData;
+            }
+            return info;
+        }
         public bool SetProperties(ClientDTO clientDTO)
         {
             var id = IsNotExistClient(clientDTO);
@@ -126,7 +178,7 @@ namespace WcfService
                 client.Name = clientDTO.Name;
                 client.UniqueName = clientDTO.UniqueName;
                 client.Account.Email = clientDTO.Account.Email;
-                client.Account.Phone = clientDTO.Account.Phone;
+                client.Account.Phone = clientDTO.Account.Phone;              
                 repositories.ClientRepos.Update(client);
                 repositories.Save();
                 return true;
@@ -202,5 +254,15 @@ namespace WcfService
             else
                 return null;
         }
+
+    }
+    [DataContract]
+    public class InfoFile
+    {
+        [DataMember]
+        public string Name { get; set; }
+        [DataMember]
+        public byte[] Data { get; set; }
+
     }
 }

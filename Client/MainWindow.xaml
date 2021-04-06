@@ -41,7 +41,7 @@
 
                 <StackPanel Width="275" >
                     <Border Height="80" Background="{DynamicResource PrimaryHueMidBrush }" TextBlock.Foreground="{StaticResource MaterialDesignBackground}">
-                        <Grid >
+                        <Grid Margin="10,0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"></ColumnDefinition>
                                 <ColumnDefinition></ColumnDefinition>
@@ -62,12 +62,12 @@
                             </Grid.RowDefinitions>
                             <Ellipse Width="50" Height="50" Margin="10,0" Grid.RowSpan="4" Grid.Row="1">
                                 <Ellipse.Fill>
-                                    <ImageBrush  Stretch="UniformToFill"/>
+                                    <ImageBrush ImageSource="{Binding CurrentClient.PhotoPath}" Stretch="UniformToFill"/>
                                 </Ellipse.Fill>
                             </Ellipse>
 
-                            <TextBlock Grid.Column="1"  Grid.RowSpan="3" Margin="5,0"  TextAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Bottom" Text="{Binding CurrentClient.Name}"></TextBlock>
-                            <TextBlock Grid.Column="1" Grid.Row="3" Margin="5,0" Grid.RowSpan="2" VerticalAlignment="Bottom"  TextAlignment="Center" Text="{Binding CurrentClient.Account.Phone}"></TextBlock>
+                            <TextBlock Grid.Column="1"  Grid.RowSpan="3" Margin="5,0"  TextAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Bottom" Text="{Binding CurrentClient.Name}"></TextBlock>
+                            <TextBlock Grid.Column="1" Grid.Row="3" Margin="5,0" Grid.RowSpan="2" VerticalAlignment="Bottom"  TextAlignment="Left" Text="{Binding CurrentClient.Account.Phone}"></TextBlock>
                         </Grid>
                     </Border>
 
@@ -134,7 +134,7 @@
             <Grid>
 
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" MinWidth="200"></ColumnDefinition>
+                    <ColumnDefinition Width="*" MinWidth="200" ></ColumnDefinition>
                     <ColumnDefinition Width="Auto"></ColumnDefinition>
                     <ColumnDefinition Width="*" MinWidth="400"></ColumnDefinition>
 
@@ -262,10 +262,10 @@
                                     </Grid.RowDefinitions>
                                     <Ellipse Width="70" Height="70" Grid.ColumnSpan="2" Margin="10,0" Grid.RowSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" >
                                         <Ellipse.Fill>
-                                            <ImageBrush  Stretch="UniformToFill"/>
+                                            <ImageBrush ImageSource="{Binding ClientForChange.PhotoPath}" Stretch="UniformToFill"/>
                                         </Ellipse.Fill>
                                     </Ellipse>
-                                    <Button Grid.Row="3" Grid.ColumnSpan="2" VerticalAlignment="Center" Margin="10"  HorizontalAlignment="Center" Background="{StaticResource SecondaryHueMidBrush}" materialDesign:ButtonAssist.CornerRadius="15" BorderBrush="#FF663737">Set profile photo</Button>
+                                    <Button Grid.Row="3" Grid.ColumnSpan="2" VerticalAlignment="Center" Margin="10"  HorizontalAlignment="Center" Background="{StaticResource SecondaryHueMidBrush}" materialDesign:ButtonAssist.CornerRadius="15" BorderBrush="#FF663737" Command="{Binding SetPhotoCommand}">Select photo</Button>
                                 </Grid>
                             </Border>
 
@@ -441,7 +441,25 @@
                                         CommandParameter="{x:Static Dock.Left}" >
                             <materialDesign:PackIcon Kind="Menu" Foreground="{StaticResource PrimaryHueMidBrush}"  Width="30" Height="30" />
                         </Button>
-                        <TextBox  Margin="5"   materialDesign:HintAssist.Hint="Search"   materialDesign:TextFieldAssist.HasClearButton="True"  ></TextBox>
+                        <Button  Style="{DynamicResource MaterialDesignToolButton}">
+                            <materialDesign:PackIcon Kind="Magnify" Opacity=".56" RenderTransformOrigin="0.5,0.5" >
+                                <materialDesign:PackIcon.RenderTransform>
+                                    <TransformGroup>
+                                        <ScaleTransform ScaleY="1" ScaleX="-1"/>
+                                        <SkewTransform AngleY="0" AngleX="0"/>
+                                        <RotateTransform Angle="0"/>
+                                        <TranslateTransform/>
+                                    </TransformGroup>
+                                </materialDesign:PackIcon.RenderTransform>
+                            </materialDesign:PackIcon>
+                        </Button>
+                        <TextBox
+                         Margin="0,0,10,0"
+                         Grid.Column="1"                         
+                         materialDesign:HintAssist.Hint="Search"
+                         materialDesign:TextFieldAssist.HasClearButton="True"                                  
+                         VerticalAlignment="Center" />
+                       
                     </DockPanel>
                     <ListBox Grid.Row="1"></ListBox>
                 </Grid>

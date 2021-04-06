@@ -16,5 +16,11 @@ namespace WcfService
         ClientDTO GetClient(AccountDTO accountDTO, string password);
         [OperationContract]
         bool SetProperties(ClientDTO clientDTO);
+        [OperationContract]
+        void SetPhoto(int clientId, InfoFile info);
+        [OperationContract]
+        InfoFile GetPhoto(int clientId);
+        [OperationContract]
+        void GetPathToPhoto(string pathToPhoto);
     }
 }
