@@ -14,5 +14,9 @@ namespace WcfService
         ClientDTO AddContact(int clientID, string uniqueNameContact);
         [OperationContract]
         bool DeleteContact(int clientID, string uniqueNameContact);
+        [OperationContract]
+        IEnumerable<ClientDTO> TakeContacts(int clientId);
     }
+
+
 }

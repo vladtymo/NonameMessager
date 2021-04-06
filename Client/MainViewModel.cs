@@ -153,6 +153,10 @@ namespace Client
                 CurrentClient = result;
                 IsOpenLoginRegistrationDialog = false;
                 GetPhoto();
+                foreach (var item in contactService.TakeContacts(currentClient.Id))
+                {
+                    contacts.Add(mapper.Map<ClientViewModel>(item));
+                }
                 OpenInfoDialog(Resources.SuccessfulLoginString +$"{CurrentClient.Name}!");
             }
             else
