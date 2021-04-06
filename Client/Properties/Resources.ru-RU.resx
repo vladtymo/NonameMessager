@@ -259,13 +259,15 @@
     <value>Чат успешно создан.</value>
   </data>
   <data name="SuccessfulLoginString" xml:space="preserve">
-    <value>Успешный вход в систему. Привет, </value>
+    <value>Успешный вход в систему. 
+Привет, </value>
   </data>
   <data name="SuccessfulSetProfileString" xml:space="preserve">
     <value>Данные успешно обновлены.</value>
   </data>
   <data name="SuccessfulSignUpString" xml:space="preserve">
-    <value>Регистрация прошла успешно. Добро пожаловать, </value>
+    <value>Регистрация прошла успешно. 
+Добро пожаловать, </value>
   </data>
   <data name="UniqueNameString" xml:space="preserve">
     <value>Уникальное имя</value>

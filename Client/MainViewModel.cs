@@ -139,7 +139,7 @@ namespace Client
 
             clientService.GetPathToPhoto(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(Environment.CurrentDirectory).FullName).FullName).FullName, "WcfService", "ClientsPhoto"));
             InitializeLanguages();
-        
+            GetRegistry();
         }
 
 
@@ -321,7 +321,33 @@ namespace Client
 
         public void EditLanguage()
         {
-              Properties.ResourceService.Current.ChangeCulture(SelectedLanguage.Culture);
+            Properties.ResourceService.Current.ChangeCulture(SelectedLanguage.Culture);
+            EditRegistry();
+        }
+        private void EditRegistry()
+        {
+            RegistryKey currentUserKey = Registry.CurrentUser;
+            RegistryKey key = currentUserKey.CreateSubKey("NonameMessangerSettings");
+            key.SetValue("Language", SelectedLanguage.Culture, RegistryValueKind.String);
+            key.Close();
+        }
+        private void CreateRegistry()
+        {
+            RegistryKey key = Registry.CurrentUser;
+
+            if (key.OpenSubKey("NonameMessangerSettings") == null)
+            {
+                key.CreateSubKey("NonameMessangerSettings");
+            }
+            key.Close();
+        }
+        private void GetRegistry()
+        {
+            CreateRegistry();
+            string culture = (string)Registry.GetValue(@"HKEY_CURRENT_USER\NonameMessangerSettings", "Language", null);
+            var result = languages.Where(l => l.Culture == culture).FirstOrDefault();
+            if (result != null)
+                SelectedLanguage = result;
         }
         public void InitializeLanguages()
         {
