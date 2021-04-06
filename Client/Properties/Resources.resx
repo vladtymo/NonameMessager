@@ -259,13 +259,15 @@
     <value>Chat successsfully created.</value>
   </data>
   <data name="SuccessfulLoginString" xml:space="preserve">
-    <value>Login successful. Hi, </value>
+    <value>Login successful. 
+Hi, </value>
   </data>
   <data name="SuccessfulSetProfileString" xml:space="preserve">
     <value>Data changed successfully.</value>
   </data>
   <data name="SuccessfulSignUpString" xml:space="preserve">
-    <value>Registration successful. Welcome, </value>
+    <value>Registration successful. 
+Welcome, </value>
   </data>
   <data name="UniqueNameString" xml:space="preserve">
     <value>Unique name</value>
