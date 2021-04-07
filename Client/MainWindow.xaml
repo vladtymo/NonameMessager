@@ -638,7 +638,6 @@
                                                 <Ellipse Width="50" Height="50"  Grid.RowSpan="4" Grid.Row="1">
                                                     <Ellipse.Fill>
                                                         <ImageBrush Stretch="UniformToFill"/>
-                                                        <ImageBrush   Stretch="UniformToFill"/>
                                                     </Ellipse.Fill>
                                                 </Ellipse>
 
@@ -707,7 +706,6 @@
                                 <Ellipse Width="65" Height="65" Grid.Row="1" Grid.RowSpan="4" >
                                     <Ellipse.Fill>
                                         <ImageBrush Stretch="UniformToFill"/>
-                                        <ImageBrush  Stretch="UniformToFill"/>
                                     </Ellipse.Fill>
                                 </Ellipse>
                                 <TextBlock Grid.Column="1" FontSize="15" Grid.Row="1"  Margin="15,0" FontWeight="DemiBold"></TextBlock>
@@ -772,7 +770,6 @@
                                 <Ellipse Width="65" Height="65" Grid.Row="1" Grid.RowSpan="4" >
                                     <Ellipse.Fill>
                                         <ImageBrush Stretch="UniformToFill"/>
-                                        <ImageBrush  Stretch="UniformToFill"/>
                                     </Ellipse.Fill>
                                 </Ellipse>
                                 <TextBlock Grid.Column="1" FontSize="15" Grid.Row="2"  Margin="15,0" FontWeight="DemiBold"></TextBlock>
@@ -830,7 +827,6 @@
                                                 <Ellipse Width="45" Height="45" Grid.RowSpan="4" Grid.Row="1">
                                                     <Ellipse.Fill>
                                                         <ImageBrush Stretch="UniformToFill"/>
-                                                        <ImageBrush   Stretch="UniformToFill"/>
                                                     </Ellipse.Fill>
                                                 </Ellipse>
 
@@ -938,7 +934,6 @@
                                         <Ellipse Width="50" Height="50" Margin="15,0" Grid.RowSpan="4" Grid.Row="1">
                                             <Ellipse.Fill>
                                                 <ImageBrush Stretch="UniformToFill"/>
-                                                <ImageBrush   Stretch="UniformToFill"/>
                                             </Ellipse.Fill>
                                         </Ellipse>
 
