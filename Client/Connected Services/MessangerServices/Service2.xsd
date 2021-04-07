@@ -39,6 +39,12 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="InfoFile" nillable="true" type="tns:InfoFile" />
+  <xs:complexType name="ArrayOfChatDTO">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ChatDTO" nillable="true" type="tns:ChatDTO" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfChatDTO" nillable="true" type="tns:ArrayOfChatDTO" />
   <xs:complexType name="ArrayOfClientDTO">
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="unbounded" name="ClientDTO" nillable="true" type="tns:ClientDTO" />

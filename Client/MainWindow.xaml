@@ -126,7 +126,7 @@
                         </Grid>
                     </Button>
                     <!--Join to chat button-->
-                    <Button Style="{StaticResource MaterialDesignFlatButton}"  HorizontalContentAlignment="Stretch"  Margin="5" TextBlock.FontSize="15">
+                    <Button Style="{StaticResource MaterialDesignFlatButton}"  HorizontalContentAlignment="Stretch"  Margin="5" TextBlock.FontSize="15" Command="{Binding JoinToChatDialogOpenCommand}">
 
                         <Grid >
                             <Grid.ColumnDefinitions>
@@ -568,7 +568,7 @@
                 <!--Join chat dialog-->
                 <materialDesign:DialogHost Grid.Column="1" 
                          HorizontalAlignment="Center" 
-                            VerticalAlignment="Center" DialogTheme="Light" >
+                            VerticalAlignment="Center" DialogTheme="Light" IsOpen="{Binding IsOpenJoinToChatDialog}">
 
                     <materialDesign:DialogHost.DialogContent >
                         <Grid Width="350" Height="500"  >
@@ -608,7 +608,8 @@
                          Grid.Column="1"                         
                          materialDesign:HintAssist.Hint="{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.SearchString, Mode=OneWay}"
                          materialDesign:TextFieldAssist.HasClearButton="True"                                  
-                         VerticalAlignment="Center" FontSize="15"/>
+                         VerticalAlignment="Center" FontSize="15"
+                         Text="{Binding UniqueNameChat, Mode=OneWayToSource}"/>
 
                             </Grid>
                             <ListBox Grid.ColumnSpan="2" Grid.Row="2" Margin="25,10" Name="listBoxChatsDialog" >
@@ -636,6 +637,7 @@
                                                 </Grid.RowDefinitions>
                                                 <Ellipse Width="50" Height="50"  Grid.RowSpan="4" Grid.Row="1">
                                                     <Ellipse.Fill>
+                                                        <ImageBrush Stretch="UniformToFill"/>
                                                         <ImageBrush   Stretch="UniformToFill"/>
                                                     </Ellipse.Fill>
                                                 </Ellipse>
@@ -651,6 +653,8 @@
 
                             </ListBox>
 
+                            <Button  Grid.Row="3" Margin="15,5" Content="Join" Command="{Binding JoinToChatCommand}"></Button>
+                            <Button Grid.Row="3" Grid.Column="1" Margin="15,5" Content="Cancel" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"></Button>
                             <Button  Grid.Row="3" Margin="15,5" Content="{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.JoinChatDialogJoin, Mode=OneWay}" ></Button>
                             <Button Grid.Row="3" Grid.Column="1" Margin="15,5" Content="{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.CancelButtonString, Mode=OneWay}"  Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"></Button>
 
@@ -702,6 +706,7 @@
                                 </Grid.RowDefinitions>
                                 <Ellipse Width="65" Height="65" Grid.Row="1" Grid.RowSpan="4" >
                                     <Ellipse.Fill>
+                                        <ImageBrush Stretch="UniformToFill"/>
                                         <ImageBrush  Stretch="UniformToFill"/>
                                     </Ellipse.Fill>
                                 </Ellipse>
@@ -766,6 +771,7 @@
                                 </Grid.RowDefinitions>
                                 <Ellipse Width="65" Height="65" Grid.Row="1" Grid.RowSpan="4" >
                                     <Ellipse.Fill>
+                                        <ImageBrush Stretch="UniformToFill"/>
                                         <ImageBrush  Stretch="UniformToFill"/>
                                     </Ellipse.Fill>
                                 </Ellipse>
@@ -823,6 +829,7 @@
                                                 </Grid.RowDefinitions>
                                                 <Ellipse Width="45" Height="45" Grid.RowSpan="4" Grid.Row="1">
                                                     <Ellipse.Fill>
+                                                        <ImageBrush Stretch="UniformToFill"/>
                                                         <ImageBrush   Stretch="UniformToFill"/>
                                                     </Ellipse.Fill>
                                                 </Ellipse>
@@ -930,6 +937,7 @@
                                         </Grid.RowDefinitions>
                                         <Ellipse Width="50" Height="50" Margin="15,0" Grid.RowSpan="4" Grid.Row="1">
                                             <Ellipse.Fill>
+                                                <ImageBrush Stretch="UniformToFill"/>
                                                 <ImageBrush   Stretch="UniformToFill"/>
                                             </Ellipse.Fill>
                                         </Ellipse>

@@ -88,6 +88,7 @@
     <Compile Include="Contracts\IContactService.cs" />
     <Compile Include="DataTransferObject\FileDTO.cs" />
     <Compile Include="DataTransferObject\MessageDTO.cs" />
+    <Compile Include="Contracts\IChatMemberService.cs" />
     <Compile Include="Service.svc.cs">
       <DependentUpon>Service.svc</DependentUpon>
     </Compile>

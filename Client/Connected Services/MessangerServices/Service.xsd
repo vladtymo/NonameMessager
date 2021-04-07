@@ -128,6 +128,33 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+  <xs:element name="JoinToChat">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="clientId" type="xs:int" />
+        <xs:element minOccurs="0" name="chatUniqueName" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="isAdmin" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="JoinToChatResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q11="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="JoinToChatResult" nillable="true" type="q11:ChatDTO" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="TakeChats">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="clientId" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="TakeChatsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q12="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="TakeChatsResult" nillable="true" type="q12:ArrayOfChatDTO" />
   <xs:element name="TakeContacts">
     <xs:complexType>
       <xs:sequence>

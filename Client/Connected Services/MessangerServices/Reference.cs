@@ -671,4 +671,65 @@ namespace Client.MessangerServices {
             return base.Channel.TakeContactsAsync(clientId);
         }
     }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="MessangerServices.IChatMemberService")]
+    public interface IChatMemberService {
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatMemberService/JoinToChat", ReplyAction="http://tempuri.org/IChatMemberService/JoinToChatResponse")]
+        Client.MessangerServices.ChatDTO JoinToChat(int clientId, string chatUniqueName, bool isAdmin);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatMemberService/JoinToChat", ReplyAction="http://tempuri.org/IChatMemberService/JoinToChatResponse")]
+        System.Threading.Tasks.Task<Client.MessangerServices.ChatDTO> JoinToChatAsync(int clientId, string chatUniqueName, bool isAdmin);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatMemberService/TakeChats", ReplyAction="http://tempuri.org/IChatMemberService/TakeChatsResponse")]
+        Client.MessangerServices.ChatDTO[] TakeChats(int clientId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatMemberService/TakeChats", ReplyAction="http://tempuri.org/IChatMemberService/TakeChatsResponse")]
+        System.Threading.Tasks.Task<Client.MessangerServices.ChatDTO[]> TakeChatsAsync(int clientId);
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    public interface IChatMemberServiceChannel : Client.MessangerServices.IChatMemberService, System.ServiceModel.IClientChannel {
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    public partial class ChatMemberServiceClient : System.ServiceModel.ClientBase<Client.MessangerServices.IChatMemberService>, Client.MessangerServices.IChatMemberService {
+        
+        public ChatMemberServiceClient() {
+        }
+        
+        public ChatMemberServiceClient(string endpointConfigurationName) : 
+                base(endpointConfigurationName) {
+        }
+        
+        public ChatMemberServiceClient(string endpointConfigurationName, string remoteAddress) : 
+                base(endpointConfigurationName, remoteAddress) {
+        }
+        
+        public ChatMemberServiceClient(string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) : 
+                base(endpointConfigurationName, remoteAddress) {
+        }
+        
+        public ChatMemberServiceClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
+                base(binding, remoteAddress) {
+        }
+        
+        public Client.MessangerServices.ChatDTO JoinToChat(int clientId, string chatUniqueName, bool isAdmin) {
+            return base.Channel.JoinToChat(clientId, chatUniqueName, isAdmin);
+        }
+        
+        public System.Threading.Tasks.Task<Client.MessangerServices.ChatDTO> JoinToChatAsync(int clientId, string chatUniqueName, bool isAdmin) {
+            return base.Channel.JoinToChatAsync(clientId, chatUniqueName, isAdmin);
+        }
+        
+        public Client.MessangerServices.ChatDTO[] TakeChats(int clientId) {
+            return base.Channel.TakeChats(clientId);
+        }
+        
+        public System.Threading.Tasks.Task<Client.MessangerServices.ChatDTO[]> TakeChatsAsync(int clientId) {
+            return base.Channel.TakeChatsAsync(clientId);
+        }
+    }
 }
