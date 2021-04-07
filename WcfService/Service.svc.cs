@@ -14,7 +14,7 @@ namespace WcfService
 {
     // NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "Service1" in code, svc and config file together.
     // NOTE: In order to launch WCF Test Client for testing this service, please select Service1.svc or Service1.svc.cs at the Solution Explorer and start debugging.
-    public class Service : IChatService, IClientService, IContactService
+    public class Service : IChatService, IClientService, IContactService, IChatMemberService
     {
         private IUnitOfWork repositories;
         private IMapper clientMapper;
@@ -68,10 +68,11 @@ namespace WcfService
                     cfg.CreateMap<AccountDTO, Account>().ForMember(dst => dst.Password, opt => opt.Ignore());
                 });
             contactMapper = new Mapper(contactConfig);
-            
+
 
         }
         //--------------------------Client Methods--------------------//
+        #region
         private Client GetClientByAccount(AccountDTO accountDTO, string password)
         {
             var client = repositories.ClientRepos.Get().Where(c => (c.Account.Email == accountDTO.Email || c.Account.Phone == accountDTO.Phone) && c.Account.Password == ComputeSha256Hash(password)).FirstOrDefault();
@@ -135,14 +136,14 @@ namespace WcfService
         public void SetPhoto(int clientId, InfoFile info)
         {
             string path = FreePath(Path.Combine(pathToPhoto, clientId.ToString() + Path.GetExtension(info.Name)));
-      
+
             using (FileStream fs = new FileStream(path, FileMode.Create, FileAccess.Write))
             {
                 fs.Write(info.Data, 0, info.Data.Length);
             }
-            repositories.ClientRepos.Get().Where(c => c.Id == clientId).FirstOrDefault().PhotoPath=path;
+            repositories.ClientRepos.Get().Where(c => c.Id == clientId).FirstOrDefault().PhotoPath = path;
             repositories.Save();
-           
+
         }
         public void GetPathToPhoto(string pathToPhoto)
         {
@@ -153,11 +154,11 @@ namespace WcfService
             DirectoryInfo di = new DirectoryInfo(pathToPhoto);
             string path = repositories.ClientRepos.Get().Where(c => c.Id == clientId).Select(c => c.PhotoPath).FirstOrDefault();
             if (path == null) return null;
-            var result = di.GetFiles().Where(f => f.FullName==path).FirstOrDefault();
-            if (result == null)
+            var result = di.GetFiles().Where(f => f.FullName == path);
+            if (result.Count() == 0)
             {
                 repositories.ClientRepos.Get().Where(c => c.Id == clientId).FirstOrDefault().PhotoPath = null;
-                repositories.Save();             
+                repositories.Save();
                 return null;
             }
             InfoFile info = new InfoFile() { Name = path };
@@ -178,7 +179,7 @@ namespace WcfService
                 client.Name = clientDTO.Name;
                 client.UniqueName = clientDTO.UniqueName;
                 client.Account.Email = clientDTO.Account.Email;
-                client.Account.Phone = clientDTO.Account.Phone;              
+                client.Account.Phone = clientDTO.Account.Phone;
                 repositories.ClientRepos.Update(client);
                 repositories.Save();
                 return true;
@@ -200,8 +201,9 @@ namespace WcfService
                 return builder.ToString();
             }
         }
-
+        #endregion
         //--------------------------Contacts Methods--------------------//
+        #region
         private bool IsContactExist(int clientID, string uniqueNameContact)
         {
             var contact = repositories.ContactRepos.Get().Where(c => c.ClientId == clientID && c.ContactClient.UniqueName == uniqueNameContact).FirstOrDefault();
@@ -233,8 +235,9 @@ namespace WcfService
             }
             return false;
         }
-
+        #endregion
         //--------------------------Chat Methods--------------------//
+        #region
         private int IsExistChat(ChatDTO chatDTO)
         {
             var chat = repositories.ChatRepos.Get().Where(ch => ch.UniqueName == chatDTO.UniqueName).FirstOrDefault();
@@ -254,7 +257,35 @@ namespace WcfService
             else
                 return null;
         }
-
+        #endregion
+        //--------------------------ChatMember Methods--------------------//
+        #region
+        private bool IsThereClientInChat(int clientId, int chatId)
+        {
+            var result = repositories.ChatMemberRepos.Get().Where(c => c.ClientId == clientId && c.ChatId == chatId).FirstOrDefault();
+            if (result == null)
+            {
+                return false;
+            }
+            return true;
+        }
+        public ChatDTO JoinToChat(int clientId, string chatUniqueName, bool isAdmin)
+        {
+            var chat = repositories.ChatRepos.Get().Where(c => c.UniqueName == chatUniqueName).FirstOrDefault();
+            if (!IsThereClientInChat(clientId, chat.Id))
+            {
+                repositories.ChatMemberRepos.Insert(new ChatMember() { ClientId = clientId, ChatId = chat.Id, IsAdmin = isAdmin, DateLastReadMessage = DateTime.Now });
+                repositories.Save();
+                return chatMapper.Map<ChatDTO>(repositories.ChatRepos.Get().Where(c => c.UniqueName == chatUniqueName).FirstOrDefault());
+            }
+            return null;
+        }
+        public IEnumerable<ChatDTO> TakeChats(int clientId)
+        {
+            var result = repositories.ChatMemberRepos.Get(includeProperties: $"{nameof(ChatMember.Chat)}").Where(c => c.ClientId == clientId).Select(c => c.Chat);
+            return chatMapper.Map<IEnumerable<ChatDTO>>(result);
+        }
+        #endregion
     }
     [DataContract]
     public class InfoFile

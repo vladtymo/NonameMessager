@@ -31,6 +31,7 @@ namespace Client
         private ClientServiceClient clientService = new ClientServiceClient();
         private ChatServiceClient chatService = new ChatServiceClient();
         private ContactServiceClient contactService = new ContactServiceClient();
+        private ChatMemberServiceClient chatMemberService = new ChatMemberServiceClient();
 
         private IMapper mapper;
 
@@ -47,7 +48,10 @@ namespace Client
 
         private bool isOpenAddEditChatDialog;
 
+        private bool isOpenJoinToChatDialog;
+
         private bool isAddChatDialog;
+
 
 
         private bool isOpenInfoDialog;
@@ -55,6 +59,7 @@ namespace Client
 
         private string password;
         private string uniqueNameContact;
+        private string uniqueNameChat;
 
         private string pathToPhoto;
 
@@ -67,14 +72,17 @@ namespace Client
 
         public bool IsOpenAddEditChatDialog { get { return isOpenAddEditChatDialog; } set { SetProperty(ref isOpenAddEditChatDialog, value); } }
 
-        public bool IsAddChatDialog { get { return isAddChatDialog; } set { SetProperty(ref isAddChatDialog, value); } }
-
         public bool IsOpenInfoDialog { get { return isOpenInfoDialog; } set { SetProperty(ref isOpenInfoDialog, value); } }
+
+        public bool IsOpenJoinToChatDialog { get { return isOpenJoinToChatDialog; } set { SetProperty(ref isOpenJoinToChatDialog, value); } }
+
+        public bool IsAddChatDialog { get { return isAddChatDialog; } set { SetProperty(ref isAddChatDialog, value); } }
 
         public string TextForInfoDialog { get { return textForInfoDialog; } set { SetProperty(ref textForInfoDialog, value); } }
 
         public string Password { get => password; set => SetProperty(ref password, value); }
         public string UniqueNameContact { get => uniqueNameContact; set => SetProperty(ref uniqueNameContact, value); }
+        public string UniqueNameChat { get => uniqueNameChat; set => SetProperty(ref uniqueNameChat, value); }
 
 
         public ClientViewModel CurrentClient { get { return currentClient; } set { SetProperty(ref currentClient, value); } }
@@ -124,9 +132,11 @@ namespace Client
             setPhotoCommand = new DelegateCommand(SetPhoto);
             setProfileDialogOpenCommand = new DelegateCommand(ShowSetProfileDialog);
             contactsDialogOpenCommand = new DelegateCommand(ShowContactsDialog);
+            joinToChatDialogOpenCommand = new DelegateCommand(ShowJoinToChatDialog);
             addContactCommand = new DelegateCommand(AddContact);
             deleteContactCommand = new DelegateCommand(DeleteContact);
             addChatCommand = new DelegateCommand(CreateNewChat);
+            joinToChatCommand = new DelegateCommand(JoinToChat);
             chatAddDialogOpenCommand = new DelegateCommand(ShowAddChatDialog);
             IsOpenLoginRegistrationDialog = true;
             
@@ -147,6 +157,10 @@ namespace Client
                 CurrentClient = result;
                 IsOpenLoginRegistrationDialog = false;
                 GetPhoto();
+                foreach (var item in chatMemberService.TakeChats(currentClient.Id))
+                {
+                    chats.Add(mapper.Map<ChatViewModel>(item));
+                }
                 OpenInfoDialog($"Login successful. Hi, {CurrentClient.Name}");
             }
             else
@@ -173,24 +187,7 @@ namespace Client
 
             }
         }
-        public void Exit()
-        {
-            CurrentClient = new ClientViewModel() { Account = new AccountViewModel() };
-            ClientForChange = new ClientViewModel() { Account = new AccountViewModel() };
-            Password = String.Empty;
-            IsOpenLoginRegistrationDialog = true;
-        }
-        public string FreePath(string path)
-        {
-            int index = 0;
-            string tmp;
-            do
-            {
-                tmp = Path.Combine(Path.GetDirectoryName(path), Path.GetFileNameWithoutExtension(path) + (index == 0 ? null : $"({index})") + Path.GetExtension(path));
-                index++;
-            } while (System.IO.File.Exists(tmp));
-            return tmp;
-        }
+        
         public void GetPhoto()
         {
             InfoFile info = clientService.GetPhoto(CurrentClient.Id);
@@ -257,11 +254,25 @@ namespace Client
                 SelectedChat = result;
                 ChatForChange = new ChatViewModel();
                 IsOpenAddEditChatDialog = false;
+                chatMemberService.JoinToChat(CurrentClient.Id, result.UniqueName, true);
                 OpenInfoDialog("Chat successsfully created.");
             }
             else
             {
                 OpenInfoDialog("Chat was not created.");
+            }
+        }
+        public void JoinToChat()
+        {
+            var result = chatMemberService.JoinToChat(CurrentClient.Id, UniqueNameChat, true);
+            if (result != null)
+            {
+                chats.Add(mapper.Map<ChatViewModel>(result));
+                OpenInfoDialog("Join to Chat successsfully.");
+            }
+            else
+            {
+                OpenInfoDialog("Join to Chat failed.");
             }
         }
 
@@ -312,12 +323,37 @@ namespace Client
             IsAddChatDialog = true;
             IsOpenAddEditChatDialog = true;
         }
+        public void ShowJoinToChatDialog()
+        {
+            IsOpenJoinToChatDialog = true;
+        }
+        public void Exit()
+        {
+            CurrentClient = new ClientViewModel() { Account = new AccountViewModel() };
+            ClientForChange = new ClientViewModel() { Account = new AccountViewModel() };
+            Password = String.Empty;
+            IsOpenLoginRegistrationDialog = true;
+            contacts.Clear();
+            chats.Clear();
+        }
+        public string FreePath(string path)
+        {
+            int index = 0;
+            string tmp;
+            do
+            {
+                tmp = Path.Combine(Path.GetDirectoryName(path), Path.GetFileNameWithoutExtension(path) + (index == 0 ? null : $"({index})") + Path.GetExtension(path));
+                index++;
+            } while (System.IO.File.Exists(tmp));
+            return tmp;
+        }
 
 
         #region Commands
         private Command setProfileDialogOpenCommand;
         private Command contactsDialogOpenCommand;
         private Command chatAddDialogOpenCommand;
+        private Command joinToChatDialogOpenCommand;
 
 
         private Command loginCommand;
@@ -331,10 +367,12 @@ namespace Client
         private Command deleteContactCommand;
 
         private Command addChatCommand;
+        private Command joinToChatCommand;
 
         public ICommand SetProfileDialogOpenCommand => setProfileDialogOpenCommand;
         public ICommand ContactsDialogOpenCommand => contactsDialogOpenCommand;
         public ICommand ChatAddDialogOpenCommand => chatAddDialogOpenCommand;
+        public ICommand JoinToChatDialogOpenCommand => joinToChatDialogOpenCommand;
 
 
         public ICommand LoginCommand => loginCommand;
@@ -348,7 +386,7 @@ namespace Client
         public ICommand DeleteContactCommand => deleteContactCommand;
 
         public ICommand AddChatCommand => addChatCommand;
-
+        public ICommand JoinToChatCommand => joinToChatCommand;
 
         #endregion
 
