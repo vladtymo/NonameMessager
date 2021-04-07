@@ -155,6 +155,17 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element xmlns:q12="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="TakeChatsResult" nillable="true" type="q12:ArrayOfChatDTO" />
+  <xs:element name="TakeContacts">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="clientId" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="TakeContactsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q11="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="TakeContactsResult" nillable="true" type="q11:ArrayOfClientDTO" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

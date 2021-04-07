@@ -236,6 +236,13 @@ namespace WcfService
             return false;
         }
         #endregion
+
+        public IEnumerable<ClientDTO> TakeContacts(int clientId)
+        {
+            var result = repositories.ContactRepos.Get(includeProperties: $"{nameof(Contact.ContactClient)}").Where(c => c.ClientId == clientId).Select(c => c.ContactClient);
+            return contactMapper.Map<IEnumerable<ClientDTO>>(result);
+        }
+
         //--------------------------Chat Methods--------------------//
         #region
         private int IsExistChat(ChatDTO chatDTO)

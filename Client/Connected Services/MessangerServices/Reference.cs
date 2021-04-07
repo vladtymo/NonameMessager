@@ -612,6 +612,12 @@ namespace Client.MessangerServices {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IContactService/DeleteContact", ReplyAction="http://tempuri.org/IContactService/DeleteContactResponse")]
         System.Threading.Tasks.Task<bool> DeleteContactAsync(int clientID, string uniqueNameContact);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IContactService/TakeContacts", ReplyAction="http://tempuri.org/IContactService/TakeContactsResponse")]
+        Client.MessangerServices.ClientDTO[] TakeContacts(int clientId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IContactService/TakeContacts", ReplyAction="http://tempuri.org/IContactService/TakeContactsResponse")]
+        System.Threading.Tasks.Task<Client.MessangerServices.ClientDTO[]> TakeContactsAsync(int clientId);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -655,6 +661,14 @@ namespace Client.MessangerServices {
         
         public System.Threading.Tasks.Task<bool> DeleteContactAsync(int clientID, string uniqueNameContact) {
             return base.Channel.DeleteContactAsync(clientID, uniqueNameContact);
+        }
+        
+        public Client.MessangerServices.ClientDTO[] TakeContacts(int clientId) {
+            return base.Channel.TakeContacts(clientId);
+        }
+        
+        public System.Threading.Tasks.Task<Client.MessangerServices.ClientDTO[]> TakeContactsAsync(int clientId) {
+            return base.Channel.TakeContactsAsync(clientId);
         }
     }
     

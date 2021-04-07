@@ -765,6 +765,7 @@
     </wsp:ExactlyOne>
   </wsp:Policy>
   <wsp:Policy wsu:Id="WSHttpBinding_IChatMemberService_TakeChats_Input_policy">
+  <wsp:Policy wsu:Id="WSHttpBinding_IContactService_TakeContacts_Input_policy">
     <wsp:ExactlyOne>
       <wsp:All>
         <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
@@ -784,6 +785,7 @@
     </wsp:ExactlyOne>
   </wsp:Policy>
   <wsp:Policy wsu:Id="WSHttpBinding_IChatMemberService_TakeChats_output_policy">
+  <wsp:Policy wsu:Id="WSHttpBinding_IContactService_TakeContacts_output_policy">
     <wsp:ExactlyOne>
       <wsp:All>
         <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
@@ -874,6 +876,11 @@
   </wsdl:message>
   <wsdl:message name="IChatMemberService_TakeChats_OutputMessage">
     <wsdl:part name="parameters" element="tns:TakeChatsResponse" />
+  <wsdl:message name="IContactService_TakeContacts_InputMessage">
+    <wsdl:part name="parameters" element="tns:TakeContacts" />
+  </wsdl:message>
+  <wsdl:message name="IContactService_TakeContacts_OutputMessage">
+    <wsdl:part name="parameters" element="tns:TakeContactsResponse" />
   </wsdl:message>
   <wsdl:portType name="IChatService">
     <wsdl:operation name="CreateNewChat">
@@ -915,6 +922,10 @@
     <wsdl:operation name="DeleteContact">
       <wsdl:input wsaw:Action="http://tempuri.org/IContactService/DeleteContact" message="tns:IContactService_DeleteContact_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IContactService/DeleteContactResponse" message="tns:IContactService_DeleteContact_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="TakeContacts">
+      <wsdl:input wsaw:Action="http://tempuri.org/IContactService/TakeContacts" message="tns:IContactService_TakeContacts_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IContactService/TakeContactsResponse" message="tns:IContactService_TakeContacts_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:portType name="IChatMemberService">
@@ -1034,6 +1045,17 @@
       </wsdl:input>
       <wsdl:output>
         <wsp:PolicyReference URI="#WSHttpBinding_IContactService_DeleteContact_output_policy" />
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TakeContacts">
+      <soap12:operation soapAction="http://tempuri.org/IContactService/TakeContacts" style="document" />
+      <wsdl:input>
+        <wsp:PolicyReference URI="#WSHttpBinding_IContactService_TakeContacts_Input_policy" />
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <wsp:PolicyReference URI="#WSHttpBinding_IContactService_TakeContacts_output_policy" />
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>

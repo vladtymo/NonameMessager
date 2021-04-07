@@ -22,7 +22,7 @@ namespace Client.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    public class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace Client.Properties {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Client.Properties.Resources", typeof(Resources).Assembly);
@@ -51,12 +51,491 @@ namespace Client.Properties {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Accept.
+        /// </summary>
+        public static string AcceptButtonString {
+            get {
+                return ResourceManager.GetString("AcceptButtonString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Is private chat.
+        /// </summary>
+        public static string AddEditChatDialogIsPrivateChatString {
+            get {
+                return ResourceManager.GetString("AddEditChatDialogIsPrivateChatString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Private messages.
+        /// </summary>
+        public static string AddEditChatDialogPM {
+            get {
+                return ResourceManager.GetString("AddEditChatDialogPM", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select chat photo.
+        /// </summary>
+        public static string AddEditChatDialogSelectChatPhotoButtonString {
+            get {
+                return ResourceManager.GetString("AddEditChatDialogSelectChatPhotoButtonString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        public static string CancelButtonString {
+            get {
+                return ResourceManager.GetString("CancelButtonString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chat Info.
+        /// </summary>
+        public static string ChatViewChatInfoDialogHeaderChatInfoString {
+            get {
+                return ResourceManager.GetString("ChatViewChatInfoDialogHeaderChatInfoString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User Info.
+        /// </summary>
+        public static string ChatViewProfileDialogHeaderUserInfoString {
+            get {
+                return ResourceManager.GetString("ChatViewProfileDialogHeaderUserInfoString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add contact.
+        /// </summary>
+        public static string ContactsDialogAddContactString {
+            get {
+                return ResourceManager.GetString("ContactsDialogAddContactString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete contact.
+        /// </summary>
+        public static string ContactsDialogDeleteContactString {
+            get {
+                return ResourceManager.GetString("ContactsDialogDeleteContactString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Contacts.
+        /// </summary>
+        public static string ContactsDialogHeaderString {
+            get {
+                return ResourceManager.GetString("ContactsDialogHeaderString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select photo.
+        /// </summary>
+        public static string EditProfileDialogSetProfilePhotoButtonString {
+            get {
+                return ResourceManager.GetString("EditProfileDialogSetProfilePhotoButtonString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Email.
+        /// </summary>
+        public static string EmailString {
+            get {
+                return ResourceManager.GetString("EmailString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Contact could not be added..
+        /// </summary>
+        public static string FailedContactAddString {
+            get {
+                return ResourceManager.GetString("FailedContactAddString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to delete contact..
+        /// </summary>
+        public static string FailedContactDeletedString {
+            get {
+                return ResourceManager.GetString("FailedContactDeletedString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chat was not created..
+        /// </summary>
+        public static string FailedCreateChatString {
+            get {
+                return ResourceManager.GetString("FailedCreateChatString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to It looks like our system does not have a user with enetered data. Please, try again..
+        /// </summary>
+        public static string FailedLoginString {
+            get {
+                return ResourceManager.GetString("FailedLoginString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The data has not been changed..
+        /// </summary>
+        public static string FailedSetProfileString {
+            get {
+                return ResourceManager.GetString("FailedSetProfileString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Registration problems. Try to change data..
+        /// </summary>
+        public static string FailedSignUpString {
+            get {
+                return ResourceManager.GetString("FailedSignUpString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Information diolog.
+        /// </summary>
+        public static string InformationDialogHeaderInformationDialogString {
+            get {
+                return ResourceManager.GetString("InformationDialogHeaderInformationDialogString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OK.
+        /// </summary>
+        public static string InformationDialogOKButtonString {
+            get {
+                return ResourceManager.GetString("InformationDialogOKButtonString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chats.
+        /// </summary>
+        public static string JoinChatDialogHeaderChatsString {
+            get {
+                return ResourceManager.GetString("JoinChatDialogHeaderChatsString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Join.
+        /// </summary>
+        public static string JoinChatDialogJoin {
+            get {
+                return ResourceManager.GetString("JoinChatDialogJoin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Language.
+        /// </summary>
+        public static string LanguageString {
+            get {
+                return ResourceManager.GetString("LanguageString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Leave the chat.
+        /// </summary>
+        public static string LeaveTheChatButtonString {
+            get {
+                return ResourceManager.GetString("LeaveTheChatButtonString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Contacts.
+        /// </summary>
+        public static string LeftPanelContactsButtonString {
+            get {
+                return ResourceManager.GetString("LeftPanelContactsButtonString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit profile.
+        /// </summary>
+        public static string LeftPanelEditProfileButtonString {
+            get {
+                return ResourceManager.GetString("LeftPanelEditProfileButtonString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exit.
+        /// </summary>
+        public static string LeftPanelExitButtonString {
+            get {
+                return ResourceManager.GetString("LeftPanelExitButtonString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Join to chat.
+        /// </summary>
+        public static string LeftPanelJoinToChatButtonString {
+            get {
+                return ResourceManager.GetString("LeftPanelJoinToChatButtonString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New chat.
+        /// </summary>
+        public static string LeftPanelNewChatButtonString {
+            get {
+                return ResourceManager.GetString("LeftPanelNewChatButtonString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Already have an account.
+        /// </summary>
+        public static string LoginDialogGoToLogInString {
+            get {
+                return ResourceManager.GetString("LoginDialogGoToLogInString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Don&apos;t have an account.
+        /// </summary>
+        public static string LoginDialogGoToSignUpString {
+            get {
+                return ResourceManager.GetString("LoginDialogGoToSignUpString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Login.
+        /// </summary>
+        public static string LoginDialogHeaderLoginString {
+            get {
+                return ResourceManager.GetString("LoginDialogHeaderLoginString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sign up.
+        /// </summary>
+        public static string LoginDialogHeaderSignUpString {
+            get {
+                return ResourceManager.GetString("LoginDialogHeaderSignUpString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Log in.
+        /// </summary>
+        public static string LoginDialogLoginButtonString {
+            get {
+                return ResourceManager.GetString("LoginDialogLoginButtonString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sign up.
+        /// </summary>
+        public static string LoginDialogSignUpButtonString {
+            get {
+                return ResourceManager.GetString("LoginDialogSignUpButtonString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Manage chat.
+        /// </summary>
+        public static string ManageChatButtonString {
+            get {
+                return ResourceManager.GetString("ManageChatButtonString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Maximum number of members.
+        /// </summary>
+        public static string MaxNumOfMembersString {
+            get {
+                return ResourceManager.GetString("MaxNumOfMembersString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to members.
+        /// </summary>
+        public static string MembersString {
+            get {
+                return ResourceManager.GetString("MembersString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chat name.
+        /// </summary>
+        public static string NameChatSrting {
+            get {
+                return ResourceManager.GetString("NameChatSrting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        public static string NameString {
+            get {
+                return ResourceManager.GetString("NameString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add chat.
+        /// </summary>
+        public static string NewChatDialogAddChatButtonString {
+            get {
+                return ResourceManager.GetString("NewChatDialogAddChatButtonString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password.
+        /// </summary>
+        public static string PasswordString {
+            get {
+                return ResourceManager.GetString("PasswordString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Phone.
+        /// </summary>
+        public static string PhoneString {
+            get {
+                return ResourceManager.GetString("PhoneString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search.
+        /// </summary>
+        public static string SearchString {
+            get {
+                return ResourceManager.GetString("SearchString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Contact added successfully..
+        /// </summary>
+        public static string SuccessfulContactAddString {
+            get {
+                return ResourceManager.GetString("SuccessfulContactAddString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Contact successfully delete..
+        /// </summary>
+        public static string SuccessfulContactDeleteString {
+            get {
+                return ResourceManager.GetString("SuccessfulContactDeleteString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chat successsfully created..
+        /// </summary>
+        public static string SuccessfulCreateChatString {
+            get {
+                return ResourceManager.GetString("SuccessfulCreateChatString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Login successful. 
+        ///Hi, .
+        /// </summary>
+        public static string SuccessfulLoginString {
+            get {
+                return ResourceManager.GetString("SuccessfulLoginString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data changed successfully..
+        /// </summary>
+        public static string SuccessfulSetProfileString {
+            get {
+                return ResourceManager.GetString("SuccessfulSetProfileString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Registration successful. 
+        ///Welcome, .
+        /// </summary>
+        public static string SuccessfulSignUpString {
+            get {
+                return ResourceManager.GetString("SuccessfulSignUpString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unique name.
+        /// </summary>
+        public static string UniqueNameString {
+            get {
+                return ResourceManager.GetString("UniqueNameString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View chat info.
+        /// </summary>
+        public static string ViewChatInfoButtonString {
+            get {
+                return ResourceManager.GetString("ViewChatInfoButtonString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View profile.
+        /// </summary>
+        public static string ViewProfileButtonString {
+            get {
+                return ResourceManager.GetString("ViewProfileButtonString", resourceCulture);
             }
         }
     }

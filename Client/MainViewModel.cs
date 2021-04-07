@@ -1,11 +1,8 @@
 ﻿using AutoMapper;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity.Validation;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+using Client.Properties;
 using System.Windows.Input;
 using Client.MessangerServices;
 using System.Collections.ObjectModel;
@@ -20,10 +17,12 @@ namespace Client
 
         private readonly ICollection<ClientViewModel> contacts = new ObservableCollection<ClientViewModel>();
         private readonly ICollection<ChatViewModel> chats = new ObservableCollection<ChatViewModel>();
+        private readonly ICollection<Language> languages = new ObservableCollection<Language>();
 
 
         public IEnumerable<ClientViewModel> Contacts => contacts;
         public IEnumerable<ChatViewModel> Chats => chats;
+        public IEnumerable<Language> Languages => languages;
 
 
         #endregion
@@ -63,7 +62,7 @@ namespace Client
 
         private string pathToPhoto;
 
-        
+        private Language selectedLanguage;
 
         public bool IsOpenLoginRegistrationDialog { get { return isOpenLoginRegistrationDialog; } set { SetProperty(ref isOpenLoginRegistrationDialog, value); } }
         public bool IsOpenProfileDialog { get { return isOpenProfileDialog; } set { SetProperty(ref isOpenProfileDialog, value); } }
@@ -90,6 +89,7 @@ namespace Client
         public ChatViewModel ChatForChange { get { return chatForChange; } set { SetProperty(ref chatForChange, value); } }
         public ChatViewModel SelectedChat { get { return selectedChat; } set { SetProperty(ref selectedChat, value); } }
 
+        public Language SelectedLanguage { get { return selectedLanguage; } set { SetProperty(ref selectedLanguage, value); } }
 
         #endregion
 
@@ -120,6 +120,10 @@ namespace Client
                 if (args.PropertyName == nameof(CurrentClient))
                 {
                     ClientForChange = CurrentClient.Clone();
+                }
+                if (args.PropertyName == nameof(SelectedLanguage))
+                {
+                    EditLanguage();
 
                 }
 
@@ -140,10 +144,12 @@ namespace Client
             chatAddDialogOpenCommand = new DelegateCommand(ShowAddChatDialog);
             IsOpenLoginRegistrationDialog = true;
             
-             
+            
             pathToPhoto = Path.Combine(Directory.GetParent(Directory.GetParent(Environment.CurrentDirectory).FullName).FullName, "ClientsPhoto");
 
             clientService.GetPathToPhoto(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(Environment.CurrentDirectory).FullName).FullName).FullName, "WcfService", "ClientsPhoto"));
+            InitializeLanguages();
+            GetRegistry();
         }
 
 
@@ -162,10 +168,15 @@ namespace Client
                     chats.Add(mapper.Map<ChatViewModel>(item));
                 }
                 OpenInfoDialog($"Login successful. Hi, {CurrentClient.Name}");
+                foreach (var item in contactService.TakeContacts(currentClient.Id))
+                {
+                    contacts.Add(mapper.Map<ClientViewModel>(item));
+                }
+                OpenInfoDialog(Resources.SuccessfulLoginString +$"{CurrentClient.Name}!");
             }
             else
             {
-                OpenInfoDialog($"It looks like our system does not have a user with enetered data. Please, try again.");
+                OpenInfoDialog(Resources.FailedLoginString);
 
             }
         }
@@ -178,12 +189,12 @@ namespace Client
             {
                 CurrentClient = result;
                 IsOpenLoginRegistrationDialog = false;
-                OpenInfoDialog($"Registration successful. Welcome, {CurrentClient.Name}");
+                OpenInfoDialog(Resources.SuccessfulSignUpString + $"{CurrentClient.Name}!");
 
             }
             else
             {
-                OpenInfoDialog($"Registration problems. Try to change data.");
+                OpenInfoDialog(Resources.FailedSignUpString);
 
             }
         }
@@ -224,13 +235,13 @@ namespace Client
                     File.Copy(clientForChange.PhotoPath, path, true);
                     ClientForChange.PhotoPath = path;              
                 }
-                OpenInfoDialog($"Data changed successfully.");
+                OpenInfoDialog(Resources.SuccessfulSetProfileString);
                 CurrentClient = ClientForChange.Clone();
 
             }
             else
             {
-                OpenInfoDialog($"The data has not been changed.");
+                OpenInfoDialog(Resources.FailedSetProfileString);
 
                 ClientForChange = CurrentClient.Clone();
             }
@@ -256,10 +267,11 @@ namespace Client
                 IsOpenAddEditChatDialog = false;
                 chatMemberService.JoinToChat(CurrentClient.Id, result.UniqueName, true);
                 OpenInfoDialog("Chat successsfully created.");
+                OpenInfoDialog(Resources.SuccessfulCreateChatString);
             }
             else
             {
-                OpenInfoDialog("Chat was not created.");
+                OpenInfoDialog(Resources.FailedCreateChatString);
             }
         }
         public void JoinToChat()
@@ -282,11 +294,11 @@ namespace Client
             if (result != null)
             {
                 contacts.Add(result);
-                OpenInfoDialog($"Contact added successfully.");
+                OpenInfoDialog(Resources.SuccessfulContactAddString);
             }
             else
             {
-                OpenInfoDialog($"Contact could not be added.");
+                OpenInfoDialog(Resources.FailedContactAddString);          
             }
         }
         public void DeleteContact()
@@ -294,12 +306,12 @@ namespace Client
             if (contactService.DeleteContact(CurrentClient.Id, UniqueNameContact))
             {
                 contacts.Remove(contacts.Where(c => c.UniqueName == UniqueNameContact).FirstOrDefault());
-                OpenInfoDialog($"Contact successfully delete.");
+                OpenInfoDialog(Resources.SuccessfulContactDeleteString);
+
             }
             else
             {
-                OpenInfoDialog($"Failed to delete contact.");
-
+                OpenInfoDialog(Resources.FailedContactDeletedString);
             }
         }
         public void OpenInfoDialog(string text)
@@ -348,6 +360,42 @@ namespace Client
             return tmp;
         }
 
+        public void EditLanguage()
+        {
+            Properties.ResourceService.Current.ChangeCulture(SelectedLanguage.Culture);
+            EditRegistry();
+        }
+        private void EditRegistry()
+        {
+            RegistryKey currentUserKey = Registry.CurrentUser;
+            RegistryKey key = currentUserKey.CreateSubKey("NonameMessangerSettings");
+            key.SetValue("Language", SelectedLanguage.Culture, RegistryValueKind.String);
+            key.Close();
+        }
+        private void CreateRegistry()
+        {
+            RegistryKey key = Registry.CurrentUser;
+
+            if (key.OpenSubKey("NonameMessangerSettings") == null)
+            {
+                key.CreateSubKey("NonameMessangerSettings");
+            }
+            key.Close();
+        }
+        private void GetRegistry()
+        {
+            CreateRegistry();
+            string culture = (string)Registry.GetValue(@"HKEY_CURRENT_USER\NonameMessangerSettings", "Language", null);
+            var result = languages.Where(l => l.Culture == culture).FirstOrDefault();
+            if (result != null)
+                SelectedLanguage = result;
+        }
+        public void InitializeLanguages()
+        {
+            languages.Add(new Language() { Name = "English", Culture = "en-US" });
+            languages.Add(new Language() { Name = "Русский", Culture = "ru-RU" });
+
+        }
 
         #region Commands
         private Command setProfileDialogOpenCommand;
@@ -389,6 +437,59 @@ namespace Client
         public ICommand JoinToChatCommand => joinToChatCommand;
 
         #endregion
+
+    }
+    class Language : ViewModelBase
+    {
+        private string name;
+        public string Name { get { return name; } set { SetProperty(ref name, value); } }
+
+        private string culture;
+        public string Culture { get { return culture; } set { SetProperty(ref culture, value); } }
+    }
+}
+namespace Client.Properties
+{
+    using System.Globalization;
+    using System.ComponentModel;
+    using System.Runtime.CompilerServices;
+
+
+    public class ResourceService : INotifyPropertyChanged
+    {
+        #region singleton members
+
+        private static readonly ResourceService _current = new ResourceService();
+        public static ResourceService Current
+        {
+            get { return _current; }
+        }
+        #endregion
+
+        readonly Resources _resources = new Resources();
+
+        public Resources Resources
+        {
+            get { return this._resources; }
+        }
+
+        #region INotifyPropertyChanged members
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void RaisePropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            var handler = this.PropertyChanged;
+            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        #endregion
+
+        public void ChangeCulture(string name)
+        {
+            Resources.Culture = CultureInfo.GetCultureInfo(name);
+            this.RaisePropertyChanged("Resources");
+        }
 
     }
 }

@@ -118,164 +118,164 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AcceptButtonString" xml:space="preserve">
-    <value>Accept</value>
+    <value>Подтвердить</value>
   </data>
   <data name="AddEditChatDialogIsPrivateChatString" xml:space="preserve">
-    <value>Is private chat</value>
+    <value>Приватный чат</value>
   </data>
   <data name="AddEditChatDialogPM" xml:space="preserve">
-    <value>Private messages</value>
+    <value>Личные сообщения</value>
   </data>
   <data name="AddEditChatDialogSelectChatPhotoButtonString" xml:space="preserve">
-    <value>Select chat photo</value>
+    <value>Выбрать фото для чата</value>
   </data>
   <data name="CancelButtonString" xml:space="preserve">
-    <value>Cancel</value>
+    <value>Отмена</value>
   </data>
   <data name="ChatViewChatInfoDialogHeaderChatInfoString" xml:space="preserve">
-    <value>Chat Info</value>
+    <value>Информация о чате</value>
   </data>
   <data name="ChatViewProfileDialogHeaderUserInfoString" xml:space="preserve">
-    <value>User Info</value>
+    <value>Профиль</value>
   </data>
   <data name="ContactsDialogAddContactString" xml:space="preserve">
-    <value>Add contact</value>
+    <value>Добавить контакт</value>
   </data>
   <data name="ContactsDialogDeleteContactString" xml:space="preserve">
-    <value>Delete contact</value>
+    <value>Удалить контакт</value>
   </data>
   <data name="ContactsDialogHeaderString" xml:space="preserve">
-    <value>Contacts</value>
+    <value>Контакты</value>
   </data>
   <data name="EditProfileDialogSetProfilePhotoButtonString" xml:space="preserve">
-    <value>Select photo</value>
+    <value>Выбрать фото</value>
   </data>
   <data name="EmailString" xml:space="preserve">
-    <value>Email</value>
+    <value>Эл. адрес</value>
   </data>
   <data name="FailedContactAddString" xml:space="preserve">
-    <value>Contact could not be added.</value>
+    <value>Контакт не был добавлен.</value>
   </data>
   <data name="FailedContactDeletedString" xml:space="preserve">
-    <value>Failed to delete contact.</value>
+    <value>Контакт не был удален.</value>
   </data>
   <data name="FailedCreateChatString" xml:space="preserve">
-    <value>Chat was not created.</value>
+    <value>Чат не был создан.</value>
   </data>
   <data name="FailedLoginString" xml:space="preserve">
-    <value>It looks like our system does not have a user with enetered data. Please, try again.</value>
+    <value>Похоже, что в системе нет пользователя с введенными данными. Попробуйте ещё раз.</value>
   </data>
   <data name="FailedSetProfileString" xml:space="preserve">
-    <value>The data has not been changed.</value>
+    <value>Данный не были изменены.</value>
   </data>
   <data name="FailedSignUpString" xml:space="preserve">
-    <value>Registration problems. Try to change data.</value>
+    <value>Проблемы с регистрацией. Попробуйте изменить данные.</value>
   </data>
   <data name="InformationDialogHeaderInformationDialogString" xml:space="preserve">
-    <value>Information diolog</value>
+    <value>Информационное окно</value>
   </data>
   <data name="InformationDialogOKButtonString" xml:space="preserve">
     <value>OK</value>
   </data>
   <data name="JoinChatDialogHeaderChatsString" xml:space="preserve">
-    <value>Chats</value>
+    <value>Чаты</value>
   </data>
   <data name="JoinChatDialogJoin" xml:space="preserve">
-    <value>Join</value>
+    <value>Присоедениться</value>
   </data>
   <data name="LanguageString" xml:space="preserve">
-    <value>Language</value>
+    <value>Языки</value>
   </data>
   <data name="LeaveTheChatButtonString" xml:space="preserve">
-    <value>Leave the chat</value>
+    <value>Покинуть чат</value>
   </data>
   <data name="LeftPanelContactsButtonString" xml:space="preserve">
-    <value>Contacts</value>
+    <value>Контакты</value>
   </data>
   <data name="LeftPanelEditProfileButtonString" xml:space="preserve">
-    <value>Edit profile</value>
+    <value>Изменить профиль</value>
   </data>
   <data name="LeftPanelExitButtonString" xml:space="preserve">
-    <value>Exit</value>
+    <value>Выход</value>
   </data>
   <data name="LeftPanelJoinToChatButtonString" xml:space="preserve">
-    <value>Join to chat</value>
+    <value>Присоедениться к чату</value>
   </data>
   <data name="LeftPanelNewChatButtonString" xml:space="preserve">
-    <value>New chat</value>
+    <value>Создать чат</value>
   </data>
   <data name="LoginDialogGoToLogInString" xml:space="preserve">
-    <value>Already have an account</value>
+    <value>Уже есть аккаунт</value>
   </data>
   <data name="LoginDialogGoToSignUpString" xml:space="preserve">
-    <value>Don't have an account</value>
+    <value>Ещё нет аккаунта?</value>
   </data>
   <data name="LoginDialogHeaderLoginString" xml:space="preserve">
-    <value>Login</value>
+    <value>Вход</value>
   </data>
   <data name="LoginDialogHeaderSignUpString" xml:space="preserve">
-    <value>Sign up</value>
+    <value>Регистрация</value>
   </data>
   <data name="LoginDialogLoginButtonString" xml:space="preserve">
-    <value>Log in</value>
+    <value>Войти</value>
   </data>
   <data name="LoginDialogSignUpButtonString" xml:space="preserve">
-    <value>Sign up</value>
+    <value>Регистрация</value>
   </data>
   <data name="ManageChatButtonString" xml:space="preserve">
-    <value>Manage chat</value>
+    <value>Настройки чата</value>
   </data>
   <data name="MaxNumOfMembersString" xml:space="preserve">
-    <value>Maximum number of members</value>
+    <value>Максимальное кол-во участников</value>
   </data>
   <data name="MembersString" xml:space="preserve">
-    <value>members</value>
+    <value>участников</value>
   </data>
   <data name="NameChatSrting" xml:space="preserve">
-    <value>Chat name</value>
+    <value>Название чата</value>
   </data>
   <data name="NameString" xml:space="preserve">
-    <value>Name</value>
+    <value>Имя</value>
   </data>
   <data name="NewChatDialogAddChatButtonString" xml:space="preserve">
-    <value>Add chat</value>
+    <value>Добавить чат</value>
   </data>
   <data name="PasswordString" xml:space="preserve">
-    <value>Password</value>
+    <value>Пароль</value>
   </data>
   <data name="PhoneString" xml:space="preserve">
-    <value>Phone</value>
+    <value>Телефон</value>
   </data>
   <data name="SearchString" xml:space="preserve">
-    <value>Search</value>
+    <value>Поиск</value>
   </data>
   <data name="SuccessfulContactAddString" xml:space="preserve">
-    <value>Contact added successfully.</value>
+    <value>Контакт успешно добавлен.</value>
   </data>
   <data name="SuccessfulContactDeleteString" xml:space="preserve">
-    <value>Contact successfully delete.</value>
+    <value>Контакт успешно удалён.</value>
   </data>
   <data name="SuccessfulCreateChatString" xml:space="preserve">
-    <value>Chat successsfully created.</value>
+    <value>Чат успешно создан.</value>
   </data>
   <data name="SuccessfulLoginString" xml:space="preserve">
-    <value>Login successful. 
-Hi, </value>
+    <value>Успешный вход в систему. 
+Привет, </value>
   </data>
   <data name="SuccessfulSetProfileString" xml:space="preserve">
-    <value>Data changed successfully.</value>
+    <value>Данные успешно обновлены.</value>
   </data>
   <data name="SuccessfulSignUpString" xml:space="preserve">
-    <value>Registration successful. 
-Welcome, </value>
+    <value>Регистрация прошла успешно. 
+Добро пожаловать, </value>
   </data>
   <data name="UniqueNameString" xml:space="preserve">
-    <value>Unique name</value>
+    <value>Уникальное имя</value>
   </data>
   <data name="ViewChatInfoButtonString" xml:space="preserve">
-    <value>View chat info</value>
+    <value>Информация о чате</value>
   </data>
   <data name="ViewProfileButtonString" xml:space="preserve">
-    <value>View profile</value>
+    <value>Показать профиль</value>
   </data>
 </root>
