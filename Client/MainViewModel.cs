@@ -53,6 +53,7 @@ namespace Client
 
         private bool isAddChatDialog;
 
+        private bool isChatSelected;
 
 
         private bool isOpenInfoDialog;
@@ -79,6 +80,8 @@ namespace Client
         public bool IsOpenJoinToChatDialog { get { return isOpenJoinToChatDialog; } set { SetProperty(ref isOpenJoinToChatDialog, value); } }
 
         public bool IsAddChatDialog { get { return isAddChatDialog; } set { SetProperty(ref isAddChatDialog, value); } }
+
+        public bool IsChatSelected { get { return isChatSelected; } set { SetProperty(ref isChatSelected, value); } }
 
         public string TextForInfoDialog { get { return textForInfoDialog; } set { SetProperty(ref textForInfoDialog, value); } }
 
@@ -130,6 +133,14 @@ namespace Client
                 if (args.PropertyName == nameof(SelectedLanguage))
                 {
                     EditLanguage();
+
+                }
+                if (args.PropertyName == nameof(SelectedChat))
+                {
+                    if (SelectedChat == null)
+                        IsChatSelected = false;
+                    else
+                        IsChatSelected = true;
 
                 }
 
@@ -425,6 +436,9 @@ namespace Client
         private Command addChatCommand;
         private Command joinToChatCommand;
 
+        private Command sendMessageCommand;
+
+
         public ICommand SetProfileDialogOpenCommand => setProfileDialogOpenCommand;
         public ICommand ContactsDialogOpenCommand => contactsDialogOpenCommand;
         public ICommand ChatAddDialogOpenCommand => chatAddDialogOpenCommand;
@@ -443,6 +457,8 @@ namespace Client
 
         public ICommand AddChatCommand => addChatCommand;
         public ICommand JoinToChatCommand => joinToChatCommand;
+
+        public ICommand SendMessageCommand => sendMessageCommand;
 
         #endregion
 
