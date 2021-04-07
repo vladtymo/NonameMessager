@@ -128,6 +128,20 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+  <xs:element name="TakeContacts">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="clientId" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="TakeContactsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q11="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="TakeContactsResult" nillable="true" type="q11:ArrayOfClientDTO" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
   <xs:element name="JoinToChat">
     <xs:complexType>
       <xs:sequence>
@@ -140,7 +154,7 @@
   <xs:element name="JoinToChatResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q11="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="JoinToChatResult" nillable="true" type="q11:ChatDTO" />
+        <xs:element xmlns:q12="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="JoinToChatResult" nillable="true" type="q12:ChatDTO" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -154,18 +168,37 @@
   <xs:element name="TakeChatsResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q12="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="TakeChatsResult" nillable="true" type="q12:ArrayOfChatDTO" />
-  <xs:element name="TakeContacts">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element minOccurs="0" name="clientId" type="xs:int" />
+        <xs:element xmlns:q13="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="TakeChatsResult" nillable="true" type="q13:ArrayOfChatDTO" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="TakeContactsResponse">
+  <xs:element name="SendMessage">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q11="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="TakeContactsResult" nillable="true" type="q11:ArrayOfClientDTO" />
+        <xs:element minOccurs="0" name="clientId" type="xs:int" />
+        <xs:element minOccurs="0" name="chatId" type="xs:int" />
+        <xs:element xmlns:q14="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="message" nillable="true" type="q14:MessageInfo" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SendMessageResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q15="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="SendMessageResult" nillable="true" type="q15:MessageDTO" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="TakeMessages">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="chatId" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="TakeMessagesResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q16="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="TakeMessagesResult" nillable="true" type="q16:ArrayOfMessageDTO" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

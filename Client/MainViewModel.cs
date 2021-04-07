@@ -18,11 +18,12 @@ namespace Client
         private readonly ICollection<ClientViewModel> contacts = new ObservableCollection<ClientViewModel>();
         private readonly ICollection<ChatViewModel> chats = new ObservableCollection<ChatViewModel>();
         private readonly ICollection<Language> languages = new ObservableCollection<Language>();
-
+        private readonly ICollection<MessageViewModel> chatMessages = new ObservableCollection<MessageViewModel>();
 
         public IEnumerable<ClientViewModel> Contacts => contacts;
         public IEnumerable<ChatViewModel> Chats => chats;
         public IEnumerable<Language> Languages => languages;
+        public IEnumerable<MessageViewModel> ChatMessages => chatMessages;
 
 
         #endregion
@@ -31,6 +32,7 @@ namespace Client
         private ChatServiceClient chatService = new ChatServiceClient();
         private ContactServiceClient contactService = new ContactServiceClient();
         private ChatMemberServiceClient chatMemberService = new ChatMemberServiceClient();
+        private MessageServiceClient messageService = new MessageServiceClient();
 
         private IMapper mapper;
 
@@ -57,6 +59,7 @@ namespace Client
         private string textForInfoDialog;
 
         private string password;
+        private string textMessage;
         private string uniqueNameContact;
         private string uniqueNameChat;
 
@@ -80,6 +83,7 @@ namespace Client
         public string TextForInfoDialog { get { return textForInfoDialog; } set { SetProperty(ref textForInfoDialog, value); } }
 
         public string Password { get => password; set => SetProperty(ref password, value); }
+        public string TextMessage { get => textMessage; set => SetProperty(ref textMessage, value); }
         public string UniqueNameContact { get => uniqueNameContact; set => SetProperty(ref uniqueNameContact, value); }
         public string UniqueNameChat { get => uniqueNameChat; set => SetProperty(ref uniqueNameChat, value); }
 
@@ -102,10 +106,12 @@ namespace Client
                     cfg.CreateMap<AccountDTO, AccountViewModel>();
                     cfg.CreateMap<ClientDTO, ClientViewModel>();
                     cfg.CreateMap<ChatDTO, ChatViewModel>();
+                    cfg.CreateMap<MessageDTO, MessageViewModel>();
 
                     cfg.CreateMap<AccountViewModel, AccountDTO>();
                     cfg.CreateMap<ClientViewModel, ClientDTO>();
                     cfg.CreateMap<ChatViewModel, ChatDTO>();
+                    cfg.CreateMap<MessageViewModel, MessageDTO>();
                 });
 
             mapper = new Mapper(config);
@@ -150,6 +156,8 @@ namespace Client
             clientService.GetPathToPhoto(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(Environment.CurrentDirectory).FullName).FullName).FullName, "WcfService", "ClientsPhoto"));
             InitializeLanguages();
             GetRegistry();
+
+
         }
 
 

@@ -14,12 +14,13 @@ namespace WcfService
 {
     // NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "Service1" in code, svc and config file together.
     // NOTE: In order to launch WCF Test Client for testing this service, please select Service1.svc or Service1.svc.cs at the Solution Explorer and start debugging.
-    public class Service : IChatService, IClientService, IContactService, IChatMemberService
+    public class Service : IChatService, IClientService, IContactService, IChatMemberService, IMessageService
     {
         private IUnitOfWork repositories;
         private IMapper clientMapper;
         private IMapper chatMapper;
         private IMapper contactMapper;
+        private IMapper messageMapper;
 
         private string pathToPhoto;
         public Service()
@@ -69,7 +70,27 @@ namespace WcfService
                 });
             contactMapper = new Mapper(contactConfig);
 
+            IConfigurationProvider messageConfig = new MapperConfiguration(
+                cfg =>
+                {
+                    // Entity to DTO
+                    cfg.CreateMap<Message, MessageDTO>();
 
+                    cfg.CreateMap<Client, ClientDTO>();
+
+                    cfg.CreateMap<Chat, ChatDTO>();
+
+                    cfg.CreateMap<Account, AccountDTO>().ForMember(dst => dst.Password, opt => opt.Ignore());
+
+                    cfg.CreateMap<MessageDTO, Message>();
+
+                    cfg.CreateMap<ClientDTO, Client>();
+
+                    cfg.CreateMap<ChatDTO, Chat>();
+
+                    cfg.CreateMap<AccountDTO, Account>().ForMember(dst => dst.Password, opt => opt.Ignore());
+                });
+            messageMapper = new Mapper(messageConfig);
         }
         //--------------------------Client Methods--------------------//
         #region
@@ -235,14 +256,13 @@ namespace WcfService
             }
             return false;
         }
-        #endregion
 
         public IEnumerable<ClientDTO> TakeContacts(int clientId)
         {
-            var result = repositories.ContactRepos.Get(includeProperties: $"{nameof(Contact.ContactClient)}").Where(c => c.ClientId == clientId).Select(c => c.ContactClient);
+            var result = repositories.ContactRepos.Get().Where(c => c.ClientId == clientId).Select(c => c.ContactClient);
             return contactMapper.Map<IEnumerable<ClientDTO>>(result);
         }
-
+        #endregion
         //--------------------------Chat Methods--------------------//
         #region
         private int IsExistChat(ChatDTO chatDTO)
@@ -293,6 +313,31 @@ namespace WcfService
             return chatMapper.Map<IEnumerable<ChatDTO>>(result);
         }
         #endregion
+        //--------------------------Message Methods--------------------//
+        #region
+        private bool IsChatAndClientExist(int clientId, int chatId)
+        {
+            var client = repositories.ClientRepos.GetById(clientId);
+            var chat = repositories.ChatRepos.GetById(chatId);
+            if (chat != null && client != null)
+                return true;
+            return false;
+        }
+        public MessageDTO SendMessage(int clientId, int chatId, MessageInfo message)
+        {
+            if (!IsChatAndClientExist(clientId, chatId))
+                return null;
+            Message newMessage = new Message() { ClientId = clientId, ChatId = chatId, SendingTime = DateTime.Now, Text = message.Text };
+            repositories.MessageRepos.Insert(newMessage);
+            repositories.Save();
+            return messageMapper.Map<MessageDTO>(newMessage);
+        }
+        public IEnumerable<MessageDTO> TakeMessages(int chatId)
+        {
+            var result = repositories.MessageRepos.Get().Where(c => c.ChatId == chatId);
+            return messageMapper.Map<IEnumerable<MessageDTO>>(result);
+        }
+        #endregion
     }
     [DataContract]
     public class InfoFile
@@ -302,5 +347,13 @@ namespace WcfService
         [DataMember]
         public byte[] Data { get; set; }
 
+    }
+    [DataContract]
+    public class MessageInfo
+    {
+        [DataMember]
+        public string Text { get; set; }
+        [DataMember]
+        public InfoFile[] Files { get; set; }
     }
 }
