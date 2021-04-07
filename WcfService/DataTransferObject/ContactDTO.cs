@@ -1,18 +1,19 @@
-﻿using System;
+﻿using System.Runtime.Serialization;
 
-namespace BLL
+namespace WcfService
 {
+    [DataContract]
     public class ContactDTO
     {
+        [DataMember]
         public int Id { get; set; }
+        [DataMember]
         public int ClientId { get; set; }
+        [DataMember]
         public int ContactClientId { get; set; }
+        [DataMember]
         public ClientDTO Client { get; set; }
+        [DataMember]
         public ClientDTO ContactClient { get; set; }
-
-        public static implicit operator ContactDTO(int v)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

@@ -12,8 +12,8 @@ namespace BLL
     public interface IClientService
     {
         IEnumerable<ClientDTO> GetAllClients();
-        ClientDTO CreateNewClient(ClientDTO clientDTO);
-        ClientDTO GetClient(AccountDTO accountDTO);
+        ClientDTO CreateNewClient(ClientDTO clientDTO, string password);
+        ClientDTO GetClient(AccountDTO accountDTO, string password);
         bool SetProperties(ClientDTO clientDTO);
     }
     public class ClientService : IClientService
@@ -45,9 +45,9 @@ namespace BLL
             var result = repositories.ClientRepos.Get(includeProperties: $"{nameof(Client.Account)}");
             return mapper.Map<IEnumerable<ClientDTO>>(result);
         }
-        private Client GetClientByAccount(AccountDTO accountDTO)
+        private Client GetClientByAccount(AccountDTO accountDTO, string password)
         {
-            var client = repositories.ClientRepos.Get().Where(c => c.Account.Email == accountDTO.Email || c.Account.Phone == accountDTO.Phone && c.Account.Password == ComputeSha256Hash(accountDTO.Password)).FirstOrDefault();
+            var client = repositories.ClientRepos.Get().Where(c => (c.Account.Email == accountDTO.Email || c.Account.Phone == accountDTO.Phone) && c.Account.Password == ComputeSha256Hash(password)).FirstOrDefault();
             if (client != null)
                 return client;
             else
@@ -69,11 +69,12 @@ namespace BLL
             else
                 return client.Id;
         }
-        public ClientDTO CreateNewClient(ClientDTO clientDTO)
+        public ClientDTO CreateNewClient(ClientDTO clientDTO, string password)
         {
             var id = IsExistClient(clientDTO);
             if (id == -1)
             {
+                clientDTO.Account.Password = password;
                 repositories.ClientRepos.Insert(mapper.Map<Client>(clientDTO));
                 repositories.Save();
                 repositories.ClientRepos.Get().LastOrDefault().AccountId = repositories.AccountRepos.Get().LastOrDefault().ClientId;
@@ -83,9 +84,9 @@ namespace BLL
             else
                 return null;
         }
-        public ClientDTO GetClient(AccountDTO accountDTO)
+        public ClientDTO GetClient(AccountDTO accountDTO, string password)
         {
-            var client = GetClientByAccount(accountDTO);
+            var client = GetClientByAccount(accountDTO, password);
             if (client != null)
             {
                 return mapper.Map<ClientDTO>(client);

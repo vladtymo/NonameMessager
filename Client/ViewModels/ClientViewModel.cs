@@ -16,7 +16,7 @@
 
         public ClientViewModel Clone()
         {
-            return new ClientViewModel() { Account = new AccountViewModel() { Email = Account.Email, Password = Account.Password, Phone = Account.Phone, Id=Account.Id }, Name = Name, PhotoPath =PhotoPath, UniqueName = UniqueName, Id=Id };
+            return new ClientViewModel() { Account = new AccountViewModel() { Email = Account.Email, Phone = Account.Phone, Id = Account.Id }, Name = Name, PhotoPath = PhotoPath, UniqueName = UniqueName, Id = Id };
         }
     }
 }

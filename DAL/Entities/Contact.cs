@@ -17,5 +17,10 @@ namespace DAL
         // NAVIGATION PROPERTIES
         public virtual Client ContactClient { get; set; }
         public virtual Client Client { get; set; }
+
+        public static implicit operator Contact(int v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

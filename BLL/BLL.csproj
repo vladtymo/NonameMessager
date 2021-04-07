@@ -54,6 +54,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Services\ChatService.cs" />
+    <Compile Include="Services\ContactService.cs" />
     <Compile Include="DataTransferObjects\AccountDTO.cs" />
     <Compile Include="DataTransferObjects\ChatDTO.cs" />
     <Compile Include="DataTransferObjects\ChatMemberDTO.cs" />
