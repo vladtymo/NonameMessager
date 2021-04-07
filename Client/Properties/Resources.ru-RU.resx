@@ -278,4 +278,7 @@
   <data name="ViewProfileButtonString" xml:space="preserve">
     <value>Показать профиль</value>
   </data>
+  <data name="WriteMessageString" xml:space="preserve">
+    <value>Написать сообщение...</value>
+  </data>
 </root>
