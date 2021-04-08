@@ -12,10 +12,11 @@ using System.Text;
 
 namespace WcfService
 {
-    // NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "Service1" in code, svc and config file together.
-    // NOTE: In order to launch WCF Test Client for testing this service, please select Service1.svc or Service1.svc.cs at the Solution Explorer and start debugging.
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
     public class Service : IChatService, IClientService, IContactService, IChatMemberService, IMessageService
     {
+        private List<CallBack> callbacks = new List<CallBack>();
+
         private IUnitOfWork repositories;
         private IMapper clientMapper;
         private IMapper chatMapper;
@@ -47,7 +48,11 @@ namespace WcfService
                     // Entity to DTO
                     cfg.CreateMap<Chat, ChatDTO>();
 
+                    cfg.CreateMap<Client, ClientDTO>();
+
                     cfg.CreateMap<ChatDTO, Chat>();
+
+                    cfg.CreateMap<ClientDTO, Client>();
 
                 });
             chatMapper = new Mapper(chatConfig);
@@ -126,9 +131,11 @@ namespace WcfService
                 clientDTO.Account.Password = password;
                 repositories.ClientRepos.Insert(clientMapper.Map<Client>(clientDTO));
                 repositories.Save();
-                repositories.ClientRepos.Get().LastOrDefault().AccountId = repositories.AccountRepos.Get().LastOrDefault().ClientId;
+                repositories.ClientRepos.Get().FirstOrDefault(c=>c.UniqueName==clientDTO.UniqueName).AccountId = repositories.AccountRepos.Get().FirstOrDefault(a => a.Email == clientDTO.Account.Email).ClientId;
                 repositories.Save();
-                return clientMapper.Map<ClientDTO>(repositories.ClientRepos.Get().LastOrDefault());
+                ClientDTO addedClient = clientMapper.Map<ClientDTO>(repositories.ClientRepos.Get().FirstOrDefault(c => c.UniqueName == clientDTO.UniqueName));
+                callbacks.Add(new CallBack() { ClientId = addedClient.Id, Callback = OperationContext.Current.GetCallbackChannel<ICallback>()});
+                return addedClient;
             }
             else
                 return null;
@@ -136,8 +143,9 @@ namespace WcfService
         public ClientDTO GetClient(AccountDTO accountDTO, string password)
         {
             var client = GetClientByAccount(accountDTO, password);
-            if (client != null)
+         if (client != null)
             {
+                callbacks.Add(new CallBack() { ClientId = client.Id, Callback = OperationContext.Current.GetCallbackChannel<ICallback>()});
                 return clientMapper.Map<ClientDTO>(client);
             }
             else
@@ -207,6 +215,10 @@ namespace WcfService
             }
             else
                 return false;
+        }
+        public void Disconnect()
+        {
+            callbacks.Remove(callbacks.Where(c => c.Callback == OperationContext.Current.GetCallbackChannel<ICallback>()).FirstOrDefault());
         }
         static string ComputeSha256Hash(string rawData)
         {
@@ -309,8 +321,13 @@ namespace WcfService
         }
         public IEnumerable<ChatDTO> TakeChats(int clientId)
         {
-            var result = repositories.ChatMemberRepos.Get(includeProperties: $"{nameof(ChatMember.Chat)}").Where(c => c.ClientId == clientId).Select(c => c.Chat);
+            var result = repositories.ChatMemberRepos.Get().Where(c => c.ClientId == clientId).Select(c => c.Chat);
             return chatMapper.Map<IEnumerable<ChatDTO>>(result);
+        }
+        public IEnumerable<ClientDTO> TakeClients(int chatId)
+        {
+            var result = repositories.ChatMemberRepos.Get().Where(c => c.ChatId == chatId).Select(c => c.Client);
+            return clientMapper.Map<IEnumerable<ClientDTO>>(result);
         }
         #endregion
         //--------------------------Message Methods--------------------//
@@ -323,14 +340,27 @@ namespace WcfService
                 return true;
             return false;
         }
-        public MessageDTO SendMessage(int clientId, int chatId, MessageInfo message)
+        public void SendMessage(int clientId, int chatId, MessageInfo message)
         {
-            if (!IsChatAndClientExist(clientId, chatId))
-                return null;
-            Message newMessage = new Message() { ClientId = clientId, ChatId = chatId, SendingTime = DateTime.Now, Text = message.Text };
-            repositories.MessageRepos.Insert(newMessage);
-            repositories.Save();
-            return messageMapper.Map<MessageDTO>(newMessage);
+            if (IsChatAndClientExist(clientId, chatId))
+            {
+                Message newMessage = new Message() { ClientId = clientId, ChatId = chatId, SendingTime = DateTime.Now, Text = message.Text };
+                repositories.MessageRepos.Insert(newMessage);
+                repositories.Save();
+                foreach (var item in TakeClients(chatId))
+                {
+                    foreach (var item2 in callbacks)
+                    {
+                        if(item2.ClientId == item.Id)
+                            item2.Callback.TakeMessage(messageMapper.Map<MessageDTO>(newMessage));
+                    }
+                    //var result = .Where(c => c.ClientId == item.Id).FirstOrDefault();
+                    //if (result != null)
+                    //    result.Callback.TakeMessage(messageMapper.Map<MessageDTO>(newMessage));
+                }
+            }
+            else
+                callbacks.Where(c => c.ClientId == clientId).FirstOrDefault().Callback.TakeMessage(null);
         }
         public IEnumerable<MessageDTO> TakeMessages(int chatId)
         {
@@ -355,5 +385,10 @@ namespace WcfService
         public string Text { get; set; }
         [DataMember]
         public InfoFile[] Files { get; set; }
+    }
+    internal class CallBack
+    {
+        public int ClientId { get; set; }
+        public ICallback Callback { get; set; }
     }
 }

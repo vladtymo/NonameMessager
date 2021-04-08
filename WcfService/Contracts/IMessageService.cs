@@ -7,12 +7,17 @@ using System.Threading.Tasks;
 
 namespace WcfService
 {
-    [ServiceContract]
+    [ServiceContract(CallbackContract = typeof(ICallback))]
     public interface IMessageService
     {
-        [OperationContract]
-        MessageDTO SendMessage(int clientId, int chatId, MessageInfo message);
+        [OperationContract(IsOneWay = true)]
+        void SendMessage(int clientId, int chatId, MessageInfo message);
         [OperationContract]
         IEnumerable<MessageDTO> TakeMessages(int chatId);
+    }
+    public interface ICallback
+    {
+        [OperationContract(IsOneWay = true)]
+        void TakeMessage(MessageDTO message);
     }
 }

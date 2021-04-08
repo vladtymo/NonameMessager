@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace WcfService
 {
-    [ServiceContract]
+    [ServiceContract(CallbackContract = typeof(ICallback))]
     public interface IClientService
     {
         [OperationContract]
@@ -22,5 +22,7 @@ namespace WcfService
         InfoFile GetPhoto(int clientId);
         [OperationContract]
         void GetPathToPhoto(string pathToPhoto);
+        [OperationContract]
+        void Disconnect();
     }
 }

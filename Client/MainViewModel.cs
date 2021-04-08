@@ -8,10 +8,13 @@ using Client.MessangerServices;
 using System.Collections.ObjectModel;
 using Microsoft.Win32;
 using System.IO;
+using System.ServiceModel;
+using System.Threading.Tasks;
+using System.Windows;
 
 namespace Client
 {
-    class MainViewModel : ViewModelBase
+    class MainViewModel : ViewModelBase, IMessageServiceCallback, IClientServiceCallback
     {
         #region Collections
 
@@ -28,11 +31,11 @@ namespace Client
 
         #endregion
         #region Properties
-        private ClientServiceClient clientService = new ClientServiceClient();
+        private ClientServiceClient clientService;
         private ChatServiceClient chatService = new ChatServiceClient();
         private ContactServiceClient contactService = new ContactServiceClient();
         private ChatMemberServiceClient chatMemberService = new ChatMemberServiceClient();
-        private MessageServiceClient messageService = new MessageServiceClient();
+        private MessageServiceClient messageService;
 
         private IMapper mapper;
 
@@ -102,6 +105,9 @@ namespace Client
 
         public MainViewModel()
         {
+            messageService = new MessageServiceClient(new InstanceContext(this));
+            clientService = new ClientServiceClient(new InstanceContext(this));
+
             IConfigurationProvider config = new MapperConfiguration(
                 cfg =>
                 {
@@ -140,8 +146,10 @@ namespace Client
                     if (SelectedChat == null)
                         IsChatSelected = false;
                     else
+                    {
+                        TakeMessages();
                         IsChatSelected = true;
-
+                    }
                 }
 
             };
@@ -159,12 +167,13 @@ namespace Client
             addChatCommand = new DelegateCommand(CreateNewChat);
             joinToChatCommand = new DelegateCommand(JoinToChat);
             chatAddDialogOpenCommand = new DelegateCommand(ShowAddChatDialog);
+            sendMessageCommand = new DelegateCommand(SendMessage);
+            closedCommand = new DelegateCommand(() => clientService.DisconnectAsync());
             IsOpenLoginRegistrationDialog = true;
-            
             
             pathToPhoto = Path.Combine(Directory.GetParent(Directory.GetParent(Environment.CurrentDirectory).FullName).FullName, "ClientsPhoto");
 
-            clientService.GetPathToPhoto(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(Environment.CurrentDirectory).FullName).FullName).FullName, "WcfService", "ClientsPhoto"));
+            clientService.GetPathToPhotoAsync(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(Environment.CurrentDirectory).FullName).FullName).FullName, "WcfService", "ClientsPhoto"));
             InitializeLanguages();
             GetRegistry();
 
@@ -176,18 +185,18 @@ namespace Client
         public void Login()
         {
             CurrentClient.Account.Phone = CurrentClient.Account.Email;
-            var result = mapper.Map<ClientViewModel>(clientService.GetClient(mapper.Map<AccountDTO>(CurrentClient.Account), this.Password));
+            var result = mapper.Map<ClientViewModel>(clientService.GetClientAsync(mapper.Map<AccountDTO>(CurrentClient.Account), this.Password).Result);
             if (result != null)
             {
                 CurrentClient = result;
                 IsOpenLoginRegistrationDialog = false;
                 GetPhoto();
-                foreach (var item in chatMemberService.TakeChats(currentClient.Id))
+                foreach (var item in chatMemberService.TakeChatsAsync(currentClient.Id).Result)
                 {
                     chats.Add(mapper.Map<ChatViewModel>(item));
                 }
                 OpenInfoDialog($"Login successful. Hi, {CurrentClient.Name}");
-                foreach (var item in contactService.TakeContacts(currentClient.Id))
+                foreach (var item in contactService.TakeContactsAsync(currentClient.Id).Result)
                 {
                     contacts.Add(mapper.Map<ClientViewModel>(item));
                 }
@@ -203,7 +212,7 @@ namespace Client
         public void SignUp()
         {
 
-            var result = mapper.Map<ClientViewModel>(clientService.CreateNewClient(mapper.Map<ClientDTO>(CurrentClient), this.Password));
+            var result = mapper.Map<ClientViewModel>(clientService.CreateNewClientAsync(mapper.Map<ClientDTO>(CurrentClient), this.Password).Result);
             if (result != null)
             {
                 CurrentClient = result;
@@ -220,7 +229,7 @@ namespace Client
         
         public void GetPhoto()
         {
-            InfoFile info = clientService.GetPhoto(CurrentClient.Id);
+            InfoFile info = clientService.GetPhotoAsync(CurrentClient.Id).Result;
             if (info != null)
             {
                 string path = FreePath(Path.Combine(pathToPhoto, clientForChange.Id.ToString() + Path.GetExtension(info.Name)));
@@ -235,7 +244,7 @@ namespace Client
         }
         public void SetProfile()
         {
-            if (clientService.SetProperties(mapper.Map<ClientDTO>(ClientForChange)))
+            if (clientService.SetPropertiesAsync(mapper.Map<ClientDTO>(ClientForChange)).Result)
             {
                 if (CurrentClient.PhotoPath != ClientForChange.PhotoPath)
                 {
@@ -248,7 +257,7 @@ namespace Client
                         fs.Read(fileData, 0, fileData.Length);
                         info.Data = fileData;
                     }
-                    clientService.SetPhoto(clientForChange.Id, info);
+                    clientService.SetPhotoAsync(clientForChange.Id, info);
 
                     string path =FreePath( Path.Combine( pathToPhoto, clientForChange.Id.ToString() + Path.GetExtension(info.Name)));
                     File.Copy(clientForChange.PhotoPath, path, true);
@@ -277,14 +286,14 @@ namespace Client
         }
         public void CreateNewChat()
         {
-            var result = mapper.Map<ChatViewModel>(chatService.CreateNewChat(mapper.Map<ChatDTO>(ChatForChange)));
+            var result = mapper.Map<ChatViewModel>(chatService.CreateNewChatAsync(mapper.Map<ChatDTO>(ChatForChange)).Result);
             if (result != null)
             {   
                 chats.Add(result);
                 SelectedChat = result;
                 ChatForChange = new ChatViewModel();
                 IsOpenAddEditChatDialog = false;
-                chatMemberService.JoinToChat(CurrentClient.Id, result.UniqueName, true);
+                chatMemberService.JoinToChatAsync(CurrentClient.Id, result.UniqueName, true);
                 OpenInfoDialog("Chat successsfully created.");
                 OpenInfoDialog(Resources.SuccessfulCreateChatString);
             }
@@ -295,7 +304,7 @@ namespace Client
         }
         public void JoinToChat()
         {
-            var result = chatMemberService.JoinToChat(CurrentClient.Id, UniqueNameChat, true);
+            var result = chatMemberService.JoinToChatAsync(CurrentClient.Id, UniqueNameChat, true).Result;
             if (result != null)
             {
                 chats.Add(mapper.Map<ChatViewModel>(result));
@@ -306,10 +315,24 @@ namespace Client
                 OpenInfoDialog("Join to Chat failed.");
             }
         }
+        public void TakeMessages()
+        {
+            chatMessages.Clear();
+            var result = mapper.Map<IEnumerable<MessageViewModel>>(messageService.TakeMessagesAsync(SelectedChat.Id).Result);
 
+            Task.Run(() =>
+            {
+                foreach (var item in result)
+                {
+                    Application.Current.Dispatcher.Invoke(() => { chatMessages.Add(item); });
+                }
+            });
+
+
+        }
         public void AddContact()
         {
-            var result = mapper.Map<ClientViewModel>(contactService.AddContact(CurrentClient.Id, UniqueNameContact));
+            var result = mapper.Map<ClientViewModel>(contactService.AddContactAsync(CurrentClient.Id, UniqueNameContact).Result);
             if (result != null)
             {
                 contacts.Add(result);
@@ -322,7 +345,7 @@ namespace Client
         }
         public void DeleteContact()
         {
-            if (contactService.DeleteContact(CurrentClient.Id, UniqueNameContact))
+            if (contactService.DeleteContactAsync(CurrentClient.Id, UniqueNameContact).Result)
             {
                 contacts.Remove(contacts.Where(c => c.UniqueName == UniqueNameContact).FirstOrDefault());
                 OpenInfoDialog(Resources.SuccessfulContactDeleteString);
@@ -332,6 +355,10 @@ namespace Client
             {
                 OpenInfoDialog(Resources.FailedContactDeletedString);
             }
+        }
+        public void SendMessage()
+        {
+            messageService.SendMessageAsync(CurrentClient.Id, SelectedChat.Id, new MessageInfo() { Text = TextMessage });
         }
         public void OpenInfoDialog(string text)
         {
@@ -360,6 +387,7 @@ namespace Client
         }
         public void Exit()
         {
+            clientService.DisconnectAsync();
             CurrentClient = new ClientViewModel() { Account = new AccountViewModel() };
             ClientForChange = new ClientViewModel() { Account = new AccountViewModel() };
             Password = String.Empty;
@@ -416,6 +444,12 @@ namespace Client
 
         }
 
+        public void TakeMessage(MessageDTO message)
+        {
+            if (SelectedChat.Id == message.ChatId)
+                chatMessages.Add(mapper.Map<MessageViewModel>(message));
+        }
+
         #region Commands
         private Command setProfileDialogOpenCommand;
         private Command contactsDialogOpenCommand;
@@ -426,6 +460,7 @@ namespace Client
         private Command loginCommand;
         private Command signUpCommand;
         private Command exitCommand;
+        private Command closedCommand;
 
         private Command setProfileCommand;
         private Command setPhotoCommand;
@@ -448,6 +483,7 @@ namespace Client
         public ICommand LoginCommand => loginCommand;
         public ICommand SignUpCommand => signUpCommand;
         public ICommand ExitCommand => exitCommand;
+        public ICommand ClosedCommand => closedCommand;
 
         public ICommand SetProfileCommand => setProfileCommand;
         public ICommand SetPhotoCommand => setPhotoCommand;
