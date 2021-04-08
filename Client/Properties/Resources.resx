@@ -153,6 +153,9 @@
   <data name="EmailString" xml:space="preserve">
     <value>Email</value>
   </data>
+  <data name="EmptyFieldsString" xml:space="preserve">
+    <value>Error. Not all fields were filled.</value>
+  </data>
   <data name="FailedContactAddString" xml:space="preserve">
     <value>Contact could not be added.</value>
   </data>
@@ -277,5 +280,8 @@ Welcome, </value>
   </data>
   <data name="ViewProfileButtonString" xml:space="preserve">
     <value>View profile</value>
+  </data>
+  <data name="WriteMessageString" xml:space="preserve">
+    <value>Write a message...</value>
   </data>
 </root>

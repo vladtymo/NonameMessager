@@ -433,6 +433,208 @@ namespace Client.MessangerServices {
         }
     }
     
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="MessageDTO", Namespace="http://schemas.datacontract.org/2004/07/WcfService")]
+    [System.SerializableAttribute()]
+    public partial class MessageDTO : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private Client.MessangerServices.ChatDTO ChatField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int ChatIdField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private Client.MessangerServices.ClientDTO ClientField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int ClientIdField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int IdField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.DateTime SendingTimeField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string TextField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public Client.MessangerServices.ChatDTO Chat {
+            get {
+                return this.ChatField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.ChatField, value) != true)) {
+                    this.ChatField = value;
+                    this.RaisePropertyChanged("Chat");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int ChatId {
+            get {
+                return this.ChatIdField;
+            }
+            set {
+                if ((this.ChatIdField.Equals(value) != true)) {
+                    this.ChatIdField = value;
+                    this.RaisePropertyChanged("ChatId");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public Client.MessangerServices.ClientDTO Client {
+            get {
+                return this.ClientField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.ClientField, value) != true)) {
+                    this.ClientField = value;
+                    this.RaisePropertyChanged("Client");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int ClientId {
+            get {
+                return this.ClientIdField;
+            }
+            set {
+                if ((this.ClientIdField.Equals(value) != true)) {
+                    this.ClientIdField = value;
+                    this.RaisePropertyChanged("ClientId");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int Id {
+            get {
+                return this.IdField;
+            }
+            set {
+                if ((this.IdField.Equals(value) != true)) {
+                    this.IdField = value;
+                    this.RaisePropertyChanged("Id");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.DateTime SendingTime {
+            get {
+                return this.SendingTimeField;
+            }
+            set {
+                if ((this.SendingTimeField.Equals(value) != true)) {
+                    this.SendingTimeField = value;
+                    this.RaisePropertyChanged("SendingTime");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Text {
+            get {
+                return this.TextField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.TextField, value) != true)) {
+                    this.TextField = value;
+                    this.RaisePropertyChanged("Text");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="MessageInfo", Namespace="http://schemas.datacontract.org/2004/07/WcfService")]
+    [System.SerializableAttribute()]
+    public partial class MessageInfo : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private Client.MessangerServices.InfoFile[] FilesField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string TextField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public Client.MessangerServices.InfoFile[] Files {
+            get {
+                return this.FilesField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.FilesField, value) != true)) {
+                    this.FilesField = value;
+                    this.RaisePropertyChanged("Files");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Text {
+            get {
+                return this.TextField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.TextField, value) != true)) {
+                    this.TextField = value;
+                    this.RaisePropertyChanged("Text");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="MessangerServices.IChatService")]
     public interface IChatService {
@@ -481,7 +683,7 @@ namespace Client.MessangerServices {
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="MessangerServices.IClientService")]
+    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="MessangerServices.IClientService", CallbackContract=typeof(Client.MessangerServices.IClientServiceCallback))]
     public interface IClientService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IClientService/CreateNewClient", ReplyAction="http://tempuri.org/IClientService/CreateNewClientResponse")]
@@ -519,6 +721,19 @@ namespace Client.MessangerServices {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IClientService/GetPathToPhoto", ReplyAction="http://tempuri.org/IClientService/GetPathToPhotoResponse")]
         System.Threading.Tasks.Task GetPathToPhotoAsync(string pathToPhoto);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IClientService/Disconnect", ReplyAction="http://tempuri.org/IClientService/DisconnectResponse")]
+        void Disconnect();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IClientService/Disconnect", ReplyAction="http://tempuri.org/IClientService/DisconnectResponse")]
+        System.Threading.Tasks.Task DisconnectAsync();
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    public interface IClientServiceCallback {
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IClientService/TakeMessage")]
+        void TakeMessage(Client.MessangerServices.MessageDTO message);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -527,25 +742,26 @@ namespace Client.MessangerServices {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class ClientServiceClient : System.ServiceModel.ClientBase<Client.MessangerServices.IClientService>, Client.MessangerServices.IClientService {
+    public partial class ClientServiceClient : System.ServiceModel.DuplexClientBase<Client.MessangerServices.IClientService>, Client.MessangerServices.IClientService {
         
-        public ClientServiceClient() {
+        public ClientServiceClient(System.ServiceModel.InstanceContext callbackInstance) : 
+                base(callbackInstance) {
         }
         
-        public ClientServiceClient(string endpointConfigurationName) : 
-                base(endpointConfigurationName) {
+        public ClientServiceClient(System.ServiceModel.InstanceContext callbackInstance, string endpointConfigurationName) : 
+                base(callbackInstance, endpointConfigurationName) {
         }
         
-        public ClientServiceClient(string endpointConfigurationName, string remoteAddress) : 
-                base(endpointConfigurationName, remoteAddress) {
+        public ClientServiceClient(System.ServiceModel.InstanceContext callbackInstance, string endpointConfigurationName, string remoteAddress) : 
+                base(callbackInstance, endpointConfigurationName, remoteAddress) {
         }
         
-        public ClientServiceClient(string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) : 
-                base(endpointConfigurationName, remoteAddress) {
+        public ClientServiceClient(System.ServiceModel.InstanceContext callbackInstance, string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) : 
+                base(callbackInstance, endpointConfigurationName, remoteAddress) {
         }
         
-        public ClientServiceClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
-                base(binding, remoteAddress) {
+        public ClientServiceClient(System.ServiceModel.InstanceContext callbackInstance, System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
+                base(callbackInstance, binding, remoteAddress) {
         }
         
         public Client.MessangerServices.ClientDTO CreateNewClient(Client.MessangerServices.ClientDTO clientDTO, string password) {
@@ -594,6 +810,14 @@ namespace Client.MessangerServices {
         
         public System.Threading.Tasks.Task GetPathToPhotoAsync(string pathToPhoto) {
             return base.Channel.GetPathToPhotoAsync(pathToPhoto);
+        }
+        
+        public void Disconnect() {
+            base.Channel.Disconnect();
+        }
+        
+        public System.Threading.Tasks.Task DisconnectAsync() {
+            return base.Channel.DisconnectAsync();
         }
     }
     
@@ -669,6 +893,150 @@ namespace Client.MessangerServices {
         
         public System.Threading.Tasks.Task<Client.MessangerServices.ClientDTO[]> TakeContactsAsync(int clientId) {
             return base.Channel.TakeContactsAsync(clientId);
+        }
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="MessangerServices.IChatMemberService")]
+    public interface IChatMemberService {
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatMemberService/JoinToChat", ReplyAction="http://tempuri.org/IChatMemberService/JoinToChatResponse")]
+        Client.MessangerServices.ChatDTO JoinToChat(int clientId, string chatUniqueName, bool isAdmin);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatMemberService/JoinToChat", ReplyAction="http://tempuri.org/IChatMemberService/JoinToChatResponse")]
+        System.Threading.Tasks.Task<Client.MessangerServices.ChatDTO> JoinToChatAsync(int clientId, string chatUniqueName, bool isAdmin);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatMemberService/TakeChats", ReplyAction="http://tempuri.org/IChatMemberService/TakeChatsResponse")]
+        Client.MessangerServices.ChatDTO[] TakeChats(int clientId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatMemberService/TakeChats", ReplyAction="http://tempuri.org/IChatMemberService/TakeChatsResponse")]
+        System.Threading.Tasks.Task<Client.MessangerServices.ChatDTO[]> TakeChatsAsync(int clientId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatMemberService/TakeClients", ReplyAction="http://tempuri.org/IChatMemberService/TakeClientsResponse")]
+        Client.MessangerServices.ClientDTO[] TakeClients(int chatId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatMemberService/TakeClients", ReplyAction="http://tempuri.org/IChatMemberService/TakeClientsResponse")]
+        System.Threading.Tasks.Task<Client.MessangerServices.ClientDTO[]> TakeClientsAsync(int chatId);
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    public interface IChatMemberServiceChannel : Client.MessangerServices.IChatMemberService, System.ServiceModel.IClientChannel {
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    public partial class ChatMemberServiceClient : System.ServiceModel.ClientBase<Client.MessangerServices.IChatMemberService>, Client.MessangerServices.IChatMemberService {
+        
+        public ChatMemberServiceClient() {
+        }
+        
+        public ChatMemberServiceClient(string endpointConfigurationName) : 
+                base(endpointConfigurationName) {
+        }
+        
+        public ChatMemberServiceClient(string endpointConfigurationName, string remoteAddress) : 
+                base(endpointConfigurationName, remoteAddress) {
+        }
+        
+        public ChatMemberServiceClient(string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) : 
+                base(endpointConfigurationName, remoteAddress) {
+        }
+        
+        public ChatMemberServiceClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
+                base(binding, remoteAddress) {
+        }
+        
+        public Client.MessangerServices.ChatDTO JoinToChat(int clientId, string chatUniqueName, bool isAdmin) {
+            return base.Channel.JoinToChat(clientId, chatUniqueName, isAdmin);
+        }
+        
+        public System.Threading.Tasks.Task<Client.MessangerServices.ChatDTO> JoinToChatAsync(int clientId, string chatUniqueName, bool isAdmin) {
+            return base.Channel.JoinToChatAsync(clientId, chatUniqueName, isAdmin);
+        }
+        
+        public Client.MessangerServices.ChatDTO[] TakeChats(int clientId) {
+            return base.Channel.TakeChats(clientId);
+        }
+        
+        public System.Threading.Tasks.Task<Client.MessangerServices.ChatDTO[]> TakeChatsAsync(int clientId) {
+            return base.Channel.TakeChatsAsync(clientId);
+        }
+        
+        public Client.MessangerServices.ClientDTO[] TakeClients(int chatId) {
+            return base.Channel.TakeClients(chatId);
+        }
+        
+        public System.Threading.Tasks.Task<Client.MessangerServices.ClientDTO[]> TakeClientsAsync(int chatId) {
+            return base.Channel.TakeClientsAsync(chatId);
+        }
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="MessangerServices.IMessageService", CallbackContract=typeof(Client.MessangerServices.IMessageServiceCallback))]
+    public interface IMessageService {
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IMessageService/SendMessage")]
+        void SendMessage(int clientId, int chatId, Client.MessangerServices.MessageInfo message);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IMessageService/SendMessage")]
+        System.Threading.Tasks.Task SendMessageAsync(int clientId, int chatId, Client.MessangerServices.MessageInfo message);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IMessageService/TakeMessages", ReplyAction="http://tempuri.org/IMessageService/TakeMessagesResponse")]
+        Client.MessangerServices.MessageDTO[] TakeMessages(int chatId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IMessageService/TakeMessages", ReplyAction="http://tempuri.org/IMessageService/TakeMessagesResponse")]
+        System.Threading.Tasks.Task<Client.MessangerServices.MessageDTO[]> TakeMessagesAsync(int chatId);
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    public interface IMessageServiceCallback {
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IMessageService/TakeMessage")]
+        void TakeMessage(Client.MessangerServices.MessageDTO message);
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    public interface IMessageServiceChannel : Client.MessangerServices.IMessageService, System.ServiceModel.IClientChannel {
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    public partial class MessageServiceClient : System.ServiceModel.DuplexClientBase<Client.MessangerServices.IMessageService>, Client.MessangerServices.IMessageService {
+        
+        public MessageServiceClient(System.ServiceModel.InstanceContext callbackInstance) : 
+                base(callbackInstance) {
+        }
+        
+        public MessageServiceClient(System.ServiceModel.InstanceContext callbackInstance, string endpointConfigurationName) : 
+                base(callbackInstance, endpointConfigurationName) {
+        }
+        
+        public MessageServiceClient(System.ServiceModel.InstanceContext callbackInstance, string endpointConfigurationName, string remoteAddress) : 
+                base(callbackInstance, endpointConfigurationName, remoteAddress) {
+        }
+        
+        public MessageServiceClient(System.ServiceModel.InstanceContext callbackInstance, string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) : 
+                base(callbackInstance, endpointConfigurationName, remoteAddress) {
+        }
+        
+        public MessageServiceClient(System.ServiceModel.InstanceContext callbackInstance, System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
+                base(callbackInstance, binding, remoteAddress) {
+        }
+        
+        public void SendMessage(int clientId, int chatId, Client.MessangerServices.MessageInfo message) {
+            base.Channel.SendMessage(clientId, chatId, message);
+        }
+        
+        public System.Threading.Tasks.Task SendMessageAsync(int clientId, int chatId, Client.MessangerServices.MessageInfo message) {
+            return base.Channel.SendMessageAsync(clientId, chatId, message);
+        }
+        
+        public Client.MessangerServices.MessageDTO[] TakeMessages(int chatId) {
+            return base.Channel.TakeMessages(chatId);
+        }
+        
+        public System.Threading.Tasks.Task<Client.MessangerServices.MessageDTO[]> TakeMessagesAsync(int chatId) {
+            return base.Channel.TakeMessagesAsync(chatId);
         }
     }
 }

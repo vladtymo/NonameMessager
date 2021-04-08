@@ -169,6 +169,15 @@ namespace Client.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error. Not all fields were filled..
+        /// </summary>
+        public static string EmptyFieldsString {
+            get {
+                return ResourceManager.GetString("EmptyFieldsString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Contact could not be added..
         /// </summary>
         public static string FailedContactAddString {
@@ -536,6 +545,15 @@ namespace Client.Properties {
         public static string ViewProfileButtonString {
             get {
                 return ResourceManager.GetString("ViewProfileButtonString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Write a message....
+        /// </summary>
+        public static string WriteMessageString {
+            get {
+                return ResourceManager.GetString("WriteMessageString", resourceCulture);
             }
         }
     }
