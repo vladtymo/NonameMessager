@@ -39,6 +39,18 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="InfoFile" nillable="true" type="tns:InfoFile" />
+  <xs:complexType name="MessageDTO">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Chat" nillable="true" type="tns:ChatDTO" />
+      <xs:element minOccurs="0" name="ChatId" type="xs:int" />
+      <xs:element minOccurs="0" name="Client" nillable="true" type="tns:ClientDTO" />
+      <xs:element minOccurs="0" name="ClientId" type="xs:int" />
+      <xs:element minOccurs="0" name="Id" type="xs:int" />
+      <xs:element minOccurs="0" name="SendingTime" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="Text" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="MessageDTO" nillable="true" type="tns:MessageDTO" />
   <xs:complexType name="ArrayOfClientDTO">
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="unbounded" name="ClientDTO" nillable="true" type="tns:ClientDTO" />
@@ -64,18 +76,6 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="ArrayOfInfoFile" nillable="true" type="tns:ArrayOfInfoFile" />
-  <xs:complexType name="MessageDTO">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="Chat" nillable="true" type="tns:ChatDTO" />
-      <xs:element minOccurs="0" name="ChatId" type="xs:int" />
-      <xs:element minOccurs="0" name="Client" nillable="true" type="tns:ClientDTO" />
-      <xs:element minOccurs="0" name="ClientId" type="xs:int" />
-      <xs:element minOccurs="0" name="Id" type="xs:int" />
-      <xs:element minOccurs="0" name="SendingTime" type="xs:dateTime" />
-      <xs:element minOccurs="0" name="Text" nillable="true" type="xs:string" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="MessageDTO" nillable="true" type="tns:MessageDTO" />
   <xs:complexType name="ArrayOfMessageDTO">
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="unbounded" name="MessageDTO" nillable="true" type="tns:MessageDTO" />

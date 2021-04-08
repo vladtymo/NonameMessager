@@ -14,5 +14,7 @@ namespace WcfService
         ChatDTO JoinToChat(int clientId, string chatUniqueName, bool isAdmin);
         [OperationContract]
         IEnumerable<ChatDTO> TakeChats(int clientId);
+        [OperationContract]
+        IEnumerable<ClientDTO> TakeClients(int chatId);
     }
 }

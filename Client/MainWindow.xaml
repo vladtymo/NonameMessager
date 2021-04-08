@@ -9,6 +9,11 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="500" Width="800"
            TextElement.FontSize="15" TextBlock.FontSize="15" >
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Closed">
+            <i:InvokeCommandAction Command="{Binding ClosedCommand}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <Window.Style>
         <Style TargetType="Window">
             <Style.Triggers>
@@ -653,9 +658,9 @@
 
                             </ListBox>
 
-                            <Button  Grid.Row="3" Margin="15,5" Content="Join" Command="{Binding JoinToChatCommand}"></Button>
-                            <Button Grid.Row="3" Grid.Column="1" Margin="15,5" Content="Cancel" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"></Button>
-                            <Button  Grid.Row="3" Margin="15,5" Content="{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.JoinChatDialogJoin, Mode=OneWay}" ></Button>
+                            <!--<Button  Grid.Row="3" Margin="15,5" Content="Join"></Button>-->
+                            <!--<Button Grid.Row="3" Grid.Column="1" Margin="15,5" Content="Cancel" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"></Button>-->
+                            <Button  Grid.Row="3" Margin="15,5" Content="{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.JoinChatDialogJoin, Mode=OneWay}" Command="{Binding JoinToChatCommand}"></Button>
                             <Button Grid.Row="3" Grid.Column="1" Margin="15,5" Content="{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.CancelButtonString, Mode=OneWay}"  Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"></Button>
 
 
@@ -1032,8 +1037,8 @@
                             </materialDesign:PopupBox>
                         </Grid>
                     </Border>
-                    <ListBox Grid.Row="1"  ScrollViewer.VerticalScrollBarVisibility="Hidden" >
-                        <ListBox.ItemTemplate >
+                    <ListBox Grid.Row="1"  ScrollViewer.VerticalScrollBarVisibility="Hidden" ItemsSource="{Binding ChatMessages}" >
+                        <ListBox.ItemTemplate>
                             <DataTemplate >
                                 <Grid >
                                     <Grid.ColumnDefinitions>
@@ -1061,8 +1066,8 @@
                                                 <RowDefinition></RowDefinition>
                                                 <RowDefinition Height="Auto"></RowDefinition>
                                             </Grid.RowDefinitions>
-                                            <TextBlock Margin="5,5,5,0" Foreground="#FFFFB773"></TextBlock>
-                                            <TextBlock Grid.Row="1" Margin="5" TextWrapping="Wrap" Foreground="White"></TextBlock>
+                                            <TextBlock Margin="5,5,5,0" Foreground="#FFFFB773" Text="{Binding Client.Name}"></TextBlock>
+                                            <TextBlock Grid.Row="1" Margin="5" TextWrapping="Wrap" Foreground="White" Text="{Binding Text}"></TextBlock>
                                         </Grid>
                                     </Border>
                                 </Grid>
@@ -1117,8 +1122,8 @@
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
                             </materialDesign:PackIcon>
-
-                            <TextBox materialDesign:HintAssist.Hint="{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.WriteMessageString, Mode=OneWay}" VerticalScrollBarVisibility="Hidden" AcceptsReturn="True" Grid.Column="1" VerticalAlignment="Center" Margin="5,0" Grid.RowSpan="2" TextWrapping="Wrap" CaretBrush="White" BorderBrush="{StaticResource PrimaryHueMidBrush}"></TextBox>
+                            <!--materialDesign:HintAssist.Hint="{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.WriteMessageString, Mode=OneWay}"-->
+                            <TextBox  VerticalScrollBarVisibility="Hidden" AcceptsReturn="True" Grid.Column="1" VerticalAlignment="Center" Margin="5,0" Grid.RowSpan="2" TextWrapping="Wrap" CaretBrush="White" BorderBrush="{StaticResource PrimaryHueMidBrush}" Text="{Binding TextMessage,UpdateSourceTrigger=PropertyChanged}"></TextBox>
                         </Grid>
                     </Border>
                 </Grid>
