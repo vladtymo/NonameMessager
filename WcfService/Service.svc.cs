@@ -165,14 +165,24 @@ namespace WcfService
         public void SetPhoto(int clientId, InfoFile info)
         {
             string path = FreePath(Path.Combine(pathToPhoto, clientId.ToString() + Path.GetExtension(info.Name)));
-
+            DirectoryInfo directory = new DirectoryInfo(pathToPhoto);
+            if (!directory.Exists)
+                directory.Create();
             using (FileStream fs = new FileStream(path, FileMode.Create, FileAccess.Write))
             {
                 fs.Write(info.Data, 0, info.Data.Length);
             }
             repositories.ClientRepos.Get().Where(c => c.Id == clientId).FirstOrDefault().PhotoPath = path;
             repositories.Save();
-
+            var result = directory.GetFiles().Where(d => ((!d.Name.Contains('(') && Path.GetFileNameWithoutExtension(d.Name) == clientId.ToString()) || (d.Name.Contains('(') && d.Name.Replace(d.Name.Substring(d.Name.IndexOf('(')), null) == clientId.ToString())) && d.FullName != path);
+            foreach (var item in result)
+            {
+                try
+                {
+                    item.Delete();
+                }
+                catch (Exception) { }
+            }
         }
         public void GetPathToPhoto(string pathToPhoto)
         {

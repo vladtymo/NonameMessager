@@ -136,12 +136,12 @@ namespace Client
                 {
                     ClientForChange = CurrentClient.Clone();
                 }
-                if (args.PropertyName == nameof(SelectedLanguage))
+                else if (args.PropertyName == nameof(SelectedLanguage))
                 {
                     EditLanguage();
 
                 }
-                if (args.PropertyName == nameof(SelectedChat))
+                else if (args.PropertyName == nameof(SelectedChat))
                 {
                     if (SelectedChat == null)
                         IsChatSelected = false;
@@ -151,7 +151,20 @@ namespace Client
                         IsChatSelected = true;
                     }
                 }
+                else if(args.PropertyName == nameof(UniqueNameContact))
+                {
+                    addContactCommand.RaiseCanExecuteChanged();
+                    deleteContactCommand.RaiseCanExecuteChanged();
 
+                }
+                else if (args.PropertyName == nameof(UniqueNameChat))
+                {
+                    joinToChatCommand.RaiseCanExecuteChanged();
+                }
+                else if (args.PropertyName == nameof(TextMessage))
+                {
+                    sendMessageCommand.RaiseCanExecuteChanged();
+                }
             };
 
             loginCommand = new DelegateCommand(Login);
@@ -162,13 +175,13 @@ namespace Client
             setProfileDialogOpenCommand = new DelegateCommand(ShowSetProfileDialog);
             contactsDialogOpenCommand = new DelegateCommand(ShowContactsDialog);
             joinToChatDialogOpenCommand = new DelegateCommand(ShowJoinToChatDialog);
-            addContactCommand = new DelegateCommand(AddContact);
-            deleteContactCommand = new DelegateCommand(DeleteContact);
+            addContactCommand = new DelegateCommand(AddContact, () => !string.IsNullOrEmpty(UniqueNameContact));
+            deleteContactCommand = new DelegateCommand(DeleteContact, () => !string.IsNullOrEmpty(UniqueNameContact));
             addChatCommand = new DelegateCommand(CreateNewChat);
-            joinToChatCommand = new DelegateCommand(JoinToChat);
+            joinToChatCommand = new DelegateCommand(JoinToChat, ()=> !string.IsNullOrEmpty(UniqueNameChat));
             chatAddDialogOpenCommand = new DelegateCommand(ShowAddChatDialog);
-            sendMessageCommand = new DelegateCommand(SendMessage);
-            closedCommand = new DelegateCommand(() => clientService.DisconnectAsync());
+            sendMessageCommand = new DelegateCommand(SendMessage, ()=>!string.IsNullOrEmpty(TextMessage));
+            closedCommand = new DelegateCommand(Disconnect);
             IsOpenLoginRegistrationDialog = true;
             
             pathToPhoto = Path.Combine(Directory.GetParent(Directory.GetParent(Environment.CurrentDirectory).FullName).FullName, "ClientsPhoto");
@@ -184,6 +197,11 @@ namespace Client
 
         public void Login()
         {
+            if(string.IsNullOrEmpty(CurrentClient.Account.Email)||string.IsNullOrEmpty(Password))
+            {
+                OpenInfoDialog(Resources.EmptyFieldsString);
+                return;
+            }
             CurrentClient.Account.Phone = CurrentClient.Account.Email;
             var result = mapper.Map<ClientViewModel>(clientService.GetClientAsync(mapper.Map<AccountDTO>(CurrentClient.Account), this.Password).Result);
             if (result != null)
@@ -195,23 +213,26 @@ namespace Client
                 {
                     chats.Add(mapper.Map<ChatViewModel>(item));
                 }
-                OpenInfoDialog($"Login successful. Hi, {CurrentClient.Name}");
-                foreach (var item in contactService.TakeContactsAsync(currentClient.Id).Result)
+                foreach (var item in mapper.Map<IEnumerable<ClientViewModel>>(contactService.TakeContactsAsync(currentClient.Id).Result))
                 {
-                    contacts.Add(mapper.Map<ClientViewModel>(item));
+                    contacts.Add(item);
+                    GetPhoto(item);
                 }
                 OpenInfoDialog(Resources.SuccessfulLoginString +$"{CurrentClient.Name}!");
             }
             else
             {
                 OpenInfoDialog(Resources.FailedLoginString);
-
             }
         }
 
         public void SignUp()
         {
-
+            if (string.IsNullOrEmpty(CurrentClient.Account.Email) || string.IsNullOrEmpty(CurrentClient.Account.Phone) || string.IsNullOrEmpty(CurrentClient.UniqueName) || string.IsNullOrEmpty(CurrentClient.Name) || string.IsNullOrEmpty(Password))
+            {
+                OpenInfoDialog(Resources.EmptyFieldsString);
+                return;
+            }
             var result = mapper.Map<ClientViewModel>(clientService.CreateNewClientAsync(mapper.Map<ClientDTO>(CurrentClient), this.Password).Result);
             if (result != null)
             {
@@ -238,18 +259,43 @@ namespace Client
                 {
                     fs.Write(info.Data, 0, info.Data.Length);
                 }
-                CurrentClient.PhotoPath = Path.Combine(pathToPhoto, clientForChange.Id.ToString() + Path.GetExtension(info.Name));
+                CurrentClient.PhotoPath = path;
             }
             
         }
+        public void GetPhoto(ClientViewModel client)
+        {
+            InfoFile info = clientService.GetPhotoAsync(client.Id).Result;
+            if (info != null)
+            {
+                string path = FreePath(Path.Combine(pathToPhoto, client.Id.ToString() + Path.GetExtension(info.Name)));
+
+                using (FileStream fs = new FileStream(path, FileMode.Create, FileAccess.Write))
+                {
+                    fs.Write(info.Data, 0, info.Data.Length);
+                }
+                client.PhotoPath = path;
+            }
+
+        }
         public void SetProfile()
         {
+            if (string.IsNullOrEmpty(ClientForChange.Account.Email) || string.IsNullOrEmpty(ClientForChange.Account.Phone) || string.IsNullOrEmpty(ClientForChange.UniqueName) || string.IsNullOrEmpty(ClientForChange.Name))
+            {
+                OpenInfoDialog(Resources.EmptyFieldsString);
+                return;
+            }
             if (clientService.SetPropertiesAsync(mapper.Map<ClientDTO>(ClientForChange)).Result)
             {
+                DirectoryInfo directory = new DirectoryInfo(pathToPhoto);
+                string path="";
                 if (CurrentClient.PhotoPath != ClientForChange.PhotoPath)
                 {
+                    if (!directory.Exists)
+                        directory.Create();
 
-                   
+
+
                     InfoFile info = new InfoFile() { Name = ClientForChange.PhotoPath };
                     using (FileStream fs = new FileStream(clientForChange.PhotoPath, FileMode.Open, FileAccess.Read))
                     {
@@ -259,12 +305,21 @@ namespace Client
                     }
                     clientService.SetPhotoAsync(clientForChange.Id, info);
 
-                    string path =FreePath( Path.Combine( pathToPhoto, clientForChange.Id.ToString() + Path.GetExtension(info.Name)));
+                    path =FreePath( Path.Combine( pathToPhoto, clientForChange.Id.ToString() + Path.GetExtension(info.Name)));
                     File.Copy(clientForChange.PhotoPath, path, true);
                     ClientForChange.PhotoPath = path;              
                 }
                 OpenInfoDialog(Resources.SuccessfulSetProfileString);
                 CurrentClient = ClientForChange.Clone();
+                var result = directory.GetFiles().Where(d=>((!d.Name.Contains('(')&&Path.GetFileNameWithoutExtension(d.Name) == CurrentClient.Id.ToString()) || (d.Name.Contains('(')&&d.Name.Replace(d.Name.Substring(d.Name.IndexOf('(')),null)==CurrentClient.Id.ToString())) && d.FullName!= path);
+                foreach (var item in result)
+                {
+                    try
+                    {
+                        item.Delete();
+                    }
+                    catch(Exception){}
+                }
 
             }
             else
@@ -284,8 +339,22 @@ namespace Client
                 ClientForChange.PhotoPath = ofd.FileName;
             }
         }
+        public void SetChatPhoto()
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Filter = "Image files (*.jpg, *.jpeg, *.jpe, *.jfif, *.png) | *.jpg; *.jpeg; *.jpe; *.jfif; *.png";
+            if (ofd.ShowDialog() == true)
+            {
+                ClientForChange.PhotoPath = ofd.FileName;
+            }
+        }
         public void CreateNewChat()
         {
+            if (string.IsNullOrEmpty(ChatForChange.Name) || string.IsNullOrEmpty(ChatForChange.UniqueName) || ChatForChange.MaxUsers < 1)
+            {
+                OpenInfoDialog(Resources.EmptyFieldsString);
+                return;
+            }
             var result = mapper.Map<ChatViewModel>(chatService.CreateNewChatAsync(mapper.Map<ChatDTO>(ChatForChange)).Result);
             if (result != null)
             {   
@@ -336,6 +405,7 @@ namespace Client
             if (result != null)
             {
                 contacts.Add(result);
+                GetPhoto(result);
                 OpenInfoDialog(Resources.SuccessfulContactAddString);
             }
             else
@@ -385,6 +455,20 @@ namespace Client
         {
             IsOpenJoinToChatDialog = true;
         }
+        public void Disconnect()
+        {
+            DirectoryInfo directory = new DirectoryInfo(pathToPhoto);
+            foreach (var item in directory.GetFiles())
+            {
+                try
+                {
+                    item.Delete();
+                }
+                catch (Exception)
+                {}
+            }
+            clientService.DisconnectAsync();
+        }
         public void Exit()
         {
             clientService.DisconnectAsync();
@@ -394,6 +478,16 @@ namespace Client
             IsOpenLoginRegistrationDialog = true;
             contacts.Clear();
             chats.Clear();
+            DirectoryInfo directory = new DirectoryInfo(pathToPhoto);
+            foreach (var item in directory.GetFiles())
+            {
+                try
+                {
+                    item.Delete();
+                }
+                catch (Exception)
+                {}
+            }
         }
         public string FreePath(string path)
         {
