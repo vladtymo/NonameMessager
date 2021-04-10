@@ -409,7 +409,7 @@
                          materialDesign:HintAssist.Hint="{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.SearchString, Mode=OneWay}"
                          materialDesign:TextFieldAssist.HasClearButton="True"                                  
                          VerticalAlignment="Center" FontSize="15"
-                                    Text="{Binding UniqueNameContact, Mode=OneWayToSource,UpdateSourceTrigger=PropertyChanged}"/>
+                                    Text="{Binding UniqueNameContact, UpdateSourceTrigger=PropertyChanged}"/>
 
                             </Grid>
                             <ListBox Grid.ColumnSpan="2" Grid.Row="2" Margin="25,10" ItemsSource="{Binding Contacts}">
@@ -615,7 +615,7 @@
                          materialDesign:HintAssist.Hint="{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.SearchString, Mode=OneWay}"
                          materialDesign:TextFieldAssist.HasClearButton="True"                                  
                          VerticalAlignment="Center" FontSize="15"
-                         Text="{Binding UniqueNameChat, Mode=OneWayToSource,UpdateSourceTrigger=PropertyChanged}"/>
+                         Text="{Binding UniqueNameChat, UpdateSourceTrigger=PropertyChanged}"/>
 
                             </Grid>
                             <ListBox Grid.ColumnSpan="2" Grid.Row="2" Margin="25,10" Name="listBoxChatsDialog" >
