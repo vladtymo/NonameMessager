@@ -97,6 +97,14 @@ namespace WcfService
                 });
             messageMapper = new Mapper(messageConfig);
         }
+        private bool IsExistUniqueName(string uniqueName)
+        {
+            var client = repositories.ClientRepos.Get().Where(c => c.UniqueName == uniqueName).FirstOrDefault();
+            var chat = repositories.ChatRepos.Get().Where(c => c.UniqueName == uniqueName).FirstOrDefault();
+            if (client == null && chat == null)
+                return false;
+            return true;
+        }
         //--------------------------Client Methods--------------------//
         #region
         private Client GetClientByAccount(AccountDTO accountDTO, string password)
@@ -117,7 +125,7 @@ namespace WcfService
         }
         private int IsExistClient(ClientDTO clientDTO)
         {
-            var client = repositories.ClientRepos.Get().Where(c => c.UniqueName == clientDTO.UniqueName || c.Account.Email == clientDTO.Account.Email || c.Account.Phone == clientDTO.Account.Phone).FirstOrDefault();
+            var client = repositories.ClientRepos.Get().Where(c => c.Account.Email == clientDTO.Account.Email || c.Account.Phone == clientDTO.Account.Phone).FirstOrDefault();
             if (client == null)
                 return -1;
             else
@@ -126,7 +134,7 @@ namespace WcfService
         public ClientDTO CreateNewClient(ClientDTO clientDTO, string password)
         {
             var id = IsExistClient(clientDTO);
-            if (id == -1)
+            if (id == -1 && !IsExistUniqueName(clientDTO.UniqueName))
             {
                 clientDTO.Account.Password = password;
                 repositories.ClientRepos.Insert(clientMapper.Map<Client>(clientDTO));
@@ -143,9 +151,12 @@ namespace WcfService
         public ClientDTO GetClient(AccountDTO accountDTO, string password)
         {
             var client = GetClientByAccount(accountDTO, password);
-         if (client != null)
+            if (client != null)
             {
-                callbacks.Add(new CallBack() { ClientId = client.Id, Callback = OperationContext.Current.GetCallbackChannel<ICallback>()});
+                DirectoryInfo directory = new DirectoryInfo(pathToPhoto);
+                if (!directory.Exists)
+                    directory.Create();
+                callbacks.Add(new CallBack() { ClientId = client.Id, Callback = OperationContext.Current.GetCallbackChannel<ICallback>() });
                 return clientMapper.Map<ClientDTO>(client);
             }
             else
@@ -191,6 +202,8 @@ namespace WcfService
         public InfoFile GetPhoto(int clientId)
         {
             DirectoryInfo di = new DirectoryInfo(pathToPhoto);
+            if (!di.Exists)
+                di.Create();
             string path = repositories.ClientRepos.Get().Where(c => c.Id == clientId).Select(c => c.PhotoPath).FirstOrDefault();
             if (path == null) return null;
             var result = di.GetFiles().Where(f => f.FullName == path);
@@ -256,9 +269,16 @@ namespace WcfService
             }
             return true;
         }
+        private bool IsClientExist(string uniqueName)
+        {
+            var client = repositories.ClientRepos.Get().Where(c => c.UniqueName == uniqueName).FirstOrDefault();
+            if (client != null)
+                return true;
+            return false;
+        }
         public ClientDTO AddContact(int clientID, string uniqueNameContact)
         {
-            if (!IsContactExist(clientID, uniqueNameContact))
+            if (!IsContactExist(clientID, uniqueNameContact) && IsClientExist(uniqueNameContact))
             {
                 var contactClient = repositories.ClientRepos.Get().Where(c => c.UniqueName == uniqueNameContact).FirstOrDefault();
                 repositories.ContactRepos.Insert(new Contact() { ClientId = clientID, ContactClientId = contactClient.Id });
@@ -287,17 +307,9 @@ namespace WcfService
         #endregion
         //--------------------------Chat Methods--------------------//
         #region
-        private int IsExistChat(ChatDTO chatDTO)
-        {
-            var chat = repositories.ChatRepos.Get().Where(ch => ch.UniqueName == chatDTO.UniqueName).FirstOrDefault();
-            if (chat == null) return -1;
-            else
-                return chat.Id;
-        }
         public ChatDTO CreateNewChat(ChatDTO newChatDTO)
         {
-            var id = IsExistChat(newChatDTO);
-            if (id == -1)
+            if (!IsExistUniqueName(newChatDTO.UniqueName))
             {
                 repositories.ChatRepos.Insert(chatMapper.Map<Chat>(newChatDTO));
                 repositories.Save();
@@ -318,10 +330,17 @@ namespace WcfService
             }
             return true;
         }
+        private bool IsChatExist(string chatUniqueName)
+        {
+            var chat = repositories.ChatRepos.Get().Where(c => c.UniqueName == chatUniqueName).FirstOrDefault();
+            if (chat != null)
+                return true;
+            return false;
+        }
         public ChatDTO JoinToChat(int clientId, string chatUniqueName, bool isAdmin)
         {
             var chat = repositories.ChatRepos.Get().Where(c => c.UniqueName == chatUniqueName).FirstOrDefault();
-            if (!IsThereClientInChat(clientId, chat.Id))
+            if (!IsThereClientInChat(clientId, chat.Id) && IsChatExist(chatUniqueName))
             {
                 repositories.ChatMemberRepos.Insert(new ChatMember() { ClientId = clientId, ChatId = chat.Id, IsAdmin = isAdmin, DateLastReadMessage = DateTime.Now });
                 repositories.Save();
@@ -362,11 +381,13 @@ namespace WcfService
                     foreach (var item2 in callbacks)
                     {
                         if(item2.ClientId == item.Id)
-                            item2.Callback.TakeMessage(messageMapper.Map<MessageDTO>(newMessage));
+                            try
+                            {
+                                item2.Callback.TakeMessage(messageMapper.Map<MessageDTO>(newMessage));
+                            }
+                            catch (Exception)
+                            {}
                     }
-                    //var result = .Where(c => c.ClientId == item.Id).FirstOrDefault();
-                    //if (result != null)
-                    //    result.Callback.TakeMessage(messageMapper.Map<MessageDTO>(newMessage));
                 }
             }
             else

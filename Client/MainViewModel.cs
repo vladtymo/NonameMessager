@@ -165,6 +165,16 @@ namespace Client
                 {
                     sendMessageCommand.RaiseCanExecuteChanged();
                 }
+                else if (args.PropertyName==nameof(IsOpenContactsDialog))
+                {
+                    if(IsOpenContactsDialog == true)
+                        UniqueNameContact = String.Empty;
+                }
+                else if (args.PropertyName == nameof(IsOpenJoinToChatDialog))
+                {
+                    if (IsOpenJoinToChatDialog == true)
+                        UniqueNameChat = String.Empty;
+                }
             };
 
             loginCommand = new DelegateCommand(Login);
@@ -190,9 +200,10 @@ namespace Client
             InitializeLanguages();
             GetRegistry();
 
-
+            DirectoryInfo directory = new DirectoryInfo(pathToPhoto);
+            if (!directory.Exists)
+                directory.Create();
         }
-
 
 
         public void Login()
@@ -287,15 +298,11 @@ namespace Client
             }
             if (clientService.SetPropertiesAsync(mapper.Map<ClientDTO>(ClientForChange)).Result)
             {
-                DirectoryInfo directory = new DirectoryInfo(pathToPhoto);
                 string path="";
+                DirectoryInfo directory = new DirectoryInfo(pathToPhoto);
+                
                 if (CurrentClient.PhotoPath != ClientForChange.PhotoPath)
                 {
-                    if (!directory.Exists)
-                        directory.Create();
-
-
-
                     InfoFile info = new InfoFile() { Name = ClientForChange.PhotoPath };
                     using (FileStream fs = new FileStream(clientForChange.PhotoPath, FileMode.Open, FileAccess.Read))
                     {
@@ -429,6 +436,7 @@ namespace Client
         public void SendMessage()
         {
             messageService.SendMessageAsync(CurrentClient.Id, SelectedChat.Id, new MessageInfo() { Text = TextMessage });
+            TextMessage = String.Empty;
         }
         public void OpenInfoDialog(string text)
         {
@@ -478,6 +486,15 @@ namespace Client
             IsOpenLoginRegistrationDialog = true;
             contacts.Clear();
             chats.Clear();
+
+            Password = String.Empty;
+            IsOpenAddEditChatDialog = false;
+            IsOpenContactsDialog = false;
+            IsOpenJoinToChatDialog = false;
+            IsOpenProfileDialog = false;
+            IsOpenLoginRegistrationDialog = true;
+            TextMessage = String.Empty;
+
             DirectoryInfo directory = new DirectoryInfo(pathToPhoto);
             foreach (var item in directory.GetFiles())
             {
