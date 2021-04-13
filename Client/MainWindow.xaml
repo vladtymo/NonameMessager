@@ -465,7 +465,7 @@
                 <materialDesign:DialogHost Grid.Column="1" 
                          HorizontalAlignment="Center" 
                             VerticalAlignment="Center" IsOpen="{Binding IsOpenAddEditChatDialog}">
-
+                   
                     <materialDesign:DialogHost.DialogContent>
                         <Grid Width="300" Height="430">
                             <Grid.RowDefinitions>
@@ -564,7 +564,24 @@
 
 
                             <DockPanel  Grid.Row="5" Grid.ColumnSpan="2" LastChildFill="False" Margin="10,20,15,0" VerticalAlignment="Bottom">
-                                <Button Width="120"  Content="{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.AcceptButtonString, Mode=OneWay}" Command="{Binding AddChatCommand,UpdateSourceTrigger=PropertyChanged}"></Button>
+                                <Button Width="120" >
+                                    <Button.Style>
+                                        <Style BasedOn="{StaticResource MaterialDesignRaisedButton}" TargetType="Button">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsAddChatDialog}" Value="True">
+                                                    <Setter Property="Command" Value="{Binding AddChatCommand,UpdateSourceTrigger=PropertyChanged}"></Setter>
+                                                    <Setter Property="Content" Value="{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.AddEditChatDialogButtonCreateString, Mode=OneWay}"></Setter>
+
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding IsAddChatDialog}" Value="False">
+                                                    <Setter Property="Command" Value="{Binding SetChatPropertiesCommand}"></Setter>
+                                                    <Setter Property="Content" Value="{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.AddEditChatDialogButtonEditString, Mode=OneWay}"></Setter>
+
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
                                 <Button Width="120" DockPanel.Dock="Right" IsCancel="True" Content="{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.CancelButtonString, Mode=OneWay}" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"></Button>
                             </DockPanel>
                         </Grid>
@@ -575,7 +592,6 @@
                 <materialDesign:DialogHost Grid.Column="1" 
                          HorizontalAlignment="Center" 
                             VerticalAlignment="Center" DialogTheme="Light" IsOpen="{Binding IsOpenJoinToChatDialog}">
-
                     <materialDesign:DialogHost.DialogContent >
                         <Grid Width="350" Height="500"  >
                             <Grid.RowDefinitions>
@@ -591,6 +607,9 @@
 
                             </Grid.ColumnDefinitions>
                             <TextBlock FontSize="20" Margin="25,15" FontWeight="DemiBold" Grid.ColumnSpan="2" Foreground="{ DynamicResource PrimaryHueMidBrush}" Text="{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.JoinChatDialogHeaderChatsString, Mode=OneWay}"></TextBlock>
+                            <Button  Style="{StaticResource MaterialDesignIconForegroundButton}" Grid.Column="1" HorizontalAlignment="Right" IsCancel="True" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}">
+                                <materialDesign:PackIcon Kind="CloseOutline" Foreground="{ DynamicResource PrimaryHueMidBrush}"/>
+                            </Button>
                             <Grid Grid.Row="1"  Margin="15,0" Grid.ColumnSpan="2">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />
@@ -732,10 +751,10 @@
                 </materialDesign:DialogHost>
 
                 <!--Chat view chat info dialog-->
-                <materialDesign:DialogHost Grid.Column="1" IsOpen="{Binding IsOpenChatInfoDialog}"
+                <materialDesign:DialogHost Grid.Column="1"  IsOpen="{Binding IsOpenChatInfoDialog}"
                          HorizontalAlignment="Center" 
-                            VerticalAlignment="Center" DialogTheme="Light" >
-
+                            VerticalAlignment="Center" DialogTheme="Light" Margin="1,236,2,233" >
+               
                     <materialDesign:DialogHost.DialogContent >
                         <Grid Width="350" Height="470"  >
                             <Grid.RowDefinitions>
@@ -775,12 +794,12 @@
                                 </Grid.RowDefinitions>
                                 <Ellipse Width="65" Height="65" Grid.Row="1" Grid.RowSpan="4" >
                                     <Ellipse.Fill>
-                                        <ImageBrush Stretch="UniformToFill"/>
+                                        <ImageBrush ImageSource="Resources/chat.png" Stretch="None"/>
                                     </Ellipse.Fill>
                                 </Ellipse>
-                                <TextBlock Grid.Column="1" FontSize="15" Grid.Row="2"  Margin="15,0" FontWeight="DemiBold"></TextBlock>
+                                <TextBlock Grid.Column="1" FontSize="15" Grid.Row="2"  Margin="15,0" FontWeight="DemiBold" Text="{Binding SelectedChat.Name}"></TextBlock>
                                 <TextBlock Grid.Column="1" FontSize="12" Foreground="{StaticResource MaterialDesignToolForeground}" Grid.Row="3"  Margin="15,0" FontWeight="DemiBold">
-                                    <Run Text="Count"></Run> <Run Text="{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.MembersString, Mode=OneWay}"></Run>
+                                    <Run Text="{Binding CountMembers,UpdateSourceTrigger=PropertyChanged}"></Run> <Run Text="{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.MembersString, Mode=OneWay}"></Run>
                                 </TextBlock>
 
                             </Grid>
@@ -789,7 +808,7 @@
                                  Kind="At"
                                  Height="30"
                                  Width="30" />
-                            <TextBox IsReadOnly="True" Grid.Row="4" Grid.Column="1" Margin="15,10" VerticalAlignment="Bottom" materialDesign:HintAssist.HelperText= "{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.UniqueNameString, Mode=OneWay}" ></TextBox>
+                            <TextBox IsReadOnly="True" Grid.Row="4" Grid.Column="1" Margin="15,10" VerticalAlignment="Bottom" materialDesign:HintAssist.HelperText= "{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.UniqueNameString, Mode=OneWay}" Text="{Binding SelectedChat.UniqueName}" ></TextBox>
                             <Separator Grid.Row="5" Grid.ColumnSpan="2" Margin="10,25" Background="{StaticResource PrimaryHueMidBrush}"></Separator>
 
                             <Grid Grid.Row="6" Grid.ColumnSpan="2" >
@@ -808,10 +827,10 @@
                                  Kind="AccountMultipleOutline"
                                  Height="25"
                                  Width="25" />
-                                <TextBlock  Grid.Column="1"  Margin="15,5,0,5" VerticalAlignment="Bottom"  ></TextBlock>
+                                <TextBlock  Grid.Column="1"  Margin="15,5,0,5" VerticalAlignment="Bottom"  Text="{Binding CountMembers}"></TextBlock>
                                 <TextBlock  Grid.Column="2"  Margin="5,5,15,5" VerticalAlignment="Bottom"  Text= "{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.MembersString, Mode=OneWay}"></TextBlock>
                                 <!--List of members-->
-                                <ListBox  Grid.Row="1" Margin="5" Grid.ColumnSpan="3">
+                                <ListBox  Grid.Row="1" Margin="5" Grid.ColumnSpan="3" ItemsSource="{Binding Members}">
                                     <ListBox.ItemTemplate>
                                         <DataTemplate>
                                             <Grid >
@@ -832,13 +851,13 @@
                                                 </Grid.RowDefinitions>
                                                 <Ellipse Width="45" Height="45" Grid.RowSpan="4" Grid.Row="1">
                                                     <Ellipse.Fill>
-                                                        <ImageBrush Stretch="UniformToFill"/>
+                                                        <ImageBrush ImageSource="Resources/member.png" Stretch="Uniform"/>
                                                     </Ellipse.Fill>
                                                 </Ellipse>
 
-                                                <TextBlock Grid.Column="1" FontWeight="DemiBold" Grid.RowSpan="3" FontSize="14" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Bottom" ></TextBlock>
+                                                <TextBlock Grid.Column="1" FontWeight="DemiBold" Grid.RowSpan="3" FontSize="14" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Bottom" Text="{Binding Name}"></TextBlock>
                                                 <TextBlock Grid.Column="1" Grid.Row="3" Margin="5,0" Grid.RowSpan="2" FontSize="13" VerticalAlignment="Bottom"  TextAlignment="Center" HorizontalAlignment="Left">
-                                        <Run Text="@"></Run><Run ></Run>
+                                        <Run Text="@"></Run><Run Text="{Binding UniqueName}"></Run>
                                                 </TextBlock>
                                             </Grid>
                                         </DataTemplate>
@@ -914,7 +933,7 @@
                     </DockPanel>
 
                     <!--List of chats-->
-                    <ListBox Grid.Row="1" ItemsSource="{Binding Chats}" SelectedItem="{Binding SelectedChat}">
+                    <ListBox Grid.Row="1" ItemsSource="{Binding Chats}" SelectedItem="{Binding SelectedChat,UpdateSourceTrigger=PropertyChanged}" >
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <Border >
@@ -943,9 +962,9 @@
                                             </Ellipse.Fill>
                                         </Ellipse>
 
-                                        <TextBlock Grid.Column="1" FontWeight="Bold" Grid.RowSpan="3" FontSize="16" Margin="5,0"  TextAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Bottom" Text="{Binding Name}"></TextBlock>
+                                        <TextBlock Grid.Column="1" FontWeight="Bold" Grid.RowSpan="3" FontSize="16" Margin="5,0"  TextAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Bottom" Text="{Binding Name,UpdateSourceTrigger=PropertyChanged}"></TextBlock>
                                         <TextBlock Grid.Column="1" Grid.Row="3" Margin="5,0" Grid.RowSpan="2" FontSize="13" VerticalAlignment="Bottom"  TextAlignment="Center" HorizontalAlignment="Left">
-                                        <Run Text="@"></Run><Run Text="{Binding UniqueName}"></Run>
+                                        <Run Text="@"></Run><Run Text="{Binding UniqueName,UpdateSourceTrigger=PropertyChanged}"></Run>
                                         </TextBlock>
                                     </Grid>
                                 </Border>
@@ -989,9 +1008,9 @@
                             </Grid.ColumnDefinitions>
 
                             <TextBlock  FontWeight="SemiBold"  FontSize="14"  Margin="5,0" TextAlignment="Center" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Bottom" Text="{Binding SelectedChat.Name}"></TextBlock>
-                            <!--<TextBlock Grid.Row="1"   FontSize="13" Margin="5,2"   TextAlignment="Center" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Bottom" >
-                                <Run ></Run> <Run Text="{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.MembersString, Mode=OneWay}"></Run>
-                            </TextBlock>-->
+                            <TextBlock Grid.Row="1"   FontSize="13" Margin="5,2"   TextAlignment="Center" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Bottom" >
+                                <Run Text="{Binding CountMembers,UpdateSourceTrigger=PropertyChanged}"></Run> <Run Text="{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.MembersString, Mode=OneWay}"></Run>
+                            </TextBlock>
 
 
 
@@ -1015,7 +1034,7 @@
                                         </Button.Style>
                                     </Button>
                                     <!--!IsPM-->
-                                    <Button Content="{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.ViewChatInfoButtonString, Mode=OneWay}" Command="{Binding OpenChatInfoDialogCommand}">
+                                    <Button Content="{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.ViewChatInfoButtonString, Mode=OneWay}" Command="{Binding ChatInfoDialogOpenCommand}">
                                         <Button.Style>
                                             <Style BasedOn="{StaticResource MaterialDesignPopupBoxButton}" TargetType="Button">
                                                 <Style.Triggers>
@@ -1031,7 +1050,7 @@
                                     </Button>
 
 
-                                    <Button Content="{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.ManageChatButtonString, Mode=OneWay}"></Button>
+                                    <Button Content="{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.ManageChatButtonString, Mode=OneWay}" Command="{Binding ManageChatDialogOpenCommand}"></Button>
                                     <Button Content="{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.LeaveTheChatButtonString, Mode=OneWay}" Command="{Binding LeaveFromChatCommand}"></Button>
                                 </StackPanel>
                             </materialDesign:PopupBox>

@@ -12,5 +12,8 @@ namespace WcfService
     {
         [OperationContract]
         ChatDTO CreateNewChat(ChatDTO newChatDTO);
+
+        [OperationContract]
+        bool SetChatProperties(ChatDTO chatDTO);
     }
 }
