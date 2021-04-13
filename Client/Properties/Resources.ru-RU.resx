@@ -165,6 +165,12 @@
   <data name="FailedCreateChatString" xml:space="preserve">
     <value>Чат не был создан.</value>
   </data>
+  <data name="FailedJoinToChatString" xml:space="preserve">
+    <value>Не удалось присоединиться к чату.</value>
+  </data>
+  <data name="FailedLeaveFromChatString" xml:space="preserve">
+    <value>Не удалось покинуть чат.</value>
+  </data>
   <data name="FailedLoginString" xml:space="preserve">
     <value>Похоже, что в системе нет пользователя с введенными данными. Попробуйте ещё раз.</value>
   </data>
@@ -260,6 +266,12 @@
   </data>
   <data name="SuccessfulCreateChatString" xml:space="preserve">
     <value>Чат успешно создан.</value>
+  </data>
+  <data name="SuccessfulJoinToChatString" xml:space="preserve">
+    <value>Вы успешно присоединились к чату.</value>
+  </data>
+  <data name="SuccessfulLeaveFromChatString" xml:space="preserve">
+    <value>Вы успешно покинули чат.</value>
   </data>
   <data name="SuccessfulLoginString" xml:space="preserve">
     <value>Успешный вход в систему. 

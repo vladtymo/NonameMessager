@@ -348,6 +348,17 @@ namespace WcfService
             }
             return null;
         }
+        public bool LeaveFromChat(int clientId, int chatId)
+        {
+            var chatMember = repositories.ChatMemberRepos.Get().Where(c => c.ClientId == clientId && c.ChatId == chatId).FirstOrDefault();
+            if (chatMember != null)
+            {
+                repositories.ChatMemberRepos.Delete(chatMember);
+                repositories.Save();
+                return true;
+            }
+            return false;
+        }
         public IEnumerable<ChatDTO> TakeChats(int clientId)
         {
             var result = repositories.ChatMemberRepos.Get().Where(c => c.ClientId == clientId).Select(c => c.Chat);

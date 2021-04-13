@@ -165,6 +165,12 @@
   <data name="FailedCreateChatString" xml:space="preserve">
     <value>Chat was not created.</value>
   </data>
+  <data name="FailedJoinToChatString" xml:space="preserve">
+    <value>Join to chat failed.</value>
+  </data>
+  <data name="FailedLeaveFromChatString" xml:space="preserve">
+    <value>Leave from chat failed.</value>
+  </data>
   <data name="FailedLoginString" xml:space="preserve">
     <value>It looks like our system does not have a user with enetered data. Please, try again.</value>
   </data>
@@ -260,6 +266,12 @@
   </data>
   <data name="SuccessfulCreateChatString" xml:space="preserve">
     <value>Chat successsfully created.</value>
+  </data>
+  <data name="SuccessfulJoinToChatString" xml:space="preserve">
+    <value>Join to chat successsfully.</value>
+  </data>
+  <data name="SuccessfulLeaveFromChatString" xml:space="preserve">
+    <value>Leave from chat successsfully.</value>
   </data>
   <data name="SuccessfulLoginString" xml:space="preserve">
     <value>Login successful. 
