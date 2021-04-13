@@ -120,6 +120,12 @@
   <data name="AcceptButtonString" xml:space="preserve">
     <value>Accept</value>
   </data>
+  <data name="AddEditChatDialogButtonCreateString" xml:space="preserve">
+    <value>Create</value>
+  </data>
+  <data name="AddEditChatDialogButtonEditString" xml:space="preserve">
+    <value>Edit</value>
+  </data>
   <data name="AddEditChatDialogIsPrivateChatString" xml:space="preserve">
     <value>Is private chat</value>
   </data>
@@ -173,6 +179,9 @@
   </data>
   <data name="FailedLoginString" xml:space="preserve">
     <value>It looks like our system does not have a user with enetered data. Please, try again.</value>
+  </data>
+  <data name="FailedSetChatPropertiesString" xml:space="preserve">
+    <value>The data has not been changed.</value>
   </data>
   <data name="FailedSetProfileString" xml:space="preserve">
     <value>The data has not been changed.</value>
@@ -276,6 +285,9 @@
   <data name="SuccessfulLoginString" xml:space="preserve">
     <value>Login successful. 
 Hi, </value>
+  </data>
+  <data name="SuccessfulSetChatPropertiesString" xml:space="preserve">
+    <value>Chat settings successfully changed.</value>
   </data>
   <data name="SuccessfulSetProfileString" xml:space="preserve">
     <value>Data changed successfully.</value>

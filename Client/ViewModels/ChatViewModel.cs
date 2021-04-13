@@ -23,5 +23,9 @@ namespace Client
         public bool IsPrivate { get => isPrivate; set => SetProperty(ref isPrivate, value); }
         public int MaxUsers { get => maxUsers; set => SetProperty(ref maxUsers, value); }
         public bool IsPM { get => isPM; set => SetProperty(ref isPM, value); }
+        public ChatViewModel Clone()
+        {
+            return new ChatViewModel() { Name = Name, PhotoPath = PhotoPath, UniqueName = UniqueName, Id = Id,IsPM=IsPM, IsPrivate=IsPrivate, MaxUsers=MaxUsers};
+        }
     }
 }

@@ -97,10 +97,10 @@ namespace WcfService
                 });
             messageMapper = new Mapper(messageConfig);
         }
-        private bool IsExistUniqueName(string uniqueName)
+        private bool IsExistUniqueName(int id,string uniqueName, bool isClient)
         {
-            var client = repositories.ClientRepos.Get().Where(c => c.UniqueName == uniqueName).FirstOrDefault();
-            var chat = repositories.ChatRepos.Get().Where(c => c.UniqueName == uniqueName).FirstOrDefault();
+            var client = repositories.ClientRepos.Get().Where(c => c.UniqueName == uniqueName && ((isClient && c.Id!=id)||!isClient) ).FirstOrDefault();
+            var chat = repositories.ChatRepos.Get().Where(c => c.UniqueName == uniqueName && ((!isClient && c.Id != id) || isClient)).FirstOrDefault();
             if (client == null && chat == null)
                 return false;
             return true;
@@ -134,7 +134,7 @@ namespace WcfService
         public ClientDTO CreateNewClient(ClientDTO clientDTO, string password)
         {
             var id = IsExistClient(clientDTO);
-            if (id == -1 && !IsExistUniqueName(clientDTO.UniqueName))
+            if (id == -1 && !IsExistUniqueName(clientDTO.Id, clientDTO.UniqueName,true))
             {
                 clientDTO.Account.Password = password;
                 repositories.ClientRepos.Insert(clientMapper.Map<Client>(clientDTO));
@@ -307,9 +307,16 @@ namespace WcfService
         #endregion
         //--------------------------Chat Methods--------------------//
         #region
+        public bool IsChatExist(ChatDTO chatDTO)
+        {
+            var result = repositories.ChatRepos.Get().Where(c => c.Id != chatDTO.Id && c.UniqueName == chatDTO.UniqueName).FirstOrDefault();
+            if (result == null)
+                return false;
+            return true;
+        }
         public ChatDTO CreateNewChat(ChatDTO newChatDTO)
         {
-            if (!IsExistUniqueName(newChatDTO.UniqueName))
+            if (!IsExistUniqueName(newChatDTO.Id, newChatDTO.UniqueName,false))
             {
                 repositories.ChatRepos.Insert(chatMapper.Map<Chat>(newChatDTO));
                 repositories.Save();
@@ -318,6 +325,26 @@ namespace WcfService
             else
                 return null;
         }
+        
+        public bool SetChatProperties(ChatDTO chatDTO)
+        {
+          
+            if (!IsExistUniqueName(chatDTO.Id, chatDTO.UniqueName,false) && TakeClients(chatDTO.Id).Count()<=chatDTO.MaxUsers)
+            {
+                var chat = repositories.ChatRepos.Get().Where(c => c.Id == chatDTO.Id).FirstOrDefault();
+                chat.Name = chatDTO.Name;
+                chat.UniqueName = chatDTO.UniqueName;
+                chat.MaxUsers = chatDTO.MaxUsers;
+                chat.IsPM = chatDTO.IsPM;
+                chat.IsPrivate = chatDTO.IsPrivate;
+                repositories.ChatRepos.Update(chat);
+                repositories.Save();
+                return true;
+            }
+            else
+                return false;
+        }
+
         #endregion
         //--------------------------ChatMember Methods--------------------//
         #region
