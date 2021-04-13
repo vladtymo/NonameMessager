@@ -192,6 +192,7 @@ namespace Client
             chatAddDialogOpenCommand = new DelegateCommand(ShowAddChatDialog);
             sendMessageCommand = new DelegateCommand(SendMessage, ()=>!string.IsNullOrEmpty(TextMessage));
             closedCommand = new DelegateCommand(Disconnect);
+            leaveFromChatCommand = new DelegateCommand(LeaveFromChat);
             IsOpenLoginRegistrationDialog = true;
             
             pathToPhoto = Path.Combine(Directory.GetParent(Directory.GetParent(Environment.CurrentDirectory).FullName).FullName, "ClientsPhoto");
@@ -370,7 +371,6 @@ namespace Client
                 ChatForChange = new ChatViewModel();
                 IsOpenAddEditChatDialog = false;
                 chatMemberService.JoinToChatAsync(CurrentClient.Id, result.UniqueName, true);
-                OpenInfoDialog("Chat successsfully created.");
                 OpenInfoDialog(Resources.SuccessfulCreateChatString);
             }
             else
@@ -384,11 +384,25 @@ namespace Client
             if (result != null)
             {
                 chats.Add(mapper.Map<ChatViewModel>(result));
-                OpenInfoDialog("Join to Chat successsfully.");
+                OpenInfoDialog(Resources.SuccessfulJoinToChatString);
+                IsOpenJoinToChatDialog = false;
             }
             else
             {
-                OpenInfoDialog("Join to Chat failed.");
+                OpenInfoDialog(Resources.FailedJoinToChatString);
+            }
+        }
+        public void LeaveFromChat()
+        {
+            var result = chatMemberService.LeaveFromChatAsync(CurrentClient.Id, SelectedChat.Id).Result;
+            if (result == true)
+            {
+                chats.Remove(SelectedChat);
+                OpenInfoDialog(Resources.SuccessfulLeaveFromChatString);
+            }
+            else
+            {
+                OpenInfoDialog(Resources.FailedLeaveFromChatString);
             }
         }
         public void TakeMessages()
@@ -581,6 +595,7 @@ namespace Client
 
         private Command addChatCommand;
         private Command joinToChatCommand;
+        private Command leaveFromChatCommand;
 
         private Command sendMessageCommand;
 
@@ -604,6 +619,7 @@ namespace Client
 
         public ICommand AddChatCommand => addChatCommand;
         public ICommand JoinToChatCommand => joinToChatCommand;
+        public ICommand LeaveFromChatCommand => leaveFromChatCommand;
 
         public ICommand SendMessageCommand => sendMessageCommand;
 

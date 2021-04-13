@@ -906,6 +906,12 @@ namespace Client.MessangerServices {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatMemberService/JoinToChat", ReplyAction="http://tempuri.org/IChatMemberService/JoinToChatResponse")]
         System.Threading.Tasks.Task<Client.MessangerServices.ChatDTO> JoinToChatAsync(int clientId, string chatUniqueName, bool isAdmin);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatMemberService/LeaveFromChat", ReplyAction="http://tempuri.org/IChatMemberService/LeaveFromChatResponse")]
+        bool LeaveFromChat(int clientId, int chatId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatMemberService/LeaveFromChat", ReplyAction="http://tempuri.org/IChatMemberService/LeaveFromChatResponse")]
+        System.Threading.Tasks.Task<bool> LeaveFromChatAsync(int clientId, int chatId);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatMemberService/TakeChats", ReplyAction="http://tempuri.org/IChatMemberService/TakeChatsResponse")]
         Client.MessangerServices.ChatDTO[] TakeChats(int clientId);
         
@@ -952,6 +958,14 @@ namespace Client.MessangerServices {
         
         public System.Threading.Tasks.Task<Client.MessangerServices.ChatDTO> JoinToChatAsync(int clientId, string chatUniqueName, bool isAdmin) {
             return base.Channel.JoinToChatAsync(clientId, chatUniqueName, isAdmin);
+        }
+        
+        public bool LeaveFromChat(int clientId, int chatId) {
+            return base.Channel.LeaveFromChat(clientId, chatId);
+        }
+        
+        public System.Threading.Tasks.Task<bool> LeaveFromChatAsync(int clientId, int chatId) {
+            return base.Channel.LeaveFromChatAsync(clientId, chatId);
         }
         
         public Client.MessangerServices.ChatDTO[] TakeChats(int clientId) {

@@ -205,6 +205,24 @@ namespace Client.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Join to chat failed..
+        /// </summary>
+        public static string FailedJoinToChatString {
+            get {
+                return ResourceManager.GetString("FailedJoinToChatString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Leave from chat failed..
+        /// </summary>
+        public static string FailedLeaveFromChatString {
+            get {
+                return ResourceManager.GetString("FailedLeaveFromChatString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to It looks like our system does not have a user with enetered data. Please, try again..
         /// </summary>
         public static string FailedLoginString {
@@ -489,6 +507,24 @@ namespace Client.Properties {
         public static string SuccessfulCreateChatString {
             get {
                 return ResourceManager.GetString("SuccessfulCreateChatString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Join to chat successsfully..
+        /// </summary>
+        public static string SuccessfulJoinToChatString {
+            get {
+                return ResourceManager.GetString("SuccessfulJoinToChatString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Leave from chat successsfully..
+        /// </summary>
+        public static string SuccessfulLeaveFromChatString {
+            get {
+                return ResourceManager.GetString("SuccessfulLeaveFromChatString", resourceCulture);
             }
         }
         

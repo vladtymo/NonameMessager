@@ -1032,7 +1032,7 @@
 
 
                                     <Button Content="{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.ManageChatButtonString, Mode=OneWay}"></Button>
-                                    <Button Content="{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.LeaveTheChatButtonString, Mode=OneWay}"></Button>
+                                    <Button Content="{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.LeaveTheChatButtonString, Mode=OneWay}" Command="{Binding LeaveFromChatCommand}"></Button>
                                 </StackPanel>
                             </materialDesign:PopupBox>
                         </Grid>
@@ -1128,8 +1128,7 @@
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
                             </materialDesign:PackIcon>
-                            <!--materialDesign:HintAssist.Hint="{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.WriteMessageString, Mode=OneWay}"-->
-                            <TextBox  VerticalScrollBarVisibility="Hidden" AcceptsReturn="True" Grid.Column="1" VerticalAlignment="Center" Margin="5,0" Grid.RowSpan="2" TextWrapping="Wrap" CaretBrush="White" BorderBrush="{StaticResource PrimaryHueMidBrush}" Text="{Binding TextMessage,UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                            <TextBox materialDesign:HintAssist.Hint="{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.WriteMessageString, Mode=OneWay}" VerticalScrollBarVisibility="Hidden" AcceptsReturn="True" Grid.Column="1" VerticalAlignment="Center" Margin="5,0" Grid.RowSpan="2" TextWrapping="Wrap" CaretBrush="White" BorderBrush="{StaticResource PrimaryHueMidBrush}" Text="{Binding TextMessage,UpdateSourceTrigger=PropertyChanged}"></TextBox>
                         </Grid>
                     </Border>
                 </Grid>
