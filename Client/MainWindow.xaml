@@ -732,7 +732,7 @@
                 </materialDesign:DialogHost>
 
                 <!--Chat view chat info dialog-->
-                <materialDesign:DialogHost Grid.Column="1" 
+                <materialDesign:DialogHost Grid.Column="1" IsOpen="{Binding IsOpenChatInfoDialog}"
                          HorizontalAlignment="Center" 
                             VerticalAlignment="Center" DialogTheme="Light" >
 
@@ -1015,7 +1015,7 @@
                                         </Button.Style>
                                     </Button>
                                     <!--!IsPM-->
-                                    <Button Content="{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.ViewChatInfoButtonString, Mode=OneWay}">
+                                    <Button Content="{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.ViewChatInfoButtonString, Mode=OneWay}" Command="{Binding OpenChatInfoDialogCommand}">
                                         <Button.Style>
                                             <Style BasedOn="{StaticResource MaterialDesignPopupBoxButton}" TargetType="Button">
                                                 <Style.Triggers>

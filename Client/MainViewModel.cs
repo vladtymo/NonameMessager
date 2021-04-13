@@ -66,6 +66,9 @@ namespace Client
         private string textMessage;
         private string uniqueNameContact;
         private string uniqueNameChat;
+        private bool isOpenChatInfoDialog;
+
+
 
         private string pathToPhoto;
 
@@ -92,6 +95,7 @@ namespace Client
         public string TextMessage { get => textMessage; set => SetProperty(ref textMessage, value); }
         public string UniqueNameContact { get => uniqueNameContact; set => SetProperty(ref uniqueNameContact, value); }
         public string UniqueNameChat { get => uniqueNameChat; set => SetProperty(ref uniqueNameChat, value); }
+        public bool IsOpenChatInfoDialog { get { return isOpenChatInfoDialog; } set { SetProperty(ref isOpenChatInfoDialog, value); } }
 
 
         public ClientViewModel CurrentClient { get { return currentClient; } set { SetProperty(ref currentClient, value); } }
@@ -194,8 +198,9 @@ namespace Client
             closedCommand = new DelegateCommand(Disconnect);
             leaveFromChatCommand = new DelegateCommand(LeaveFromChat);
             IsOpenLoginRegistrationDialog = true;
-            
-            pathToPhoto = Path.Combine(Directory.GetParent(Directory.GetParent(Environment.CurrentDirectory).FullName).FullName, "ClientsPhoto");
+            openChatInfoDialogCommand = new DelegateCommand(CheckChatInfo);
+
+             pathToPhoto = Path.Combine(Directory.GetParent(Directory.GetParent(Environment.CurrentDirectory).FullName).FullName, "ClientsPhoto");
 
             clientService.GetPathToPhotoAsync(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(Environment.CurrentDirectory).FullName).FullName).FullName, "WcfService", "ClientsPhoto"));
             InitializeLanguages();
@@ -204,6 +209,8 @@ namespace Client
             DirectoryInfo directory = new DirectoryInfo(pathToPhoto);
             if (!directory.Exists)
                 directory.Create();
+
+
         }
 
 
@@ -575,6 +582,14 @@ namespace Client
                 chatMessages.Add(mapper.Map<MessageViewModel>(message));
         }
 
+        public void CheckChatInfo()
+        {
+            IsOpenChatInfoDialog = true;
+
+        
+        }
+            
+
         #region Commands
         private Command setProfileDialogOpenCommand;
         private Command contactsDialogOpenCommand;
@@ -599,6 +614,8 @@ namespace Client
 
         private Command sendMessageCommand;
 
+        private Command openChatInfoDialogCommand;
+
 
         public ICommand SetProfileDialogOpenCommand => setProfileDialogOpenCommand;
         public ICommand ContactsDialogOpenCommand => contactsDialogOpenCommand;
@@ -622,6 +639,8 @@ namespace Client
         public ICommand LeaveFromChatCommand => leaveFromChatCommand;
 
         public ICommand SendMessageCommand => sendMessageCommand;
+
+        public ICommand OpenChatInfoDialogCommand => openChatInfoDialogCommand;
 
         #endregion
 
