@@ -202,9 +202,10 @@ namespace Client
             chatInfoDialogOpenCommand = new DelegateCommand(ShowChatInfo);
             setChatPropertiesCommand = new DelegateCommand(SetChatProperties);
             manageChatDialogOpenCommand = new DelegateCommand(ShowEditChatDialog);
+            setChatPhotoCommand = new DelegateCommand(SetChatPhoto);
             IsOpenLoginRegistrationDialog = true;
           
-            clientService.GetPathToPhotoAsync(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(Environment.CurrentDirectory).FullName).FullName).FullName, "WcfService", "ClientsPhoto"));
+            clientService.GetPathToPhotoAsync(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(Environment.CurrentDirectory).FullName).FullName).FullName, "WcfService"));
             InitializeLanguages();
             GetRegistry();
         }
@@ -224,9 +225,10 @@ namespace Client
                 CurrentClient = result;
                 IsOpenLoginRegistrationDialog = false;
                 GetPhoto();
-                foreach (var item in chatMemberService.TakeChatsAsync(currentClient.Id).Result)
+                foreach (var item in mapper.Map<IEnumerable<ChatViewModel>>(chatMemberService.TakeChatsAsync(currentClient.Id).Result))
                 {
-                    chats.Add(mapper.Map<ChatViewModel>(item));
+                    chats.Add(item);
+                    GetChatPhoto(item);
                 }
                 foreach (var item in mapper.Map<IEnumerable<ClientViewModel>>(contactService.TakeContactsAsync(currentClient.Id).Result))
                 {
@@ -347,7 +349,13 @@ namespace Client
             ofd.Filter = "Image files (*.jpg, *.jpeg, *.jpe, *.jfif, *.png) | *.jpg; *.jpeg; *.jpe; *.jfif; *.png";
             if (ofd.ShowDialog() == true)
             {
-                ClientForChange.PhotoPath = ofd.FileName;
+                using (FileStream fs = new FileStream(ofd.FileName, FileMode.Open, FileAccess.Read))
+                {
+                    byte[] fileData = new byte[fs.Length];
+                    fs.Read(fileData, 0, fileData.Length);
+                    ChatForChange.Photo = ToImage(fileData);
+                    ChatForChange.PhotoPath = ofd.FileName;
+                }
             }
         }
         public void CreateNewChat()
@@ -360,11 +368,23 @@ namespace Client
             var result = mapper.Map<ChatViewModel>(chatService.CreateNewChatAsync(mapper.Map<ChatDTO>(ChatForChange)).Result);
             if (result != null)
             {   
+                chatMemberService.JoinToChatAsync(CurrentClient.Id, result.UniqueName, true);
                 chats.Add(result);
                 SelectedChat = result;
+                if (ChatForChange.Photo != null)
+                {
+                    InfoFile info = new InfoFile() { Name = ChatForChange.PhotoPath };
+                    using (FileStream fs = new FileStream(ChatForChange.PhotoPath, FileMode.Open, FileAccess.Read))
+                    {
+                        byte[] fileData = new byte[fs.Length];
+                        fs.Read(fileData, 0, fileData.Length);
+                        info.Data = fileData;
+                    }
+                    chatService.SetChatPhotoAsync(SelectedChat.Id, info);
+                    SelectedChat.Photo = ChatForChange.Photo;
+                }
                 ChatForChange = new ChatViewModel();
                 IsOpenAddEditChatDialog = false;
-                chatMemberService.JoinToChatAsync(CurrentClient.Id, result.UniqueName, true);
                 OpenInfoDialog(Resources.SuccessfulCreateChatString);
             }
             else
@@ -374,10 +394,11 @@ namespace Client
         }
         public void JoinToChat()
         {
-            var result = chatMemberService.JoinToChatAsync(CurrentClient.Id, UniqueNameChat, true).Result;
+            var result = mapper.Map<ChatViewModel>(chatMemberService.JoinToChatAsync(CurrentClient.Id, UniqueNameChat, true).Result);
             if (result != null)
             {
-                chats.Add(mapper.Map<ChatViewModel>(result));
+                GetChatPhoto(result);
+                chats.Add(result);
                 OpenInfoDialog(Resources.SuccessfulJoinToChatString);
                 IsOpenJoinToChatDialog = false;
             }
@@ -390,11 +411,27 @@ namespace Client
         {
             if (chatService.SetChatPropertiesAsync(mapper.Map<ChatDTO>(ChatForChange)).Result)
             {
+                if (SelectedChat.Photo != ChatForChange.Photo)
+                {
+                    InfoFile info = new InfoFile() { Name = ChatForChange.PhotoPath };
+                    using (FileStream fs = new FileStream(ChatForChange.PhotoPath, FileMode.Open, FileAccess.Read))
+                    {
+                        byte[] fileData = new byte[fs.Length];
+                        fs.Read(fileData, 0, fileData.Length);
+                        info.Data = fileData;
+                    }
+                    chatService.SetChatPhotoAsync(SelectedChat.Id, info);
+
+                    ChatForChange.Photo = ToImage(info.Data);
+                }
+
                 SelectedChat.Name = ChatForChange.Name;
                 SelectedChat.UniqueName = ChatForChange.UniqueName;
                 SelectedChat.MaxUsers = ChatForChange.MaxUsers;
                 SelectedChat.IsPrivate = ChatForChange.IsPrivate;
                 SelectedChat.IsPM=ChatForChange.IsPM;
+                SelectedChat.Photo = ChatForChange.Photo;
+                SelectedChat.PhotoPath = ChatForChange.PhotoPath;
                 OpenInfoDialog(Resources.SuccessfulSetChatPropertiesString);
             }
             else
@@ -402,6 +439,15 @@ namespace Client
                 OpenInfoDialog(Resources.FailedSetChatPropertiesString);
                 ChatForChange = SelectedChat.Clone();
             }
+        }
+        public void GetChatPhoto(ChatViewModel chat)
+        {
+            InfoFile info = chatService.GetChatPhotoAsync(chat.Id).Result;
+            if (info != null)
+            {
+                chat.Photo = ToImage(info.Data);
+            }
+
         }
         public void LeaveFromChat()
         {
@@ -439,7 +485,7 @@ namespace Client
             {
                 Application.Current.Dispatcher.Invoke(() => { members.Add(item); });
             }
-            }).ContinueWith((res)=> CountMembers =members.Count);
+            }).ContinueWith((res)=> CountMembers = members.Count);
 
         }
         public void AddContact()
@@ -613,6 +659,7 @@ namespace Client
         private Command deleteContactCommand;
 
         private Command addChatCommand;
+        private Command setChatPhotoCommand;
         private Command setChatPropertiesCommand;
 
         private Command joinToChatCommand;
@@ -642,6 +689,7 @@ namespace Client
         public ICommand DeleteContactCommand => deleteContactCommand;
 
         public ICommand AddChatCommand => addChatCommand;
+        public ICommand SetChatPhotoCommand => setChatPhotoCommand;
         public ICommand JoinToChatCommand => joinToChatCommand;
         public ICommand SetChatPropertiesCommand => setChatPropertiesCommand;
 

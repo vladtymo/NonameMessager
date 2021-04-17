@@ -74,6 +74,9 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="ChatsPhoto\1.png" />
+    <Content Include="ChatsPhoto\2.png" />
+    <Content Include="ChatsPhoto\4%281%29.png" />
     <Content Include="Service.svc" />
     <Content Include="Web.config" />
   </ItemGroup>

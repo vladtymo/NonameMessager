@@ -23,7 +23,8 @@ namespace WcfService
         private IMapper contactMapper;
         private IMapper messageMapper;
 
-        private string pathToPhoto;
+        private string pathToClientsPhoto;
+        private string pathToChatsPhoto;
         public Service()
         {
             this.repositories = new UnitOfWork();
@@ -153,7 +154,7 @@ namespace WcfService
             var client = GetClientByAccount(accountDTO, password);
             if (client != null)
             {
-                DirectoryInfo directory = new DirectoryInfo(pathToPhoto);
+                DirectoryInfo directory = new DirectoryInfo(pathToClientsPhoto);
                 if (!directory.Exists)
                     directory.Create();
                 callbacks.Add(new CallBack() { ClientId = client.Id, Callback = OperationContext.Current.GetCallbackChannel<ICallback>() });
@@ -175,8 +176,8 @@ namespace WcfService
         }
         public void SetPhoto(int clientId, InfoFile info)
         {
-            string path = FreePath(Path.Combine(pathToPhoto, clientId.ToString() + Path.GetExtension(info.Name)));
-            DirectoryInfo directory = new DirectoryInfo(pathToPhoto);
+            string path = FreePath(Path.Combine(pathToClientsPhoto, clientId.ToString() + Path.GetExtension(info.Name)));
+            DirectoryInfo directory = new DirectoryInfo(pathToClientsPhoto);
             if (!directory.Exists)
                 directory.Create();
             using (FileStream fs = new FileStream(path, FileMode.Create, FileAccess.Write))
@@ -197,11 +198,12 @@ namespace WcfService
         }
         public void GetPathToPhoto(string pathToPhoto)
         {
-            this.pathToPhoto = pathToPhoto;
+            this.pathToClientsPhoto = Path.Combine(pathToPhoto, "ClientsPhoto");
+            this.pathToChatsPhoto = Path.Combine(pathToPhoto, "ChatsPhoto");
         }
         public InfoFile GetPhoto(int clientId)
         {
-            DirectoryInfo di = new DirectoryInfo(pathToPhoto);
+            DirectoryInfo di = new DirectoryInfo(pathToClientsPhoto);
             if (!di.Exists)
                 di.Create();
             string path = repositories.ClientRepos.Get().Where(c => c.Id == clientId).Select(c => c.PhotoPath).FirstOrDefault();
@@ -325,7 +327,6 @@ namespace WcfService
             else
                 return null;
         }
-        
         public bool SetChatProperties(ChatDTO chatDTO)
         {
           
@@ -344,7 +345,51 @@ namespace WcfService
             else
                 return false;
         }
-
+        public void SetChatPhoto(int chatId, InfoFile info)
+        {
+            string path = FreePath(Path.Combine(pathToChatsPhoto, chatId.ToString() + Path.GetExtension(info.Name)));
+            DirectoryInfo directory = new DirectoryInfo(pathToChatsPhoto);
+            if (!directory.Exists)
+                directory.Create();
+            using (FileStream fs = new FileStream(path, FileMode.Create, FileAccess.Write))
+            {
+                fs.Write(info.Data, 0, info.Data.Length);
+            }
+            repositories.ChatRepos.Get().Where(c => c.Id == chatId).FirstOrDefault().PhotoPath = path;
+            repositories.Save();
+            var result = directory.GetFiles().Where(d => ((!d.Name.Contains('(') && Path.GetFileNameWithoutExtension(d.Name) == chatId.ToString()) || (d.Name.Contains('(') && d.Name.Replace(d.Name.Substring(d.Name.IndexOf('(')), null) == chatId.ToString())) && d.FullName != path);
+            foreach (var item in result)
+            {
+                try
+                {
+                    item.Delete();
+                }
+                catch (Exception) { }
+            }
+        }
+        public InfoFile GetChatPhoto(int chatId)
+        {
+            DirectoryInfo di = new DirectoryInfo(pathToChatsPhoto);
+            if (!di.Exists)
+                di.Create();
+            string path = repositories.ChatRepos.Get().Where(c => c.Id == chatId).Select(c => c.PhotoPath).FirstOrDefault();
+            if (path == null) return null;
+            var result = di.GetFiles().Where(f => f.FullName == path);
+            if (result.Count() == 0)
+            {
+                repositories.ChatRepos.Get().Where(c => c.Id == chatId).FirstOrDefault().PhotoPath = null;
+                repositories.Save();
+                return null;
+            }
+            InfoFile info = new InfoFile() { Name = path };
+            using (FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read))
+            {
+                byte[] fileData = new byte[fs.Length];
+                fs.Read(fileData, 0, fileData.Length);
+                info.Data = fileData;
+            }
+            return info;
+        }
         #endregion
         //--------------------------ChatMember Methods--------------------//
         #region
