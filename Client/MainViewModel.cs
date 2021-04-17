@@ -11,6 +11,7 @@ using System.IO;
 using System.ServiceModel;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media.Imaging;
 
 namespace Client
 {
@@ -71,8 +72,6 @@ namespace Client
         private string uniqueNameChat;
 
         private int countMembers;
-
-        private string pathToPhoto;
 
         private Language selectedLanguage;
 
@@ -205,17 +204,9 @@ namespace Client
             manageChatDialogOpenCommand = new DelegateCommand(ShowEditChatDialog);
             IsOpenLoginRegistrationDialog = true;
           
-             pathToPhoto = Path.Combine(Directory.GetParent(Directory.GetParent(Environment.CurrentDirectory).FullName).FullName, "ClientsPhoto");
-
             clientService.GetPathToPhotoAsync(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(Environment.CurrentDirectory).FullName).FullName).FullName, "WcfService", "ClientsPhoto"));
             InitializeLanguages();
             GetRegistry();
-
-            DirectoryInfo directory = new DirectoryInfo(pathToPhoto);
-            if (!directory.Exists)
-                directory.Create();
-
-
         }
 
 
@@ -277,13 +268,7 @@ namespace Client
             InfoFile info = clientService.GetPhotoAsync(CurrentClient.Id).Result;
             if (info != null)
             {
-                string path = FreePath(Path.Combine(pathToPhoto, clientForChange.Id.ToString() + Path.GetExtension(info.Name)));
-
-                using (FileStream fs = new FileStream(path, FileMode.Create, FileAccess.Write))
-                {
-                    fs.Write(info.Data, 0, info.Data.Length);
-                }
-                CurrentClient.PhotoPath = path;
+                CurrentClient.Photo = ToImage(info.Data);
             }
             
         }
@@ -292,15 +277,21 @@ namespace Client
             InfoFile info = clientService.GetPhotoAsync(client.Id).Result;
             if (info != null)
             {
-                string path = FreePath(Path.Combine(pathToPhoto, client.Id.ToString() + Path.GetExtension(info.Name)));
-
-                using (FileStream fs = new FileStream(path, FileMode.Create, FileAccess.Write))
-                {
-                    fs.Write(info.Data, 0, info.Data.Length);
-                }
-                client.PhotoPath = path;
+                client.Photo = ToImage(info.Data);
             }
 
+        }
+        private BitmapImage ToImage(byte[] array)
+        {
+            using (var ms = new System.IO.MemoryStream(array))
+            {
+                var image = new BitmapImage();
+                image.BeginInit();
+                image.CacheOption = BitmapCacheOption.OnLoad; // here
+                image.StreamSource = ms;
+                image.EndInit();
+                return image;
+            }
         }
         public void SetProfile()
         {
@@ -311,10 +302,7 @@ namespace Client
             }
             if (clientService.SetPropertiesAsync(mapper.Map<ClientDTO>(ClientForChange)).Result)
             {
-                string path="";
-                DirectoryInfo directory = new DirectoryInfo(pathToPhoto);
-                
-                if (CurrentClient.PhotoPath != ClientForChange.PhotoPath)
+                if (CurrentClient.Photo != ClientForChange.Photo)
                 {
                     InfoFile info = new InfoFile() { Name = ClientForChange.PhotoPath };
                     using (FileStream fs = new FileStream(clientForChange.PhotoPath, FileMode.Open, FileAccess.Read))
@@ -325,22 +313,10 @@ namespace Client
                     }
                     clientService.SetPhotoAsync(clientForChange.Id, info);
 
-                    path =FreePath( Path.Combine( pathToPhoto, clientForChange.Id.ToString() + Path.GetExtension(info.Name)));
-                    File.Copy(clientForChange.PhotoPath, path, true);
-                    ClientForChange.PhotoPath = path;              
+                    ClientForChange.Photo = ToImage(info.Data);            
                 }
                 OpenInfoDialog(Resources.SuccessfulSetProfileString);
                 CurrentClient = ClientForChange.Clone();
-                var result = directory.GetFiles().Where(d=>((!d.Name.Contains('(')&&Path.GetFileNameWithoutExtension(d.Name) == CurrentClient.Id.ToString()) || (d.Name.Contains('(')&&d.Name.Replace(d.Name.Substring(d.Name.IndexOf('(')),null)==CurrentClient.Id.ToString())) && d.FullName!= path);
-                foreach (var item in result)
-                {
-                    try
-                    {
-                        item.Delete();
-                    }
-                    catch(Exception){}
-                }
-
             }
             else
             {
@@ -356,7 +332,13 @@ namespace Client
             ofd.Filter = "Image files (*.jpg, *.jpeg, *.jpe, *.jfif, *.png) | *.jpg; *.jpeg; *.jpe; *.jfif; *.png";
             if (ofd.ShowDialog() == true)
             {
-                ClientForChange.PhotoPath = ofd.FileName;
+                using (FileStream fs = new FileStream(ofd.FileName, FileMode.Open, FileAccess.Read))
+                {
+                    byte[] fileData = new byte[fs.Length];
+                    fs.Read(fileData, 0, fileData.Length);
+                    ClientForChange.Photo = ToImage(fileData);
+                    ClientForChange.PhotoPath = ofd.FileName;
+                }
             }
         }
         public void SetChatPhoto()
@@ -511,6 +493,7 @@ namespace Client
         public void ShowAddChatDialog()
         {
             IsAddChatDialog = true;
+            ChatForChange = new ChatViewModel();
             IsOpenAddEditChatDialog = true;
         }
         public void ShowJoinToChatDialog()
@@ -530,16 +513,6 @@ namespace Client
 
         public void Disconnect()
         {
-            DirectoryInfo directory = new DirectoryInfo(pathToPhoto);
-            foreach (var item in directory.GetFiles())
-            {
-                try
-                {
-                    item.Delete();
-                }
-                catch (Exception)
-                {}
-            }
             clientService.DisconnectAsync();
         }
         public void Exit()
@@ -559,17 +532,6 @@ namespace Client
             IsOpenProfileDialog = false;
             IsOpenLoginRegistrationDialog = true;
             TextMessage = String.Empty;
-
-            DirectoryInfo directory = new DirectoryInfo(pathToPhoto);
-            foreach (var item in directory.GetFiles())
-            {
-                try
-                {
-                    item.Delete();
-                }
-                catch (Exception)
-                {}
-            }
         }
         public string FreePath(string path)
         {
