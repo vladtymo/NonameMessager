@@ -156,6 +156,67 @@ namespace Client.MessangerServices {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="InfoFile", Namespace="http://schemas.datacontract.org/2004/07/WcfService")]
+    [System.SerializableAttribute()]
+    public partial class InfoFile : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private byte[] DataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string NameField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public byte[] Data {
+            get {
+                return this.DataField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.DataField, value) != true)) {
+                    this.DataField = value;
+                    this.RaisePropertyChanged("Data");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Name {
+            get {
+                return this.NameField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.NameField, value) != true)) {
+                    this.NameField = value;
+                    this.RaisePropertyChanged("Name");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="ClientDTO", Namespace="http://schemas.datacontract.org/2004/07/WcfService")]
     [System.SerializableAttribute()]
     public partial class ClientDTO : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
@@ -358,67 +419,6 @@ namespace Client.MessangerServices {
                 if ((object.ReferenceEquals(this.PhoneField, value) != true)) {
                     this.PhoneField = value;
                     this.RaisePropertyChanged("Phone");
-                }
-            }
-        }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="InfoFile", Namespace="http://schemas.datacontract.org/2004/07/WcfService")]
-    [System.SerializableAttribute()]
-    public partial class InfoFile : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
-        
-        [System.NonSerializedAttribute()]
-        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private byte[] DataField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string NameField;
-        
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
-            get {
-                return this.extensionDataField;
-            }
-            set {
-                this.extensionDataField = value;
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public byte[] Data {
-            get {
-                return this.DataField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.DataField, value) != true)) {
-                    this.DataField = value;
-                    this.RaisePropertyChanged("Data");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Name {
-            get {
-                return this.NameField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.NameField, value) != true)) {
-                    this.NameField = value;
-                    this.RaisePropertyChanged("Name");
                 }
             }
         }
@@ -650,6 +650,18 @@ namespace Client.MessangerServices {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatService/SetChatProperties", ReplyAction="http://tempuri.org/IChatService/SetChatPropertiesResponse")]
         System.Threading.Tasks.Task<bool> SetChatPropertiesAsync(Client.MessangerServices.ChatDTO chatDTO);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatService/SetChatPhoto", ReplyAction="http://tempuri.org/IChatService/SetChatPhotoResponse")]
+        void SetChatPhoto(int chatId, Client.MessangerServices.InfoFile info);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatService/SetChatPhoto", ReplyAction="http://tempuri.org/IChatService/SetChatPhotoResponse")]
+        System.Threading.Tasks.Task SetChatPhotoAsync(int chatId, Client.MessangerServices.InfoFile info);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatService/GetChatPhoto", ReplyAction="http://tempuri.org/IChatService/GetChatPhotoResponse")]
+        Client.MessangerServices.InfoFile GetChatPhoto(int chatId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatService/GetChatPhoto", ReplyAction="http://tempuri.org/IChatService/GetChatPhotoResponse")]
+        System.Threading.Tasks.Task<Client.MessangerServices.InfoFile> GetChatPhotoAsync(int chatId);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -693,6 +705,22 @@ namespace Client.MessangerServices {
         
         public System.Threading.Tasks.Task<bool> SetChatPropertiesAsync(Client.MessangerServices.ChatDTO chatDTO) {
             return base.Channel.SetChatPropertiesAsync(chatDTO);
+        }
+        
+        public void SetChatPhoto(int chatId, Client.MessangerServices.InfoFile info) {
+            base.Channel.SetChatPhoto(chatId, info);
+        }
+        
+        public System.Threading.Tasks.Task SetChatPhotoAsync(int chatId, Client.MessangerServices.InfoFile info) {
+            return base.Channel.SetChatPhotoAsync(chatId, info);
+        }
+        
+        public Client.MessangerServices.InfoFile GetChatPhoto(int chatId) {
+            return base.Channel.GetChatPhoto(chatId);
+        }
+        
+        public System.Threading.Tasks.Task<Client.MessangerServices.InfoFile> GetChatPhotoAsync(int chatId) {
+            return base.Channel.GetChatPhotoAsync(chatId);
         }
     }
     

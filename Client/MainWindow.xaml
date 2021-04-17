@@ -503,7 +503,7 @@
                                     </Grid.RowDefinitions>
                                     <Ellipse Width="70" Height="70" Grid.ColumnSpan="2" Margin="10,0" Grid.RowSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" >
                                         <Ellipse.Fill>
-                                            <ImageBrush ImageSource="Resources/chat.png" Stretch="None"/>
+                                            <ImageBrush ImageSource="{Binding ChatForChange.Photo}" Stretch="UniformToFill"/>
                                         </Ellipse.Fill>
                                     </Ellipse>
                                     <Button Grid.Row="3" Grid.ColumnSpan="2" VerticalAlignment="Center" Margin="10"  HorizontalAlignment="Center" Background="{StaticResource SecondaryHueMidBrush}" materialDesign:ButtonAssist.CornerRadius="15" BorderBrush="#FF663737" Command="{Binding SetChatPhotoCommand}" Content="{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.AddEditChatDialogSelectChatPhotoButtonString, Mode=OneWay}"></Button>
@@ -794,7 +794,7 @@
                                 </Grid.RowDefinitions>
                                 <Ellipse Width="65" Height="65" Grid.Row="1" Grid.RowSpan="4" >
                                     <Ellipse.Fill>
-                                        <ImageBrush ImageSource="Resources/chat.png" Stretch="None"/>
+                                        <ImageBrush ImageSource="{Binding SelectedChat.Photo}" Stretch="UniformToFill"/>
                                     </Ellipse.Fill>
                                 </Ellipse>
                                 <TextBlock Grid.Column="1" FontSize="15" Grid.Row="2"  Margin="15,0" FontWeight="DemiBold" Text="{Binding SelectedChat.Name}"></TextBlock>
@@ -958,7 +958,7 @@
                                         </Grid.RowDefinitions>
                                         <Ellipse Width="50" Height="50" Margin="15,0" Grid.RowSpan="4" Grid.Row="1">
                                             <Ellipse.Fill>
-                                                <ImageBrush ImageSource="Resources/chat.png" Stretch="None"/>
+                                                <ImageBrush ImageSource="{Binding Photo}" Stretch="UniformToFill"/>
                                             </Ellipse.Fill>
                                         </Ellipse>
 

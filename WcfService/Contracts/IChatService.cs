@@ -15,5 +15,9 @@ namespace WcfService
 
         [OperationContract]
         bool SetChatProperties(ChatDTO chatDTO);
+        [OperationContract]
+        void SetChatPhoto(int chatId, InfoFile info);
+        [OperationContract]
+        InfoFile GetChatPhoto(int chatId);
     }
 }
