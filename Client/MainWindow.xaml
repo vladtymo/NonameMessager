@@ -69,7 +69,7 @@
                             </Grid.RowDefinitions>
                             <Ellipse Width="50" Height="50" Margin="10,0" Grid.RowSpan="4" Grid.Row="1">
                                 <Ellipse.Fill>
-                                    <ImageBrush ImageSource="{Binding CurrentClient.PhotoPath}" Stretch="UniformToFill"/>
+                                    <ImageBrush ImageSource="{Binding CurrentClient.Photo}" Stretch="UniformToFill"/>
                                 </Ellipse.Fill>
                             </Ellipse>
 
@@ -328,7 +328,7 @@
                                     </Grid.RowDefinitions>
                                     <Ellipse Width="70" Height="70" Grid.ColumnSpan="2" Margin="10,0" Grid.RowSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" >
                                         <Ellipse.Fill>
-                                            <ImageBrush ImageSource="{Binding ClientForChange.PhotoPath}" Stretch="UniformToFill"/>
+                                            <ImageBrush ImageSource="{Binding ClientForChange.Photo}" Stretch="UniformToFill"/>
                                         </Ellipse.Fill>
                                     </Ellipse>
                                     <Button Grid.Row="3" Grid.ColumnSpan="2" VerticalAlignment="Center" Margin="10"  HorizontalAlignment="Center" Background="{StaticResource SecondaryHueMidBrush}" materialDesign:ButtonAssist.CornerRadius="15" BorderBrush="#FF663737" Command="{Binding SetPhotoCommand}" Content="{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.EditProfileDialogSetProfilePhotoButtonString, Mode=OneWay}"></Button>
@@ -437,7 +437,7 @@
                                                 </Grid.RowDefinitions>
                                                 <Ellipse Width="50" Height="50"  Grid.RowSpan="4" Grid.Row="1">
                                                     <Ellipse.Fill>
-                                                        <ImageBrush ImageSource="{Binding PhotoPath}"  Stretch="UniformToFill"/>
+                                                        <ImageBrush ImageSource="{Binding Photo}"  Stretch="UniformToFill"/>
                                                     </Ellipse.Fill>
                                                 </Ellipse>
 
