@@ -690,7 +690,7 @@
                 <!--Chat view profile dialog-->
                 <materialDesign:DialogHost Grid.Column="1" 
                          HorizontalAlignment="Center" 
-                            VerticalAlignment="Center" DialogTheme="Light" >
+                            VerticalAlignment="Center" DialogTheme="Light" IsOpen="{Binding IsOpenProfileInfoDialog}">
 
                     <materialDesign:DialogHost.DialogContent >
                         <Grid Width="350" Height="270"  >
@@ -730,22 +730,22 @@
                                 </Grid.RowDefinitions>
                                 <Ellipse Width="65" Height="65" Grid.Row="1" Grid.RowSpan="4" >
                                     <Ellipse.Fill>
-                                        <ImageBrush Stretch="UniformToFill"/>
+                                        <ImageBrush ImageSource="{Binding OpponentClient.Photo}" Stretch="UniformToFill"/>
                                     </Ellipse.Fill>
                                 </Ellipse>
-                                <TextBlock Grid.Column="1" FontSize="15" Grid.Row="1"  Margin="15,0" FontWeight="DemiBold"></TextBlock>
+                                <TextBlock Grid.Column="1" FontSize="15" Grid.Row="1"  Margin="15,0" FontWeight="DemiBold" Text="{Binding OpponentClient.Name}"></TextBlock>
                             </Grid>
                             <Separator Grid.Row="2" Grid.ColumnSpan="2" Margin="10,0" Background="{StaticResource PrimaryHueMidBrush}"></Separator>
                             <materialDesign:PackIcon  Grid.Row="3" VerticalAlignment="Bottom" Margin="10,0,5,0"
                                  Kind="PhoneOutline"
                                  Height="30"
                                  Width="30" />
-                            <TextBox Grid.Row="3" Grid.Column="1" Margin="15,10" VerticalAlignment="Bottom" materialDesign:HintAssist.HelperText="{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.PhoneString, Mode=OneWay}" IsReadOnly="True" ></TextBox>
+                            <TextBox Grid.Row="3" Grid.Column="1" Margin="15,10" VerticalAlignment="Bottom" materialDesign:HintAssist.HelperText="{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.PhoneString, Mode=OneWay}" IsReadOnly="True" Text="{Binding OpponentClient.Account.Phone}" ></TextBox>
                             <materialDesign:PackIcon  Grid.Row="4" VerticalAlignment="Bottom" Margin="10,0,5,0"
                                  Kind="At"
                                  Height="30"
                                  Width="30" />
-                            <TextBox  Grid.Row="4" Grid.Column="1" Margin="15,10" VerticalAlignment="Bottom" materialDesign:HintAssist.HelperText="{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.UniqueNameString, Mode=OneWay}"  IsReadOnly="True" ></TextBox>
+                            <TextBox  Grid.Row="4" Grid.Column="1" Margin="15,10" VerticalAlignment="Bottom" materialDesign:HintAssist.HelperText="{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.UniqueNameString, Mode=OneWay}"  IsReadOnly="True" Text="{Binding OpponentClient.UniqueName}" ></TextBox>
                         </Grid>
                     </materialDesign:DialogHost.DialogContent>
                 </materialDesign:DialogHost>
@@ -1019,7 +1019,7 @@
                              PopupHorizontalOffset="75" Padding="2,0">
                                 <StackPanel Width="170" >
                                     <!--IsPM-->
-                                    <Button Content="{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.ViewProfileButtonString, Mode=OneWay}">
+                                    <Button Content="{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.ViewProfileButtonString, Mode=OneWay}" Command="{Binding ProfileInfoDialogOpenCommand}">
                                         <Button.Style>
                                             <Style BasedOn="{StaticResource MaterialDesignPopupBoxButton}" TargetType="Button">
                                                 <Style.Triggers>

@@ -47,6 +47,9 @@ namespace Client
         private ClientViewModel clientForChange;
         private ChatViewModel chatForChange;
         private ChatViewModel selectedChat;
+        private ClientViewModel opponentClient;
+
+
 
 
         private bool isOpenLoginRegistrationDialog;
@@ -64,6 +67,8 @@ namespace Client
 
 
         private bool isOpenInfoDialog;
+        private bool isOpenProfileInfoDialog;
+
         private string textForInfoDialog;
 
         private string password;
@@ -84,6 +89,9 @@ namespace Client
         public bool IsOpenChatInfoDialog { get { return isOpenChatInfoDialog; } set { SetProperty(ref isOpenChatInfoDialog, value); } }
 
         public bool IsOpenInfoDialog { get { return isOpenInfoDialog; } set { SetProperty(ref isOpenInfoDialog, value); } }
+        public bool IsOpenProfileInfoDialog { get { return isOpenProfileInfoDialog; } set { SetProperty(ref isOpenProfileInfoDialog, value); } }
+
+
 
 
         public bool IsAddChatDialog { get { return isAddChatDialog; } set { SetProperty(ref isAddChatDialog, value); } }
@@ -99,10 +107,14 @@ namespace Client
         public int CountMembers { get => countMembers; set => SetProperty(ref countMembers, value); }
 
 
+
         public ClientViewModel CurrentClient { get { return currentClient; } set { SetProperty(ref currentClient, value); } }
         public ClientViewModel ClientForChange { get { return clientForChange; } set { SetProperty(ref clientForChange, value); } }
         public ChatViewModel ChatForChange { get { return chatForChange; } set { SetProperty(ref chatForChange, value); } }
         public ChatViewModel SelectedChat { get { return selectedChat; } set { SetProperty(ref selectedChat, value); } }
+        public ClientViewModel OpponentClient { get { return opponentClient; } set { SetProperty(ref opponentClient, value); } }
+
+
 
         public Language SelectedLanguage { get { return selectedLanguage; } set { SetProperty(ref selectedLanguage, value); } }
 
@@ -203,8 +215,10 @@ namespace Client
             setChatPropertiesCommand = new DelegateCommand(SetChatProperties);
             manageChatDialogOpenCommand = new DelegateCommand(ShowEditChatDialog);
             setChatPhotoCommand = new DelegateCommand(SetChatPhoto);
+            profileInfoDialogOpenCommand = new DelegateCommand(ShowProfileInfo);
             IsOpenLoginRegistrationDialog = true;
-          
+
+
             clientService.GetPathToPhotoAsync(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(Environment.CurrentDirectory).FullName).FullName).FullName, "WcfService"));
             InitializeLanguages();
             GetRegistry();
@@ -479,13 +493,28 @@ namespace Client
         {
             members.Clear();
             var result = mapper.Map<IEnumerable<ClientViewModel>>(chatMemberService.TakeClientsAsync(SelectedChat.Id).Result);
-            Task.Run(() => 
-            { 
-            foreach (var item in result)
+            Task.Run(() =>
             {
-                Application.Current.Dispatcher.Invoke(() => { members.Add(item); });
-            }
-            }).ContinueWith((res)=> CountMembers = members.Count);
+                foreach (var item in result)
+                {
+                    Application.Current.Dispatcher.Invoke(() => { members.Add(item); });
+                }
+            }).ContinueWith((res) =>
+            {
+                CountMembers = members.Count;
+                if (SelectedChat.IsPM) 
+                    TakeOpponent();
+
+            });
+
+        }
+
+
+        public void TakeOpponent()
+        {
+            var opponent = members.Where(w => w.Id != CurrentClient.Id).FirstOrDefault();
+            OpponentClient = opponent;
+
 
         }
         public void AddContact()
@@ -634,9 +663,19 @@ namespace Client
 
         }
 
+        public void ShowProfileInfo()
+        {
+            IsOpenProfileInfoDialog = true;
+        }
 
-       
-            
+
+
+
+
+
+
+
+
 
         #region Commands
         private Command setProfileDialogOpenCommand;
@@ -645,6 +684,8 @@ namespace Client
         private Command joinToChatDialogOpenCommand;
         private Command chatInfoDialogOpenCommand;
         private Command manageChatDialogOpenCommand;
+        private Command profileInfoDialogOpenCommand;
+
 
 
         private Command loginCommand;
@@ -675,6 +716,8 @@ namespace Client
         public ICommand JoinToChatDialogOpenCommand => joinToChatDialogOpenCommand;
         public ICommand ChatInfoDialogOpenCommand => chatInfoDialogOpenCommand;
         public ICommand ManageChatDialogOpenCommand => manageChatDialogOpenCommand;
+        public ICommand ProfileInfoDialogOpenCommand => profileInfoDialogOpenCommand;
+
 
 
         public ICommand LoginCommand => loginCommand;
