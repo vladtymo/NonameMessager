@@ -775,7 +775,7 @@ namespace Client.MessangerServices {
     public interface IClientServiceCallback {
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IClientService/TakeMessage")]
-        void TakeMessage(Client.MessangerServices.MessageDTO message);
+        void TakeMessage(Client.MessangerServices.MessageDTO message, Client.MessangerServices.InfoFile photoClient);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -1048,7 +1048,7 @@ namespace Client.MessangerServices {
     public interface IMessageServiceCallback {
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IMessageService/TakeMessage")]
-        void TakeMessage(Client.MessangerServices.MessageDTO message);
+        void TakeMessage(Client.MessangerServices.MessageDTO message, Client.MessangerServices.InfoFile photoClient);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]

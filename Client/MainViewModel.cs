@@ -471,7 +471,10 @@ namespace Client
             {
                 foreach (var item in result)
                 {
-                    Application.Current.Dispatcher.Invoke(() => { chatMessages.Add(item); });
+                    Application.Current.Dispatcher.Invoke(() => { 
+                        chatMessages.Add(item); 
+                        GetPhoto(item.Client);
+                    });
                 }
             });
         }
@@ -483,7 +486,10 @@ namespace Client
             { 
             foreach (var item in result)
             {
-                Application.Current.Dispatcher.Invoke(() => { members.Add(item); });
+                Application.Current.Dispatcher.Invoke(() => {
+                    members.Add(item);
+                    GetPhoto(item);
+                });
             }
             }).ContinueWith((res)=> CountMembers = members.Count);
 
@@ -591,10 +597,14 @@ namespace Client
             return tmp;
         }
 
-        public void TakeMessage(MessageDTO message)
+        public void TakeMessage(MessageDTO message, InfoFile photoClient)
         {
             if (SelectedChat.Id == message.ChatId)
-                chatMessages.Add(mapper.Map<MessageViewModel>(message));
+            {
+                var mes = mapper.Map<MessageViewModel>(message);
+                mes.Client.Photo = ToImage(photoClient.Data);
+                chatMessages.Add(mes);
+            }
         }
 
         public void EditLanguage()

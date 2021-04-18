@@ -18,6 +18,6 @@ namespace WcfService
     public interface ICallback
     {
         [OperationContract(IsOneWay = true)]
-        void TakeMessage(MessageDTO message);
+        void TakeMessage(MessageDTO message, InfoFile photoClient);
     }
 }

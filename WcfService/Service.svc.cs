@@ -412,7 +412,7 @@ namespace WcfService
         public ChatDTO JoinToChat(int clientId, string chatUniqueName, bool isAdmin)
         {
             var chat = repositories.ChatRepos.Get().Where(c => c.UniqueName == chatUniqueName).FirstOrDefault();
-            if (!IsThereClientInChat(clientId, chat.Id) && IsChatExist(chatUniqueName))
+            if (chat!=null && !IsThereClientInChat(clientId, chat.Id) && IsChatExist(chatUniqueName))
             {
                 repositories.ChatMemberRepos.Insert(new ChatMember() { ClientId = clientId, ChatId = chat.Id, IsAdmin = isAdmin, DateLastReadMessage = DateTime.Now });
                 repositories.Save();
@@ -466,7 +466,7 @@ namespace WcfService
                         if(item2.ClientId == item.Id)
                             try
                             {
-                                item2.Callback.TakeMessage(messageMapper.Map<MessageDTO>(newMessage));
+                                item2.Callback.TakeMessage(messageMapper.Map<MessageDTO>(newMessage), GetPhoto(clientId));
                             }
                             catch (Exception)
                             {}
@@ -474,7 +474,7 @@ namespace WcfService
                 }
             }
             else
-                callbacks.Where(c => c.ClientId == clientId).FirstOrDefault().Callback.TakeMessage(null);
+                callbacks.Where(c => c.ClientId == clientId).FirstOrDefault().Callback.TakeMessage(null,null);
         }
         public IEnumerable<MessageDTO> TakeMessages(int chatId)
         {
