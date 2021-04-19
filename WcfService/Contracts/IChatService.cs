@@ -19,5 +19,7 @@ namespace WcfService
         void SetChatPhoto(int chatId, InfoFile info);
         [OperationContract]
         InfoFile GetChatPhoto(int chatId);
+        [OperationContract]
+        IEnumerable<ChatDTO> SearchChats(string uniqueName);
     }
 }

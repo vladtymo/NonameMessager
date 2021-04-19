@@ -306,6 +306,11 @@ namespace WcfService
             var result = repositories.ContactRepos.Get().Where(c => c.ClientId == clientId).Select(c => c.ContactClient);
             return contactMapper.Map<IEnumerable<ClientDTO>>(result);
         }
+        public IEnumerable<ClientDTO> SearchClients(string uniqueName)
+        {
+            var result = repositories.ClientRepos.Get().Where(c => c.UniqueName.Contains(uniqueName));
+            return clientMapper.Map<IEnumerable<ClientDTO>>(result);
+        }
         #endregion
         //--------------------------Chat Methods--------------------//
         #region
@@ -389,6 +394,11 @@ namespace WcfService
                 info.Data = fileData;
             }
             return info;
+        }
+        public IEnumerable<ChatDTO> SearchChats(string uniqueName)
+        {
+            var result = repositories.ChatRepos.Get().Where(c => c.UniqueName.Contains(uniqueName) && !c.IsPM);
+            return chatMapper.Map<IEnumerable<ChatDTO>>(result);
         }
         #endregion
         //--------------------------ChatMember Methods--------------------//
