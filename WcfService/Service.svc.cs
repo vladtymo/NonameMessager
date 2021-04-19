@@ -409,27 +409,61 @@ namespace WcfService
                 return true;
             return false;
         }
-        public ChatDTO JoinToChat(int clientId, string chatUniqueName, bool isAdmin)
+        public void JoinToChat(int clientId, string chatUniqueName, bool isAdmin, out ChatDTO newChat)
         {
             var chat = repositories.ChatRepos.Get().Where(c => c.UniqueName == chatUniqueName).FirstOrDefault();
-            if (chat!=null && !IsThereClientInChat(clientId, chat.Id) && IsChatExist(chatUniqueName))
+            if (chat != null && !IsThereClientInChat(clientId, chat.Id) && IsChatExist(chatUniqueName))
             {
                 repositories.ChatMemberRepos.Insert(new ChatMember() { ClientId = clientId, ChatId = chat.Id, IsAdmin = isAdmin, DateLastReadMessage = DateTime.Now });
                 repositories.Save();
-                return chatMapper.Map<ChatDTO>(repositories.ChatRepos.Get().Where(c => c.UniqueName == chatUniqueName).FirstOrDefault());
+                newChat = chatMapper.Map<ChatDTO>(chat);
+                var client = clientMapper.Map<ClientDTO>(repositories.ClientRepos.Get().Where(c => c.Id == clientId).FirstOrDefault());
+
+                foreach (var item in TakeClients(chat.Id))
+                {
+                    foreach (var item2 in callbacks)
+                    {
+                        if (item2.ClientId == item.Id && item2.ClientId != clientId)
+                        try
+                        {
+                            item2.Callback.Joined(client, chat.Id, GetPhoto(clientId));
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(ex.Message);
+                        }
+                    }
+                }
             }
-            return null;
+            else 
+                newChat = null;
         }
-        public bool LeaveFromChat(int clientId, int chatId)
+        public void LeaveFromChat(int clientId, int chatId, out bool result)
         {
             var chatMember = repositories.ChatMemberRepos.Get().Where(c => c.ClientId == clientId && c.ChatId == chatId).FirstOrDefault();
             if (chatMember != null)
             {
+                result = true;
+                foreach (var item in TakeClients(chatMember.Chat.Id))
+                {
+                    foreach (var item2 in callbacks)
+                    {
+                        if (item2.ClientId == item.Id && item2.ClientId != clientId)
+                            try
+                            {
+                                item2.Callback.Left(chatMember.Client.Id, chatMember.Chat.Id);
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine(ex.Message);
+                            }
+                    }
+                }
                 repositories.ChatMemberRepos.Delete(chatMember);
                 repositories.Save();
-                return true;
             }
-            return false;
+            else
+                result = false;
         }
         public IEnumerable<ChatDTO> TakeChats(int clientId)
         {
@@ -473,8 +507,6 @@ namespace WcfService
                     }
                 }
             }
-            else
-                callbacks.Where(c => c.ClientId == clientId).FirstOrDefault().Callback.TakeMessage(null,null);
         }
         public IEnumerable<MessageDTO> TakeMessages(int chatId)
         {

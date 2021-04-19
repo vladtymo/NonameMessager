@@ -15,7 +15,7 @@ using System.Windows.Media.Imaging;
 
 namespace Client
 {
-    class MainViewModel : ViewModelBase, IMessageServiceCallback, IClientServiceCallback
+    class MainViewModel : ViewModelBase, IMessageServiceCallback, IClientServiceCallback,IChatMemberServiceCallback
     {
         #region Collections
 
@@ -38,7 +38,7 @@ namespace Client
         private ClientServiceClient clientService;
         private ChatServiceClient chatService = new ChatServiceClient();
         private ContactServiceClient contactService = new ContactServiceClient();
-        private ChatMemberServiceClient chatMemberService = new ChatMemberServiceClient();
+        private ChatMemberServiceClient chatMemberService;
         private MessageServiceClient messageService;
 
         private IMapper mapper;
@@ -124,6 +124,7 @@ namespace Client
         {
             messageService = new MessageServiceClient(new InstanceContext(this));
             clientService = new ClientServiceClient(new InstanceContext(this));
+            chatMemberService = new ChatMemberServiceClient(new InstanceContext(this));
 
             IConfigurationProvider config = new MapperConfiguration(
                 cfg =>
@@ -382,7 +383,7 @@ namespace Client
             var result = mapper.Map<ChatViewModel>(chatService.CreateNewChatAsync(mapper.Map<ChatDTO>(ChatForChange)).Result);
             if (result != null)
             {   
-                chatMemberService.JoinToChatAsync(CurrentClient.Id, result.UniqueName, true);
+                chatMemberService.JoinToChatAsync(CurrentClient.Id, result.UniqueName, true);/////////////////////////////////////////////////////
                 chats.Add(result);
                 SelectedChat = result;
                 if (ChatForChange.Photo != null)
@@ -500,7 +501,10 @@ namespace Client
             {
                 foreach (var item in result)
                 {
-                    Application.Current.Dispatcher.Invoke(() => { members.Add(item); });
+                    Application.Current.Dispatcher.Invoke(() => { 
+                        members.Add(item);
+                        GetPhoto(item);
+                    });
                 }
             }).ContinueWith((res) =>
             {
@@ -511,19 +515,10 @@ namespace Client
             });
 
         }
-
-
         public void TakeOpponent()
         {
             var opponent = members.Where(w => w.Id != CurrentClient.Id).FirstOrDefault();
             OpponentClient = opponent;
-
-                Application.Current.Dispatcher.Invoke(() => {
-                    members.Add(item);
-                    GetPhoto(item);
-                });
-            }
-            }).ContinueWith((res)=> CountMembers = members.Count);
 
         }
         public void AddContact()
@@ -681,14 +676,24 @@ namespace Client
             IsOpenProfileInfoDialog = true;
         }
 
-
-
-
-
-
-
-
-
+        public void Joined(ClientDTO client, int chatId, InfoFile photo)
+        {
+            if (SelectedChat.Id == chatId)
+            {
+                var cl = mapper.Map<ClientViewModel>(client);
+                cl.Photo = ToImage(photo.Data);
+                members.Add(cl);
+                CountMembers = members.Count;
+            }
+        }
+        public void Left(int clientId, int chatId)
+        {
+            if (SelectedChat.Id == chatId)
+            {
+                members.Remove(mapper.Map<ClientViewModel>(members.Where(m => m.Id == clientId).FirstOrDefault()));
+                CountMembers = members.Count;
+            }
+        }
 
         #region Commands
         private Command setProfileDialogOpenCommand;
