@@ -367,13 +367,16 @@
                 <materialDesign:DialogHost Grid.Column="1" 
                          HorizontalAlignment="Center" 
                             VerticalAlignment="Center" DialogTheme="Light" IsOpen="{Binding IsOpenContactsDialog}" >
+                   
                     <materialDesign:DialogHost.DialogContent >
                         <Grid Width="350" Height="500"  >
                             <Grid.RowDefinitions>
+                                <RowDefinition Height="0.15*"></RowDefinition>
+                                <RowDefinition Height="0.1*"></RowDefinition>
+                                <RowDefinition Height="0.4*"></RowDefinition>
                                 <RowDefinition Height="Auto"></RowDefinition>
-                                <RowDefinition Height="Auto"></RowDefinition>
-                                <RowDefinition></RowDefinition>
-                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="0.4*"></RowDefinition>
+                                <RowDefinition Height="0.12*"></RowDefinition>
 
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
@@ -412,7 +415,8 @@
                                     Text="{Binding UniqueNameContact, UpdateSourceTrigger=PropertyChanged}"/>
 
                             </Grid>
-                            <ListBox Grid.ColumnSpan="2" Grid.Row="2" Margin="25,10" ItemsSource="{Binding Contacts}">
+                            <!--List of contacts-->
+                            <ListBox Grid.ColumnSpan="2" Grid.Row="2" Margin="25,10" ItemsSource="{Binding Contacts}" SelectedItem="{Binding SelectedContact}">
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
                                         <Border TextBlock.FontSize="15">
@@ -452,9 +456,51 @@
                                 </ListBox.ItemTemplate>
 
                             </ListBox>
+                            <Separator Margin="25,5" Grid.ColumnSpan="2" Grid.Row="3"></Separator>
+                            <!--List of clients-->
+                            <ListBox Grid.ColumnSpan="2" Grid.Row="4" Margin="25,10" ItemsSource="{Binding ClientForAdd}" SelectedItem="{Binding SelectedClientForAdd}">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border TextBlock.FontSize="15">
+                                            <Grid >
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                                    <ColumnDefinition></ColumnDefinition>
 
-                            <Button  Grid.Row="3" Margin="10,5" Content="{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.ContactsDialogAddContactString, Mode=OneWay}" Command="{Binding AddContactCommand}"></Button>
-                            <Button Grid.Row="3" Grid.Column="1" Margin="10,5" Content="{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.ContactsDialogDeleteContactString, Mode=OneWay}" Command="{Binding DeleteContactCommand}"></Button>
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions>
+
+
+                                                    <RowDefinition></RowDefinition>
+                                                    <RowDefinition></RowDefinition>
+                                                    <RowDefinition></RowDefinition>
+                                                    <RowDefinition></RowDefinition>
+
+                                                    <RowDefinition></RowDefinition>
+                                                    <RowDefinition></RowDefinition>
+
+
+                                                </Grid.RowDefinitions>
+                                                <Ellipse Width="50" Height="50"  Grid.RowSpan="4" Grid.Row="1">
+                                                    <Ellipse.Fill>
+                                                        <ImageBrush ImageSource="{Binding Photo}"  Stretch="UniformToFill"/>
+                                                    </Ellipse.Fill>
+                                                </Ellipse>
+
+                                                <TextBlock Grid.Column="1" FontWeight="SemiBold"  Grid.RowSpan="3" Margin="15,0"  TextAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Bottom" Text="{Binding Name}"></TextBlock>
+                                                <TextBlock Grid.Column="1" Grid.Row="3" Margin="15,0" Grid.RowSpan="2" VerticalAlignment="Bottom"  TextAlignment="Left">
+                                                    <Run Text="@"/><Run Text="{Binding UniqueName}"/>
+
+                                                </TextBlock>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+
+                            </ListBox>
+
+                            <Button  Grid.Row="5" Margin="10,5" Content="{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.ContactsDialogAddContactString, Mode=OneWay}" Command="{Binding AddContactCommand}"></Button>
+                            <Button Grid.Row="5" Grid.Column="1" Margin="10,5" Content="{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.ContactsDialogDeleteContactString, Mode=OneWay}" Command="{Binding DeleteContactCommand}"></Button>
 
 
                         </Grid>
@@ -630,14 +676,15 @@
                                 </Button>
                                 <TextBox
                          Margin="0,0,10,0"
-                         Grid.Column="1"                         
+                         Grid.Column="1"   
+                     
                          materialDesign:HintAssist.Hint="{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.SearchString, Mode=OneWay}"
                          materialDesign:TextFieldAssist.HasClearButton="True"                                  
                          VerticalAlignment="Center" FontSize="15"
                          Text="{Binding UniqueNameChat, UpdateSourceTrigger=PropertyChanged}"/>
 
                             </Grid>
-                            <ListBox Grid.ColumnSpan="2" Grid.Row="2" Margin="25,10" Name="listBoxChatsDialog" >
+                            <ListBox Grid.ColumnSpan="2" Grid.Row="2" Margin="25,10" ItemsSource="{Binding JoinToChatChats}" SelectedItem="{Binding SelectedChatForJoin,UpdateSourceTrigger=PropertyChanged}">
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
                                         <Border TextBlock.FontSize="15">
@@ -662,13 +709,13 @@
                                                 </Grid.RowDefinitions>
                                                 <Ellipse Width="50" Height="50"  Grid.RowSpan="4" Grid.Row="1">
                                                     <Ellipse.Fill>
-                                                        <ImageBrush Stretch="UniformToFill"/>
+                                                        <ImageBrush ImageSource="{Binding Photo}" Stretch="UniformToFill"/>
                                                     </Ellipse.Fill>
                                                 </Ellipse>
 
-                                                <TextBlock Grid.Column="1" FontWeight="Bold"  Grid.RowSpan="3" Margin="15,0"  TextAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Bottom" ></TextBlock>
+                                                <TextBlock Grid.Column="1" FontWeight="Bold"  Grid.RowSpan="3" Margin="15,0"  TextAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Bottom" Text="{Binding Name,UpdateSourceTrigger=PropertyChanged}"></TextBlock>
                                                 <TextBlock Grid.Column="1" Grid.Row="3" Margin="15,0" Grid.RowSpan="2" VerticalAlignment="Bottom"  TextAlignment="Left" FontSize="13">
-                                         <Run Text="@"/><Run />
+                                         <Run Text="@"/><Run Text="{Binding UniqueName,UpdateSourceTrigger=PropertyChanged}" />
                                                 </TextBlock>
                                             </Grid>
                                         </Border>
@@ -677,9 +724,8 @@
 
                             </ListBox>
 
-                            <!--<Button  Grid.Row="3" Margin="15,5" Content="Join"></Button>-->
-                            <!--<Button Grid.Row="3" Grid.Column="1" Margin="15,5" Content="Cancel" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"></Button>-->
-                            <Button  Grid.Row="3" Margin="15,5" Content="{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.JoinChatDialogJoin, Mode=OneWay}" Command="{Binding JoinToChatCommand}"></Button>
+                          
+                            <Button  Grid.Row="3" Margin="15,5" Content="{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.JoinChatDialogJoin, Mode=OneWay}" Command="{Binding JoinToChatCommand, UpdateSourceTrigger=PropertyChanged}"></Button>
                             <Button Grid.Row="3" Grid.Column="1" Margin="15,5" Content="{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.CancelButtonString, Mode=OneWay}"  Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"></Button>
 
 
@@ -925,7 +971,8 @@
 
                         <TextBox
                          Margin="0,0,10,0"
-                         Grid.Column="1"                         
+                         Grid.Column="1"   
+                         Text="{Binding SearchChatUniqueName, UpdateSourceTrigger=PropertyChanged}"
                          materialDesign:HintAssist.Hint="{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.SearchString, Mode=OneWay}"
                          materialDesign:TextFieldAssist.HasClearButton="True"                                  
                          VerticalAlignment="Center" />
