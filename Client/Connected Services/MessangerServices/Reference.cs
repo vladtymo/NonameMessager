@@ -776,6 +776,12 @@ namespace Client.MessangerServices {
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IClientService/TakeMessage")]
         void TakeMessage(Client.MessangerServices.MessageDTO message, Client.MessangerServices.InfoFile photoClient);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IClientService/Joined")]
+        void Joined(Client.MessangerServices.ClientDTO client, int chatId, Client.MessangerServices.InfoFile photo);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IClientService/Left")]
+        void Left(int clientId, int chatId);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -939,19 +945,23 @@ namespace Client.MessangerServices {
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="MessangerServices.IChatMemberService")]
+    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="MessangerServices.IChatMemberService", CallbackContract=typeof(Client.MessangerServices.IChatMemberServiceCallback))]
     public interface IChatMemberService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatMemberService/JoinToChat", ReplyAction="http://tempuri.org/IChatMemberService/JoinToChatResponse")]
+        [return: System.ServiceModel.MessageParameterAttribute(Name="newChat")]
         Client.MessangerServices.ChatDTO JoinToChat(int clientId, string chatUniqueName, bool isAdmin);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatMemberService/JoinToChat", ReplyAction="http://tempuri.org/IChatMemberService/JoinToChatResponse")]
+        [return: System.ServiceModel.MessageParameterAttribute(Name="newChat")]
         System.Threading.Tasks.Task<Client.MessangerServices.ChatDTO> JoinToChatAsync(int clientId, string chatUniqueName, bool isAdmin);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatMemberService/LeaveFromChat", ReplyAction="http://tempuri.org/IChatMemberService/LeaveFromChatResponse")]
+        [return: System.ServiceModel.MessageParameterAttribute(Name="result")]
         bool LeaveFromChat(int clientId, int chatId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatMemberService/LeaveFromChat", ReplyAction="http://tempuri.org/IChatMemberService/LeaveFromChatResponse")]
+        [return: System.ServiceModel.MessageParameterAttribute(Name="result")]
         System.Threading.Tasks.Task<bool> LeaveFromChatAsync(int clientId, int chatId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatMemberService/TakeChats", ReplyAction="http://tempuri.org/IChatMemberService/TakeChatsResponse")]
@@ -968,30 +978,44 @@ namespace Client.MessangerServices {
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    public interface IChatMemberServiceCallback {
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IChatMemberService/TakeMessage")]
+        void TakeMessage(Client.MessangerServices.MessageDTO message, Client.MessangerServices.InfoFile photoClient);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IChatMemberService/Joined")]
+        void Joined(Client.MessangerServices.ClientDTO client, int chatId, Client.MessangerServices.InfoFile photo);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IChatMemberService/Left")]
+        void Left(int clientId, int chatId);
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     public interface IChatMemberServiceChannel : Client.MessangerServices.IChatMemberService, System.ServiceModel.IClientChannel {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class ChatMemberServiceClient : System.ServiceModel.ClientBase<Client.MessangerServices.IChatMemberService>, Client.MessangerServices.IChatMemberService {
+    public partial class ChatMemberServiceClient : System.ServiceModel.DuplexClientBase<Client.MessangerServices.IChatMemberService>, Client.MessangerServices.IChatMemberService {
         
-        public ChatMemberServiceClient() {
+        public ChatMemberServiceClient(System.ServiceModel.InstanceContext callbackInstance) : 
+                base(callbackInstance) {
         }
         
-        public ChatMemberServiceClient(string endpointConfigurationName) : 
-                base(endpointConfigurationName) {
+        public ChatMemberServiceClient(System.ServiceModel.InstanceContext callbackInstance, string endpointConfigurationName) : 
+                base(callbackInstance, endpointConfigurationName) {
         }
         
-        public ChatMemberServiceClient(string endpointConfigurationName, string remoteAddress) : 
-                base(endpointConfigurationName, remoteAddress) {
+        public ChatMemberServiceClient(System.ServiceModel.InstanceContext callbackInstance, string endpointConfigurationName, string remoteAddress) : 
+                base(callbackInstance, endpointConfigurationName, remoteAddress) {
         }
         
-        public ChatMemberServiceClient(string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) : 
-                base(endpointConfigurationName, remoteAddress) {
+        public ChatMemberServiceClient(System.ServiceModel.InstanceContext callbackInstance, string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) : 
+                base(callbackInstance, endpointConfigurationName, remoteAddress) {
         }
         
-        public ChatMemberServiceClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
-                base(binding, remoteAddress) {
+        public ChatMemberServiceClient(System.ServiceModel.InstanceContext callbackInstance, System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
+                base(callbackInstance, binding, remoteAddress) {
         }
         
         public Client.MessangerServices.ChatDTO JoinToChat(int clientId, string chatUniqueName, bool isAdmin) {
@@ -1049,6 +1073,12 @@ namespace Client.MessangerServices {
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IMessageService/TakeMessage")]
         void TakeMessage(Client.MessangerServices.MessageDTO message, Client.MessangerServices.InfoFile photoClient);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IMessageService/Joined")]
+        void Joined(Client.MessangerServices.ClientDTO client, int chatId, Client.MessangerServices.InfoFile photo);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IMessageService/Left")]
+        void Left(int clientId, int chatId);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]

@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace WcfService
 {
-    [ServiceContract]
+    [ServiceContract(CallbackContract = typeof(ICallback))]
     public interface IChatMemberService
     {
         [OperationContract]
-        ChatDTO JoinToChat(int clientId, string chatUniqueName, bool isAdmin);
+        void JoinToChat(int clientId, string chatUniqueName, bool isAdmin, out ChatDTO newChat);
         [OperationContract]
-        bool LeaveFromChat(int clientId, int chatId);
+        void LeaveFromChat(int clientId, int chatId, out bool result);
         [OperationContract]
         IEnumerable<ChatDTO> TakeChats(int clientId);
         [OperationContract]
