@@ -253,30 +253,42 @@ namespace Client
                     addContactCommand.RaiseCanExecuteChanged();
                    
                 }
+                else if (args.PropertyName == nameof(OpponentClient))
+                {
+                    profileInfoDialogOpenCommand.RaiseCanExecuteChanged();
+
+                }
 
             };
 
             loginCommand = new DelegateCommand(Login);
             signUpCommand = new DelegateCommand(SignUp);
             exitCommand = new DelegateCommand(Exit);
-            setProfileCommand = new DelegateCommand(SetProfile);
-            setPhotoCommand = new DelegateCommand(SetPhoto);
+            closedCommand = new DelegateCommand(Disconnect);
+
             setProfileDialogOpenCommand = new DelegateCommand(ShowSetProfileDialog);
             contactsDialogOpenCommand = new DelegateCommand(ShowContactsDialog);
+           
             joinToChatDialogOpenCommand = new DelegateCommand(ShowJoinToChatDialog);
+            chatAddDialogOpenCommand = new DelegateCommand(ShowAddChatDialog);
+            chatInfoDialogOpenCommand = new DelegateCommand(ShowChatInfo);
+            profileInfoDialogOpenCommand = new DelegateCommand(ShowProfileInfo, () => OpponentClient != null);
+            manageChatDialogOpenCommand = new DelegateCommand(ShowEditChatDialog);
+
+            setProfileCommand = new DelegateCommand(SetProfile);
+            setPhotoCommand = new DelegateCommand(SetPhoto);
+            
             addContactCommand = new DelegateCommand(AddContact, () => SelectedClientForAdd!=null);
             deleteContactCommand = new DelegateCommand(DeleteContact, () => SelectedContact!=null);
+            
             addChatCommand = new DelegateCommand(CreateNewChat);
             joinToChatCommand = new DelegateCommand(JoinToChat, ()=> SelectedChatForJoin!=null);
-            chatAddDialogOpenCommand = new DelegateCommand(ShowAddChatDialog);
-            sendMessageCommand = new DelegateCommand(SendMessage, ()=>!string.IsNullOrEmpty(TextMessage));
-            closedCommand = new DelegateCommand(Disconnect);
             leaveFromChatCommand = new DelegateCommand(LeaveFromChat);
-            chatInfoDialogOpenCommand = new DelegateCommand(ShowChatInfo);
             setChatPropertiesCommand = new DelegateCommand(SetChatProperties);
-            manageChatDialogOpenCommand = new DelegateCommand(ShowEditChatDialog);
             setChatPhotoCommand = new DelegateCommand(SetChatPhoto);
-            profileInfoDialogOpenCommand = new DelegateCommand(ShowProfileInfo);
+            
+            sendMessageCommand = new DelegateCommand(SendMessage, ()=>!string.IsNullOrEmpty(TextMessage));
+           
             IsOpenLoginRegistrationDialog = true;
 
 
@@ -573,10 +585,11 @@ namespace Client
                 }
             }).ContinueWith((res) =>
             {
-                CountMembers = members.Count;
+                Application.Current.Dispatcher.Invoke(() => {
+                    CountMembers = members.Count;
                 if (SelectedChat.IsPM) 
                     TakeOpponent();
-
+                });
             });
 
         }
