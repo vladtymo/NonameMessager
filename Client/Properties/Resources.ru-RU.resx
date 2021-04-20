@@ -120,6 +120,12 @@
   <data name="AcceptButtonString" xml:space="preserve">
     <value>Подтвердить</value>
   </data>
+  <data name="AddEditChatDialogButtonCreateString" xml:space="preserve">
+    <value>Создать</value>
+  </data>
+  <data name="AddEditChatDialogButtonEditString" xml:space="preserve">
+    <value>Изменить </value>
+  </data>
   <data name="AddEditChatDialogIsPrivateChatString" xml:space="preserve">
     <value>Приватный чат</value>
   </data>
@@ -165,8 +171,17 @@
   <data name="FailedCreateChatString" xml:space="preserve">
     <value>Чат не был создан.</value>
   </data>
+  <data name="FailedJoinToChatString" xml:space="preserve">
+    <value>Не удалось присоединиться к чату.</value>
+  </data>
+  <data name="FailedLeaveFromChatString" xml:space="preserve">
+    <value>Не удалось покинуть чат.</value>
+  </data>
   <data name="FailedLoginString" xml:space="preserve">
     <value>Похоже, что в системе нет пользователя с введенными данными. Попробуйте ещё раз.</value>
+  </data>
+  <data name="FailedSetChatPropertiesString" xml:space="preserve">
+    <value>Данный не были изменены.</value>
   </data>
   <data name="FailedSetProfileString" xml:space="preserve">
     <value>Данный не были изменены.</value>
@@ -261,9 +276,18 @@
   <data name="SuccessfulCreateChatString" xml:space="preserve">
     <value>Чат успешно создан.</value>
   </data>
+  <data name="SuccessfulJoinToChatString" xml:space="preserve">
+    <value>Вы успешно присоединились к чату.</value>
+  </data>
+  <data name="SuccessfulLeaveFromChatString" xml:space="preserve">
+    <value>Вы успешно покинули чат.</value>
+  </data>
   <data name="SuccessfulLoginString" xml:space="preserve">
     <value>Успешный вход в систему. 
 Привет, </value>
+  </data>
+  <data name="SuccessfulSetChatPropertiesString" xml:space="preserve">
+    <value>Данные успешно обновлены.</value>
   </data>
   <data name="SuccessfulSetProfileString" xml:space="preserve">
     <value>Данные успешно обновлены.</value>

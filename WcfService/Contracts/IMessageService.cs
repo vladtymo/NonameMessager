@@ -15,9 +15,4 @@ namespace WcfService
         [OperationContract]
         IEnumerable<MessageDTO> TakeMessages(int chatId);
     }
-    public interface ICallback
-    {
-        [OperationContract(IsOneWay = true)]
-        void TakeMessage(MessageDTO message);
-    }
 }

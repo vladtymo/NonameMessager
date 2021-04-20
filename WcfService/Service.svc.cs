@@ -23,7 +23,8 @@ namespace WcfService
         private IMapper contactMapper;
         private IMapper messageMapper;
 
-        private string pathToPhoto;
+        private string pathToClientsPhoto;
+        private string pathToChatsPhoto;
         public Service()
         {
             this.repositories = new UnitOfWork();
@@ -97,6 +98,14 @@ namespace WcfService
                 });
             messageMapper = new Mapper(messageConfig);
         }
+        private bool IsExistUniqueName(int id,string uniqueName, bool isClient)
+        {
+            var client = repositories.ClientRepos.Get().Where(c => c.UniqueName == uniqueName && ((isClient && c.Id!=id)||!isClient) ).FirstOrDefault();
+            var chat = repositories.ChatRepos.Get().Where(c => c.UniqueName == uniqueName && ((!isClient && c.Id != id) || isClient)).FirstOrDefault();
+            if (client == null && chat == null)
+                return false;
+            return true;
+        }
         //--------------------------Client Methods--------------------//
         #region
         private Client GetClientByAccount(AccountDTO accountDTO, string password)
@@ -117,7 +126,7 @@ namespace WcfService
         }
         private int IsExistClient(ClientDTO clientDTO)
         {
-            var client = repositories.ClientRepos.Get().Where(c => c.UniqueName == clientDTO.UniqueName || c.Account.Email == clientDTO.Account.Email || c.Account.Phone == clientDTO.Account.Phone).FirstOrDefault();
+            var client = repositories.ClientRepos.Get().Where(c => c.Account.Email == clientDTO.Account.Email || c.Account.Phone == clientDTO.Account.Phone).FirstOrDefault();
             if (client == null)
                 return -1;
             else
@@ -126,7 +135,7 @@ namespace WcfService
         public ClientDTO CreateNewClient(ClientDTO clientDTO, string password)
         {
             var id = IsExistClient(clientDTO);
-            if (id == -1)
+            if (id == -1 && !IsExistUniqueName(clientDTO.Id, clientDTO.UniqueName,true))
             {
                 clientDTO.Account.Password = password;
                 repositories.ClientRepos.Insert(clientMapper.Map<Client>(clientDTO));
@@ -143,9 +152,12 @@ namespace WcfService
         public ClientDTO GetClient(AccountDTO accountDTO, string password)
         {
             var client = GetClientByAccount(accountDTO, password);
-         if (client != null)
+            if (client != null)
             {
-                callbacks.Add(new CallBack() { ClientId = client.Id, Callback = OperationContext.Current.GetCallbackChannel<ICallback>()});
+                DirectoryInfo directory = new DirectoryInfo(pathToClientsPhoto);
+                if (!directory.Exists)
+                    directory.Create();
+                callbacks.Add(new CallBack() { ClientId = client.Id, Callback = OperationContext.Current.GetCallbackChannel<ICallback>() });
                 return clientMapper.Map<ClientDTO>(client);
             }
             else
@@ -164,8 +176,8 @@ namespace WcfService
         }
         public void SetPhoto(int clientId, InfoFile info)
         {
-            string path = FreePath(Path.Combine(pathToPhoto, clientId.ToString() + Path.GetExtension(info.Name)));
-            DirectoryInfo directory = new DirectoryInfo(pathToPhoto);
+            string path = FreePath(Path.Combine(pathToClientsPhoto, clientId.ToString() + Path.GetExtension(info.Name)));
+            DirectoryInfo directory = new DirectoryInfo(pathToClientsPhoto);
             if (!directory.Exists)
                 directory.Create();
             using (FileStream fs = new FileStream(path, FileMode.Create, FileAccess.Write))
@@ -186,11 +198,14 @@ namespace WcfService
         }
         public void GetPathToPhoto(string pathToPhoto)
         {
-            this.pathToPhoto = pathToPhoto;
+            this.pathToClientsPhoto = Path.Combine(pathToPhoto, "ClientsPhoto");
+            this.pathToChatsPhoto = Path.Combine(pathToPhoto, "ChatsPhoto");
         }
         public InfoFile GetPhoto(int clientId)
         {
-            DirectoryInfo di = new DirectoryInfo(pathToPhoto);
+            DirectoryInfo di = new DirectoryInfo(pathToClientsPhoto);
+            if (!di.Exists)
+                di.Create();
             string path = repositories.ClientRepos.Get().Where(c => c.Id == clientId).Select(c => c.PhotoPath).FirstOrDefault();
             if (path == null) return null;
             var result = di.GetFiles().Where(f => f.FullName == path);
@@ -256,9 +271,16 @@ namespace WcfService
             }
             return true;
         }
+        private bool IsClientExist(string uniqueName)
+        {
+            var client = repositories.ClientRepos.Get().Where(c => c.UniqueName == uniqueName).FirstOrDefault();
+            if (client != null)
+                return true;
+            return false;
+        }
         public ClientDTO AddContact(int clientID, string uniqueNameContact)
         {
-            if (!IsContactExist(clientID, uniqueNameContact))
+            if (!IsContactExist(clientID, uniqueNameContact) && IsClientExist(uniqueNameContact))
             {
                 var contactClient = repositories.ClientRepos.Get().Where(c => c.UniqueName == uniqueNameContact).FirstOrDefault();
                 repositories.ContactRepos.Insert(new Contact() { ClientId = clientID, ContactClientId = contactClient.Id });
@@ -284,20 +306,24 @@ namespace WcfService
             var result = repositories.ContactRepos.Get().Where(c => c.ClientId == clientId).Select(c => c.ContactClient);
             return contactMapper.Map<IEnumerable<ClientDTO>>(result);
         }
+        public IEnumerable<ClientDTO> SearchClients(string uniqueName)
+        {
+            var result = repositories.ClientRepos.Get().Where(c => c.UniqueName.Contains(uniqueName));
+            return clientMapper.Map<IEnumerable<ClientDTO>>(result);
+        }
         #endregion
         //--------------------------Chat Methods--------------------//
         #region
-        private int IsExistChat(ChatDTO chatDTO)
+        public bool IsChatExist(ChatDTO chatDTO)
         {
-            var chat = repositories.ChatRepos.Get().Where(ch => ch.UniqueName == chatDTO.UniqueName).FirstOrDefault();
-            if (chat == null) return -1;
-            else
-                return chat.Id;
+            var result = repositories.ChatRepos.Get().Where(c => c.Id != chatDTO.Id && c.UniqueName == chatDTO.UniqueName).FirstOrDefault();
+            if (result == null)
+                return false;
+            return true;
         }
         public ChatDTO CreateNewChat(ChatDTO newChatDTO)
         {
-            var id = IsExistChat(newChatDTO);
-            if (id == -1)
+            if (!IsExistUniqueName(newChatDTO.Id, newChatDTO.UniqueName,false))
             {
                 repositories.ChatRepos.Insert(chatMapper.Map<Chat>(newChatDTO));
                 repositories.Save();
@@ -305,6 +331,74 @@ namespace WcfService
             }
             else
                 return null;
+        }
+        public bool SetChatProperties(ChatDTO chatDTO)
+        {
+          
+            if (!IsExistUniqueName(chatDTO.Id, chatDTO.UniqueName,false) && TakeClients(chatDTO.Id).Count()<=chatDTO.MaxUsers)
+            {
+                var chat = repositories.ChatRepos.Get().Where(c => c.Id == chatDTO.Id).FirstOrDefault();
+                chat.Name = chatDTO.Name;
+                chat.UniqueName = chatDTO.UniqueName;
+                chat.MaxUsers = chatDTO.MaxUsers;
+                chat.IsPM = chatDTO.IsPM;
+                chat.IsPrivate = chatDTO.IsPrivate;
+                repositories.ChatRepos.Update(chat);
+                repositories.Save();
+                return true;
+            }
+            else
+                return false;
+        }
+        public void SetChatPhoto(int chatId, InfoFile info)
+        {
+            string path = FreePath(Path.Combine(pathToChatsPhoto, chatId.ToString() + Path.GetExtension(info.Name)));
+            DirectoryInfo directory = new DirectoryInfo(pathToChatsPhoto);
+            if (!directory.Exists)
+                directory.Create();
+            using (FileStream fs = new FileStream(path, FileMode.Create, FileAccess.Write))
+            {
+                fs.Write(info.Data, 0, info.Data.Length);
+            }
+            repositories.ChatRepos.Get().Where(c => c.Id == chatId).FirstOrDefault().PhotoPath = path;
+            repositories.Save();
+            var result = directory.GetFiles().Where(d => ((!d.Name.Contains('(') && Path.GetFileNameWithoutExtension(d.Name) == chatId.ToString()) || (d.Name.Contains('(') && d.Name.Replace(d.Name.Substring(d.Name.IndexOf('(')), null) == chatId.ToString())) && d.FullName != path);
+            foreach (var item in result)
+            {
+                try
+                {
+                    item.Delete();
+                }
+                catch (Exception) { }
+            }
+        }
+        public InfoFile GetChatPhoto(int chatId)
+        {
+            DirectoryInfo di = new DirectoryInfo(pathToChatsPhoto);
+            if (!di.Exists)
+                di.Create();
+            string path = repositories.ChatRepos.Get().Where(c => c.Id == chatId).Select(c => c.PhotoPath).FirstOrDefault();
+            if (path == null) return null;
+            var result = di.GetFiles().Where(f => f.FullName == path);
+            if (result.Count() == 0)
+            {
+                repositories.ChatRepos.Get().Where(c => c.Id == chatId).FirstOrDefault().PhotoPath = null;
+                repositories.Save();
+                return null;
+            }
+            InfoFile info = new InfoFile() { Name = path };
+            using (FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read))
+            {
+                byte[] fileData = new byte[fs.Length];
+                fs.Read(fileData, 0, fileData.Length);
+                info.Data = fileData;
+            }
+            return info;
+        }
+        public IEnumerable<ChatDTO> SearchChats(string uniqueName)
+        {
+            var result = repositories.ChatRepos.Get().Where(c => c.UniqueName.Contains(uniqueName) && !c.IsPM);
+            return chatMapper.Map<IEnumerable<ChatDTO>>(result);
         }
         #endregion
         //--------------------------ChatMember Methods--------------------//
@@ -318,16 +412,68 @@ namespace WcfService
             }
             return true;
         }
-        public ChatDTO JoinToChat(int clientId, string chatUniqueName, bool isAdmin)
+        private bool IsChatExist(string chatUniqueName)
         {
             var chat = repositories.ChatRepos.Get().Where(c => c.UniqueName == chatUniqueName).FirstOrDefault();
-            if (!IsThereClientInChat(clientId, chat.Id))
+            if (chat != null)
+                return true;
+            return false;
+        }
+        public void JoinToChat(int clientId, string chatUniqueName, bool isAdmin, out ChatDTO newChat)
+        {
+            var chat = repositories.ChatRepos.Get().Where(c => c.UniqueName == chatUniqueName).FirstOrDefault();
+            if (chat != null && !IsThereClientInChat(clientId, chat.Id) && IsChatExist(chatUniqueName))
             {
                 repositories.ChatMemberRepos.Insert(new ChatMember() { ClientId = clientId, ChatId = chat.Id, IsAdmin = isAdmin, DateLastReadMessage = DateTime.Now });
                 repositories.Save();
-                return chatMapper.Map<ChatDTO>(repositories.ChatRepos.Get().Where(c => c.UniqueName == chatUniqueName).FirstOrDefault());
+                newChat = chatMapper.Map<ChatDTO>(chat);
+                var client = clientMapper.Map<ClientDTO>(repositories.ClientRepos.Get().Where(c => c.Id == clientId).FirstOrDefault());
+
+                foreach (var item in TakeClients(chat.Id))
+                {
+                    foreach (var item2 in callbacks)
+                    {
+                        if (item2.ClientId == item.Id && item2.ClientId != clientId)
+                        try
+                        {
+                            item2.Callback.Joined(client, chat.Id, GetPhoto(clientId));
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(ex.Message);
+                        }
+                    }
+                }
             }
-            return null;
+            else 
+                newChat = null;
+        }
+        public void LeaveFromChat(int clientId, int chatId, out bool result)
+        {
+            var chatMember = repositories.ChatMemberRepos.Get().Where(c => c.ClientId == clientId && c.ChatId == chatId).FirstOrDefault();
+            if (chatMember != null)
+            {
+                result = true;
+                foreach (var item in TakeClients(chatMember.Chat.Id))
+                {
+                    foreach (var item2 in callbacks)
+                    {
+                        if (item2.ClientId == item.Id && item2.ClientId != clientId)
+                            try
+                            {
+                                item2.Callback.Left(chatMember.Client.Id, chatMember.Chat.Id);
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine(ex.Message);
+                            }
+                    }
+                }
+                repositories.ChatMemberRepos.Delete(chatMember);
+                repositories.Save();
+            }
+            else
+                result = false;
         }
         public IEnumerable<ChatDTO> TakeChats(int clientId)
         {
@@ -362,15 +508,15 @@ namespace WcfService
                     foreach (var item2 in callbacks)
                     {
                         if(item2.ClientId == item.Id)
-                            item2.Callback.TakeMessage(messageMapper.Map<MessageDTO>(newMessage));
+                            try
+                            {
+                                item2.Callback.TakeMessage(messageMapper.Map<MessageDTO>(newMessage), GetPhoto(clientId));
+                            }
+                            catch (Exception)
+                            {}
                     }
-                    //var result = .Where(c => c.ClientId == item.Id).FirstOrDefault();
-                    //if (result != null)
-                    //    result.Callback.TakeMessage(messageMapper.Map<MessageDTO>(newMessage));
                 }
             }
-            else
-                callbacks.Where(c => c.ClientId == clientId).FirstOrDefault().Callback.TakeMessage(null);
         }
         public IEnumerable<MessageDTO> TakeMessages(int chatId)
         {

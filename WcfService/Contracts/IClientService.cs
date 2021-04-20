@@ -24,5 +24,7 @@ namespace WcfService
         void GetPathToPhoto(string pathToPhoto);
         [OperationContract]
         void Disconnect();
+        [OperationContract]
+        IEnumerable<ClientDTO> SearchClients(string uniqueName);
     }
 }
