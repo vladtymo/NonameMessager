@@ -276,6 +276,9 @@
   <data name="SuccessfulCreateChatString" xml:space="preserve">
     <value>Чат успешно создан.</value>
   </data>
+  <data name="SuccessfulCreatePMChatString" xml:space="preserve">
+    <value>Личный чат успешно создан.</value>
+  </data>
   <data name="SuccessfulJoinToChatString" xml:space="preserve">
     <value>Вы успешно присоединились к чату.</value>
   </data>

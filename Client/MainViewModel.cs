@@ -15,13 +15,13 @@ using System.Windows.Media.Imaging;
 
 namespace Client
 {
-    class MainViewModel : ViewModelBase, IMessageServiceCallback, IClientServiceCallback,IChatMemberServiceCallback
+    class MainViewModel : ViewModelBase, IMessageServiceCallback, IClientServiceCallback,IChatMemberServiceCallback,IChatServiceCallback
     {
         #region Collections
 
         private readonly ICollection<ClientViewModel> contacts = new ObservableCollection<ClientViewModel>();
         private readonly ICollection<ClientViewModel> allContacts = new ObservableCollection<ClientViewModel>();
-        private readonly ICollection<ClientViewModel> clientForAdd = new ObservableCollection<ClientViewModel>();
+        private readonly ICollection<ClientViewModel> clientsForAdd = new ObservableCollection<ClientViewModel>();
 
         private readonly ICollection<ClientViewModel> members = new ObservableCollection<ClientViewModel>();
         private readonly ICollection<ChatViewModel> chats = new ObservableCollection<ChatViewModel>();
@@ -33,7 +33,7 @@ namespace Client
 
         public IEnumerable<ClientViewModel> Contacts => contacts;
         public IEnumerable<ClientViewModel> AllContacts => allContacts;
-        public IEnumerable<ClientViewModel> ClientForAdd => clientForAdd;
+        public IEnumerable<ClientViewModel> ClientsForAdd => clientsForAdd;
 
 
         public IEnumerable<ClientViewModel> Members => members;
@@ -49,7 +49,7 @@ namespace Client
         #endregion
         #region Properties
         private ClientServiceClient clientService;
-        private ChatServiceClient chatService = new ChatServiceClient();
+        private ChatServiceClient chatService;
         private ContactServiceClient contactService = new ContactServiceClient();
         private ChatMemberServiceClient chatMemberService;
         private MessageServiceClient messageService;
@@ -155,7 +155,7 @@ namespace Client
             messageService = new MessageServiceClient(new InstanceContext(this));
             clientService = new ClientServiceClient(new InstanceContext(this));
             chatMemberService = new ChatMemberServiceClient(new InstanceContext(this));
-
+            chatService = new ChatServiceClient(new InstanceContext(this));
             IConfigurationProvider config = new MapperConfiguration(
                 cfg =>
                 {
@@ -203,7 +203,7 @@ namespace Client
                 else if(args.PropertyName == nameof(UniqueNameContact))
                 {
                     if (String.IsNullOrEmpty(UniqueNameContact))
-                        clientForAdd.Clear();
+                        clientsForAdd.Clear();
                     else
                     SearchClients();
 
@@ -286,7 +286,8 @@ namespace Client
             leaveFromChatCommand = new DelegateCommand(LeaveFromChat);
             setChatPropertiesCommand = new DelegateCommand(SetChatProperties);
             setChatPhotoCommand = new DelegateCommand(SetChatPhoto);
-            
+            createOrSelectPMChatCommand = new DelegateCommand(CreateOrSelectPMChat, () => SelectedContact != null || SelectedClientForAdd != null);
+
             sendMessageCommand = new DelegateCommand(SendMessage, ()=>!string.IsNullOrEmpty(TextMessage));
            
             IsOpenLoginRegistrationDialog = true;
@@ -314,6 +315,14 @@ namespace Client
                 GetPhoto();
                 foreach (var item in mapper.Map<IEnumerable<ChatViewModel>>(chatMemberService.TakeChatsAsync(currentClient.Id).Result))
                 {
+                    if (item.IsPM)
+                    {
+                        ReplacePMChatName(item);
+                        var companion = mapper.Map<ClientViewModel>(chatMemberService.TakeClients(item.Id).FirstOrDefault(cm => cm.Id != CurrentClient.Id));
+                        var photo = clientService.GetPhotoAsync(companion.Id).Result;
+                        if (photo != null) 
+                            item.Photo = ToImage(photo.Data);
+                    }
                     allChats.Add(item);
                     chats.Add(item);
                     GetChatPhoto(item);
@@ -378,7 +387,7 @@ namespace Client
             {
                 var image = new BitmapImage();
                 image.BeginInit();
-                image.CacheOption = BitmapCacheOption.OnLoad; // here
+                image.CacheOption = BitmapCacheOption.OnLoad; 
                 image.StreamSource = ms;
                 image.EndInit();
                 return image;
@@ -455,6 +464,7 @@ namespace Client
                 return;
             }
             var result = mapper.Map<ChatViewModel>(chatService.CreateNewChatAsync(mapper.Map<ChatDTO>(ChatForChange)).Result);
+
             if (result != null)
             {   
                 chatMemberService.JoinToChatAsync(CurrentClient.Id, result.UniqueName, true);
@@ -496,6 +506,19 @@ namespace Client
             else
             {
                 OpenInfoDialog(Resources.FailedJoinToChatString);
+            }
+        }
+        public void CreateOrSelectPMChat()
+        {
+            var chatId = chatService.CreatePMChat(CurrentClient.Id, SelectedClientForAdd == null ? SelectedContact.Id : SelectedClientForAdd.Id);
+            if (chatId != -1)
+            {
+                SelectedChat = allChats.FirstOrDefault(ac => ac.Id == chatId);
+                IsOpenContactsDialog = false;
+            }
+            else
+            {
+                OpenInfoDialog(Resources.SuccessfulCreateChatString);
             }
         }
         public void SetChatProperties()
@@ -632,7 +655,7 @@ namespace Client
         }
         public void SendMessage()
         {
-            messageService.SendMessageAsync(CurrentClient.Id, SelectedChat.Id, new MessageInfo() { Text = TextMessage });
+            messageService.SendMessage(CurrentClient.Id, SelectedChat.Id, new MessageInfo() { Text = TextMessage });
             TextMessage = String.Empty;
         }
         public void OpenInfoDialog(string text)
@@ -650,7 +673,7 @@ namespace Client
         {
             UniqueNameContact = String.Empty;
             SearchContacts();
-            clientForAdd.Clear();
+            clientsForAdd.Clear();
             IsOpenContactsDialog = true;
         }
         public void ShowAddChatDialog()
@@ -719,7 +742,8 @@ namespace Client
             if (SelectedChat.Id == message.ChatId)
             {
                 var mes = mapper.Map<MessageViewModel>(message);
-                mes.Client.Photo = ToImage(photoClient.Data);
+                if(photoClient!=null)
+                    mes.Client.Photo = ToImage(photoClient.Data);
                 chatMessages.Add(mes);
             }
         }
@@ -817,12 +841,15 @@ namespace Client
         {
             if (!String.IsNullOrEmpty(UniqueNameContact))
             {
-                clientForAdd.Clear();
+                clientsForAdd.Clear();
                 var result = mapper.Map<IEnumerable<ClientViewModel>>(clientService.SearchClients(UniqueNameContact));
                 foreach (var item in result)
                 {
                     if (allContacts.Where(c => c.Id == item.Id).FirstOrDefault() == null)
-                        clientForAdd.Add(item);
+                    {
+                        GetPhoto(item);
+                        clientsForAdd.Add(item);
+                    }
                 }
             }
         }
@@ -844,7 +871,19 @@ namespace Client
                 CountMembers = members.Count;
             }
         }
-
+        public void TakeChat(ChatDTO pmChat, InfoFile photo)
+        {
+            var chat = mapper.Map<ChatViewModel>(pmChat);
+            if (photo != null)
+                chat.Photo = ToImage(photo.Data);
+            ReplacePMChatName(chat);
+            allChats.Add(chat);
+            Search();
+        }
+        private void ReplacePMChatName(ChatViewModel chat)
+        {
+            chat.Name = chat.Name.Replace(CurrentClient.Name, "");
+        }
         #region Commands
         private Command setProfileDialogOpenCommand;
         private Command contactsDialogOpenCommand;
@@ -870,6 +909,7 @@ namespace Client
         private Command addChatCommand;
         private Command setChatPhotoCommand;
         private Command setChatPropertiesCommand;
+        private Command createOrSelectPMChatCommand;
 
         private Command joinToChatCommand;
         private Command leaveFromChatCommand;
@@ -903,6 +943,7 @@ namespace Client
         public ICommand SetChatPhotoCommand => setChatPhotoCommand;
         public ICommand JoinToChatCommand => joinToChatCommand;
         public ICommand SetChatPropertiesCommand => setChatPropertiesCommand;
+        public ICommand CreateOrSelectPMChatCommand => createOrSelectPMChatCommand;
 
         public ICommand LeaveFromChatCommand => leaveFromChatCommand;
 

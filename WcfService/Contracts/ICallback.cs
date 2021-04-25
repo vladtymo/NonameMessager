@@ -10,5 +10,7 @@ namespace WcfService
         void Joined(ClientDTO client, int chatId, InfoFile photo);
         [OperationContract(IsOneWay = true)]
         void Left(int clientId, int chatId);
+        [OperationContract(IsOneWay = true)]
+        void TakeChat(ChatDTO chat, InfoFile photo);
     }
 }
