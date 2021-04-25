@@ -25,6 +25,8 @@ namespace WcfService
 
         private string pathToClientsPhoto;
         private string pathToChatsPhoto;
+
+        private static Random random = new Random();
         public Service()
         {
             this.repositories = new UnitOfWork();
@@ -325,12 +327,53 @@ namespace WcfService
         {
             if (!IsExistUniqueName(newChatDTO.Id, newChatDTO.UniqueName,false))
             {
-                repositories.ChatRepos.Insert(chatMapper.Map<Chat>(newChatDTO));
+                var chat = chatMapper.Map<Chat>(newChatDTO);
+                repositories.ChatRepos.Insert(chat);
                 repositories.Save();
-                return chatMapper.Map<ChatDTO>(repositories.ChatRepos.Get().LastOrDefault());
+                return chatMapper.Map<ChatDTO>(chat);
             }
             else
                 return null;
+        }
+        public void CreatePMChat(int clientId, int companionId,out int chatId)
+        {
+            var client = repositories.ClientRepos.Get().Where(c => c.Id == clientId).FirstOrDefault();
+            var companion = repositories.ClientRepos.Get().Where(c => c.Id == companionId).FirstOrDefault();
+            Chat pmChat = new Chat() { Id = 0, IsPM = true, MaxUsers = 2, IsPrivate = true, Name = $"{client.Name}{companion.Name}"};
+            do
+            {
+                pmChat.UniqueName = RandomString();
+
+            } while (IsExistUniqueName(pmChat.Id, pmChat.UniqueName, false));
+            var chat = repositories.ChatRepos.Get().FirstOrDefault(c => c.IsPM && c.ChatMembers.FirstOrDefault(cm => cm.ClientId == clientId) != null && c.ChatMembers.FirstOrDefault(cm => cm.ClientId == companionId) != null);
+            if (chat == null)
+            {
+                repositories.ChatRepos.Insert(pmChat);
+                repositories.Save();
+                chatId = -1;
+                repositories.ChatMemberRepos.Insert(new ChatMember() { ClientId = clientId, ChatId = pmChat.Id, IsAdmin = false, DateLastReadMessage = DateTime.Now });
+                repositories.ChatMemberRepos.Insert(new ChatMember() { ClientId = companionId, ChatId = pmChat.Id, IsAdmin = false, DateLastReadMessage = DateTime.Now });
+                repositories.Save();
+                try
+                {
+                    var clientCallback = callbacks.FirstOrDefault(c => c.ClientId == clientId);
+                    if (clientCallback != null)
+                        clientCallback.Callback.TakeChat(chatMapper.Map<ChatDTO>(pmChat), GetPhoto(companionId));
+
+                    var companionCallback = callbacks.FirstOrDefault(c => c.ClientId == companionId);
+                    if (companionCallback != null)
+                        companionCallback.Callback.TakeChat(chatMapper.Map<ChatDTO>(pmChat), GetPhoto(clientId));
+                }
+                catch (Exception)
+                { }
+            }
+            else
+                chatId = chat.Id;
+        }
+        public static string RandomString(int length = 25)
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            return new string(Enumerable.Repeat(chars, length).Select(s => s[random.Next(s.Length)]).ToArray());
         }
         public bool SetChatProperties(ChatDTO chatDTO)
         {
@@ -397,7 +440,7 @@ namespace WcfService
         }
         public IEnumerable<ChatDTO> SearchChats(string uniqueName)
         {
-            var result = repositories.ChatRepos.Get().Where(c => c.UniqueName.Contains(uniqueName) && !c.IsPM);
+            var result = repositories.ChatRepos.Get().Where(c => c.UniqueName.Contains(uniqueName) && !c.IsPM && !c.IsPrivate);
             return chatMapper.Map<IEnumerable<ChatDTO>>(result);
         }
         #endregion
@@ -438,10 +481,8 @@ namespace WcfService
                         {
                             item2.Callback.Joined(client, chat.Id, GetPhoto(clientId));
                         }
-                        catch (Exception ex)
-                        {
-                            Console.WriteLine(ex.Message);
-                        }
+                        catch (Exception)
+                        {}
                     }
                 }
             }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace WcfService
 {
-    [ServiceContract]
+    [ServiceContract(CallbackContract = typeof(ICallback))]
     public interface IChatService
     {
         [OperationContract]
@@ -21,5 +21,7 @@ namespace WcfService
         InfoFile GetChatPhoto(int chatId);
         [OperationContract]
         IEnumerable<ChatDTO> SearchChats(string uniqueName);
+        [OperationContract]
+        void CreatePMChat(int clientId, int companionId, out int chatId);
     }
 }
