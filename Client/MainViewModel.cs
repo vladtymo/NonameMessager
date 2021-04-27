@@ -15,7 +15,7 @@ using System.Windows.Media.Imaging;
 
 namespace Client
 {
-    class MainViewModel : ViewModelBase, IMessageServiceCallback, IClientServiceCallback,IChatMemberServiceCallback,IChatServiceCallback
+    class MainViewModel : ViewModelBase, IMessageServiceCallback, IClientServiceCallback,IChatMemberServiceCallback,IChatServiceCallback,IContactServiceCallback
     {
         #region Collections
 
@@ -50,7 +50,7 @@ namespace Client
         #region Properties
         private ClientServiceClient clientService;
         private ChatServiceClient chatService;
-        private ContactServiceClient contactService = new ContactServiceClient();
+        private ContactServiceClient contactService;
         private ChatMemberServiceClient chatMemberService;
         private MessageServiceClient messageService;
 
@@ -156,6 +156,8 @@ namespace Client
             clientService = new ClientServiceClient(new InstanceContext(this));
             chatMemberService = new ChatMemberServiceClient(new InstanceContext(this));
             chatService = new ChatServiceClient(new InstanceContext(this));
+            contactService = new ContactServiceClient(new InstanceContext(this));
+
             IConfigurationProvider config = new MapperConfiguration(
                 cfg =>
                 {
@@ -199,6 +201,7 @@ namespace Client
                         TakeMembers();                      
                         IsChatSelected = true;
                     }
+                    deleteChatCommand.RaiseCanExecuteChanged();
                 }
                 else if(args.PropertyName == nameof(UniqueNameContact))
                 {
@@ -287,6 +290,7 @@ namespace Client
             setChatPropertiesCommand = new DelegateCommand(SetChatProperties);
             setChatPhotoCommand = new DelegateCommand(SetChatPhoto);
             createOrSelectPMChatCommand = new DelegateCommand(CreateOrSelectPMChat, () => SelectedContact != null || SelectedClientForAdd != null);
+            deleteChatCommand = new DelegateCommand(DeleteChat, () => SelectedChat != null);
 
             sendMessageCommand = new DelegateCommand(SendMessage, ()=>!string.IsNullOrEmpty(TextMessage));
            
@@ -313,7 +317,8 @@ namespace Client
                 CurrentClient = result;
                 IsOpenLoginRegistrationDialog = false;
                 GetPhoto();
-                foreach (var item in mapper.Map<IEnumerable<ChatViewModel>>(chatMemberService.TakeChatsAsync(currentClient.Id).Result))
+                var chatsq = mapper.Map<IEnumerable<ChatViewModel>>(chatMemberService.TakeChatsAsync(currentClient.Id).Result);
+                foreach (var item in chatsq)
                 {
                     if (item.IsPM)
                     {
@@ -552,6 +557,13 @@ namespace Client
             {
                 OpenInfoDialog(Resources.FailedSetChatPropertiesString);
                 ChatForChange = SelectedChat.Clone();
+            }
+        }
+        public void DeleteChat()
+        {
+            if(!chatService.DeleteChat(SelectedChat.Id))
+            {
+                OpenInfoDialog(Resources.FailedDeleteChatString);
             }
         }
         public void GetChatPhoto(ChatViewModel chat)
@@ -858,7 +870,8 @@ namespace Client
             if (SelectedChat.Id == chatId)
             {
                 var cl = mapper.Map<ClientViewModel>(client);
-                cl.Photo = ToImage(photo.Data);
+                if (photo != null)
+                    cl.Photo = ToImage(photo.Data);
                 members.Add(cl);
                 CountMembers = members.Count;
             }
@@ -880,6 +893,30 @@ namespace Client
             allChats.Add(chat);
             Search();
         }
+        public void DeleteChatForAll(int chatId)
+        {
+            var chatForDelete = allChats.FirstOrDefault(ca => ca.Id == chatId);
+            if (chatForDelete != null)
+            {
+                if (SelectedChat != null && SelectedChat.Id == chatId)
+                    OpenInfoDialog(Resources.SuccessfulDeleteChatString);
+                allChats.Remove(chatForDelete);
+                Search();
+            } 
+                
+        }
+
+        public void DeleteMessageForAll(int chatId, int messageId)
+        {
+
+        }
+        public void AddContactInChat(ChatDTO chat, InfoFile photo)
+        {
+
+        }
+
+
+
         private void ReplacePMChatName(ChatViewModel chat)
         {
             chat.Name = chat.Name.Replace(CurrentClient.Name, "");
@@ -910,6 +947,7 @@ namespace Client
         private Command setChatPhotoCommand;
         private Command setChatPropertiesCommand;
         private Command createOrSelectPMChatCommand;
+        private Command deleteChatCommand;
 
         private Command joinToChatCommand;
         private Command leaveFromChatCommand;
@@ -944,6 +982,7 @@ namespace Client
         public ICommand JoinToChatCommand => joinToChatCommand;
         public ICommand SetChatPropertiesCommand => setChatPropertiesCommand;
         public ICommand CreateOrSelectPMChatCommand => createOrSelectPMChatCommand;
+        public ICommand DeleteChatCommand => deleteChatCommand;
 
         public ICommand LeaveFromChatCommand => leaveFromChatCommand;
 

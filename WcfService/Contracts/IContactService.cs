@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace WcfService
 {
-    [ServiceContract]
+    [ServiceContract(CallbackContract = typeof(ICallback))]
     public interface IContactService
     {
         [OperationContract]

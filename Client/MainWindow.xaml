@@ -1129,7 +1129,7 @@
                                         </Style>
                                         </Button.Style>
                                     </Button>
-                                    <Button Content="{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.LeaveTheChatButtonString, Mode=OneWay}" Command="{Binding LeaveFromChatCommand}">
+                                    <Button Content="{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.LeaveTheChatButtonString, Mode=OneWay}" Command="{Binding LeaveFromChatCommand}" >
                                         <Button.Style>
                                             <Style BasedOn="{StaticResource MaterialDesignPopupBoxButton}" TargetType="Button">
                                                 <Style.Triggers>
