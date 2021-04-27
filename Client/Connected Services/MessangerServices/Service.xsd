@@ -147,7 +147,7 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="AddContactInChat">
+  <xs:element name="AddChatForContact">
     <xs:complexType>
       <xs:sequence>
         <xs:element xmlns:q13="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="chat" nillable="true" type="q13:ChatDTO" />
@@ -362,6 +362,21 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element xmlns:q27="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="TakeClientsResult" nillable="true" type="q27:ArrayOfClientDTO" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="InviteContact">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="chatId" type="xs:int" />
+        <xs:element minOccurs="0" name="contactId" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="InviteContactResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="result" type="xs:boolean" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

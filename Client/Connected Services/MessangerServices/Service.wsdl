@@ -563,7 +563,7 @@
       </wsp:All>
     </wsp:ExactlyOne>
   </wsp:Policy>
-  <wsp:Policy wsu:Id="WSDualHttpBinding_IChatService_AddContactInChat_output_policy">
+  <wsp:Policy wsu:Id="WSDualHttpBinding_IChatService_AddChatForContact_output_policy">
     <wsp:ExactlyOne>
       <wsp:All>
         <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
@@ -1195,7 +1195,7 @@
       </wsp:All>
     </wsp:ExactlyOne>
   </wsp:Policy>
-  <wsp:Policy wsu:Id="WSDualHttpBinding_IClientService_AddContactInChat_output_policy">
+  <wsp:Policy wsu:Id="WSDualHttpBinding_IClientService_AddChatForContact_output_policy">
     <wsp:ExactlyOne>
       <wsp:All>
         <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
@@ -1597,7 +1597,7 @@
       </wsp:All>
     </wsp:ExactlyOne>
   </wsp:Policy>
-  <wsp:Policy wsu:Id="WSDualHttpBinding_IContactService_AddContactInChat_output_policy">
+  <wsp:Policy wsu:Id="WSDualHttpBinding_IContactService_AddChatForContact_output_policy">
     <wsp:ExactlyOne>
       <wsp:All>
         <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
@@ -1907,6 +1907,52 @@
       </wsp:All>
     </wsp:ExactlyOne>
   </wsp:Policy>
+  <wsp:Policy wsu:Id="WSDualHttpBinding_IChatMemberService_InviteContact_Input_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="Sequence" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="SequenceAcknowledgement" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="AckRequested" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="ChannelInstance" Namespace="http://schemas.microsoft.com/ws/2005/02/duplex" />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="WSDualHttpBinding_IChatMemberService_InviteContact_output_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="Sequence" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="SequenceAcknowledgement" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="AckRequested" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="ChannelInstance" Namespace="http://schemas.microsoft.com/ws/2005/02/duplex" />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
   <wsp:Policy wsu:Id="WSDualHttpBinding_IChatMemberService_TakeMessage_output_policy">
     <wsp:ExactlyOne>
       <wsp:All>
@@ -2045,7 +2091,7 @@
       </wsp:All>
     </wsp:ExactlyOne>
   </wsp:Policy>
-  <wsp:Policy wsu:Id="WSDualHttpBinding_IChatMemberService_AddContactInChat_output_policy">
+  <wsp:Policy wsu:Id="WSDualHttpBinding_IChatMemberService_AddChatForContact_output_policy">
     <wsp:ExactlyOne>
       <wsp:All>
         <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
@@ -2378,7 +2424,7 @@
       </wsp:All>
     </wsp:ExactlyOne>
   </wsp:Policy>
-  <wsp:Policy wsu:Id="WSDualHttpBinding_IMessageService_AddContactInChat_output_policy">
+  <wsp:Policy wsu:Id="WSDualHttpBinding_IMessageService_AddChatForContact_output_policy">
     <wsp:ExactlyOne>
       <wsp:All>
         <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
@@ -2468,8 +2514,8 @@
   <wsdl:message name="IChatService_DeleteMessageForAll_OutputCallbackMessage">
     <wsdl:part name="parameters" element="tns:DeleteMessageForAll" />
   </wsdl:message>
-  <wsdl:message name="IChatService_AddContactInChat_OutputCallbackMessage">
-    <wsdl:part name="parameters" element="tns:AddContactInChat" />
+  <wsdl:message name="IChatService_AddChatForContact_OutputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:AddChatForContact" />
   </wsdl:message>
   <wsdl:message name="IClientService_CreateNewClient_InputMessage">
     <wsdl:part name="parameters" element="tns:CreateNewClient" />
@@ -2537,8 +2583,8 @@
   <wsdl:message name="IClientService_DeleteMessageForAll_OutputCallbackMessage">
     <wsdl:part name="parameters" element="tns:DeleteMessageForAll" />
   </wsdl:message>
-  <wsdl:message name="IClientService_AddContactInChat_OutputCallbackMessage">
-    <wsdl:part name="parameters" element="tns:AddContactInChat" />
+  <wsdl:message name="IClientService_AddChatForContact_OutputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:AddChatForContact" />
   </wsdl:message>
   <wsdl:message name="IContactService_AddContact_InputMessage">
     <wsdl:part name="parameters" element="tns:AddContact" />
@@ -2576,8 +2622,8 @@
   <wsdl:message name="IContactService_DeleteMessageForAll_OutputCallbackMessage">
     <wsdl:part name="parameters" element="tns:DeleteMessageForAll" />
   </wsdl:message>
-  <wsdl:message name="IContactService_AddContactInChat_OutputCallbackMessage">
-    <wsdl:part name="parameters" element="tns:AddContactInChat" />
+  <wsdl:message name="IContactService_AddChatForContact_OutputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:AddChatForContact" />
   </wsdl:message>
   <wsdl:message name="IChatMemberService_JoinToChat_InputMessage">
     <wsdl:part name="parameters" element="tns:JoinToChat" />
@@ -2603,6 +2649,12 @@
   <wsdl:message name="IChatMemberService_TakeClients_OutputMessage">
     <wsdl:part name="parameters" element="tns:TakeClientsResponse" />
   </wsdl:message>
+  <wsdl:message name="IChatMemberService_InviteContact_InputMessage">
+    <wsdl:part name="parameters" element="tns:InviteContact" />
+  </wsdl:message>
+  <wsdl:message name="IChatMemberService_InviteContact_OutputMessage">
+    <wsdl:part name="parameters" element="tns:InviteContactResponse" />
+  </wsdl:message>
   <wsdl:message name="IChatMemberService_TakeMessage_OutputCallbackMessage">
     <wsdl:part name="parameters" element="tns:TakeMessage" />
   </wsdl:message>
@@ -2621,8 +2673,8 @@
   <wsdl:message name="IChatMemberService_DeleteMessageForAll_OutputCallbackMessage">
     <wsdl:part name="parameters" element="tns:DeleteMessageForAll" />
   </wsdl:message>
-  <wsdl:message name="IChatMemberService_AddContactInChat_OutputCallbackMessage">
-    <wsdl:part name="parameters" element="tns:AddContactInChat" />
+  <wsdl:message name="IChatMemberService_AddChatForContact_OutputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:AddChatForContact" />
   </wsdl:message>
   <wsdl:message name="IMessageService_SendMessage_InputMessage">
     <wsdl:part name="parameters" element="tns:SendMessage" />
@@ -2651,8 +2703,8 @@
   <wsdl:message name="IMessageService_DeleteMessageForAll_OutputCallbackMessage">
     <wsdl:part name="parameters" element="tns:DeleteMessageForAll" />
   </wsdl:message>
-  <wsdl:message name="IMessageService_AddContactInChat_OutputCallbackMessage">
-    <wsdl:part name="parameters" element="tns:AddContactInChat" />
+  <wsdl:message name="IMessageService_AddChatForContact_OutputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:AddChatForContact" />
   </wsdl:message>
   <wsdl:portType name="IChatService">
     <wsdl:operation name="CreateNewChat">
@@ -2701,8 +2753,8 @@
     <wsdl:operation name="DeleteMessageForAll">
       <wsdl:output wsaw:Action="http://tempuri.org/IChatService/DeleteMessageForAll" message="tns:IChatService_DeleteMessageForAll_OutputCallbackMessage" />
     </wsdl:operation>
-    <wsdl:operation name="AddContactInChat">
-      <wsdl:output wsaw:Action="http://tempuri.org/IChatService/AddContactInChat" message="tns:IChatService_AddContactInChat_OutputCallbackMessage" />
+    <wsdl:operation name="AddChatForContact">
+      <wsdl:output wsaw:Action="http://tempuri.org/IChatService/AddChatForContact" message="tns:IChatService_AddChatForContact_OutputCallbackMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:portType name="IClientService">
@@ -2756,8 +2808,8 @@
     <wsdl:operation name="DeleteMessageForAll">
       <wsdl:output wsaw:Action="http://tempuri.org/IClientService/DeleteMessageForAll" message="tns:IClientService_DeleteMessageForAll_OutputCallbackMessage" />
     </wsdl:operation>
-    <wsdl:operation name="AddContactInChat">
-      <wsdl:output wsaw:Action="http://tempuri.org/IClientService/AddContactInChat" message="tns:IClientService_AddContactInChat_OutputCallbackMessage" />
+    <wsdl:operation name="AddChatForContact">
+      <wsdl:output wsaw:Action="http://tempuri.org/IClientService/AddChatForContact" message="tns:IClientService_AddChatForContact_OutputCallbackMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:portType name="IContactService">
@@ -2791,8 +2843,8 @@
     <wsdl:operation name="DeleteMessageForAll">
       <wsdl:output wsaw:Action="http://tempuri.org/IContactService/DeleteMessageForAll" message="tns:IContactService_DeleteMessageForAll_OutputCallbackMessage" />
     </wsdl:operation>
-    <wsdl:operation name="AddContactInChat">
-      <wsdl:output wsaw:Action="http://tempuri.org/IContactService/AddContactInChat" message="tns:IContactService_AddContactInChat_OutputCallbackMessage" />
+    <wsdl:operation name="AddChatForContact">
+      <wsdl:output wsaw:Action="http://tempuri.org/IContactService/AddChatForContact" message="tns:IContactService_AddChatForContact_OutputCallbackMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:portType name="IChatMemberService">
@@ -2812,6 +2864,10 @@
       <wsdl:input wsaw:Action="http://tempuri.org/IChatMemberService/TakeClients" message="tns:IChatMemberService_TakeClients_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IChatMemberService/TakeClientsResponse" message="tns:IChatMemberService_TakeClients_OutputMessage" />
     </wsdl:operation>
+    <wsdl:operation name="InviteContact">
+      <wsdl:input wsaw:Action="http://tempuri.org/IChatMemberService/InviteContact" message="tns:IChatMemberService_InviteContact_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IChatMemberService/InviteContactResponse" message="tns:IChatMemberService_InviteContact_OutputMessage" />
+    </wsdl:operation>
     <wsdl:operation name="TakeMessage">
       <wsdl:output wsaw:Action="http://tempuri.org/IChatMemberService/TakeMessage" message="tns:IChatMemberService_TakeMessage_OutputCallbackMessage" />
     </wsdl:operation>
@@ -2830,8 +2886,8 @@
     <wsdl:operation name="DeleteMessageForAll">
       <wsdl:output wsaw:Action="http://tempuri.org/IChatMemberService/DeleteMessageForAll" message="tns:IChatMemberService_DeleteMessageForAll_OutputCallbackMessage" />
     </wsdl:operation>
-    <wsdl:operation name="AddContactInChat">
-      <wsdl:output wsaw:Action="http://tempuri.org/IChatMemberService/AddContactInChat" message="tns:IChatMemberService_AddContactInChat_OutputCallbackMessage" />
+    <wsdl:operation name="AddChatForContact">
+      <wsdl:output wsaw:Action="http://tempuri.org/IChatMemberService/AddChatForContact" message="tns:IChatMemberService_AddChatForContact_OutputCallbackMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:portType name="IMessageService">
@@ -2860,8 +2916,8 @@
     <wsdl:operation name="DeleteMessageForAll">
       <wsdl:output wsaw:Action="http://tempuri.org/IMessageService/DeleteMessageForAll" message="tns:IMessageService_DeleteMessageForAll_OutputCallbackMessage" />
     </wsdl:operation>
-    <wsdl:operation name="AddContactInChat">
-      <wsdl:output wsaw:Action="http://tempuri.org/IMessageService/AddContactInChat" message="tns:IMessageService_AddContactInChat_OutputCallbackMessage" />
+    <wsdl:operation name="AddChatForContact">
+      <wsdl:output wsaw:Action="http://tempuri.org/IMessageService/AddChatForContact" message="tns:IMessageService_AddChatForContact_OutputCallbackMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="WSDualHttpBinding_IChatService" type="tns:IChatService">
@@ -2986,10 +3042,10 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="AddContactInChat">
-      <soap12:operation soapAction="http://tempuri.org/IChatService/AddContactInChat" style="document" />
+    <wsdl:operation name="AddChatForContact">
+      <soap12:operation soapAction="http://tempuri.org/IChatService/AddChatForContact" style="document" />
       <wsdl:output>
-        <wsp:PolicyReference URI="#WSDualHttpBinding_IChatService_AddContactInChat_output_policy" />
+        <wsp:PolicyReference URI="#WSDualHttpBinding_IChatService_AddChatForContact_output_policy" />
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
@@ -3127,10 +3183,10 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="AddContactInChat">
-      <soap12:operation soapAction="http://tempuri.org/IClientService/AddContactInChat" style="document" />
+    <wsdl:operation name="AddChatForContact">
+      <soap12:operation soapAction="http://tempuri.org/IClientService/AddChatForContact" style="document" />
       <wsdl:output>
-        <wsp:PolicyReference URI="#WSDualHttpBinding_IClientService_AddContactInChat_output_policy" />
+        <wsp:PolicyReference URI="#WSDualHttpBinding_IClientService_AddChatForContact_output_policy" />
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
@@ -3213,10 +3269,10 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="AddContactInChat">
-      <soap12:operation soapAction="http://tempuri.org/IContactService/AddContactInChat" style="document" />
+    <wsdl:operation name="AddChatForContact">
+      <soap12:operation soapAction="http://tempuri.org/IContactService/AddChatForContact" style="document" />
       <wsdl:output>
-        <wsp:PolicyReference URI="#WSDualHttpBinding_IContactService_AddContactInChat_output_policy" />
+        <wsp:PolicyReference URI="#WSDualHttpBinding_IContactService_AddChatForContact_output_policy" />
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
@@ -3268,6 +3324,17 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="InviteContact">
+      <soap12:operation soapAction="http://tempuri.org/IChatMemberService/InviteContact" style="document" />
+      <wsdl:input>
+        <wsp:PolicyReference URI="#WSDualHttpBinding_IChatMemberService_InviteContact_Input_policy" />
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <wsp:PolicyReference URI="#WSDualHttpBinding_IChatMemberService_InviteContact_output_policy" />
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="TakeMessage">
       <soap12:operation soapAction="http://tempuri.org/IChatMemberService/TakeMessage" style="document" />
       <wsdl:output>
@@ -3310,10 +3377,10 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="AddContactInChat">
-      <soap12:operation soapAction="http://tempuri.org/IChatMemberService/AddContactInChat" style="document" />
+    <wsdl:operation name="AddChatForContact">
+      <soap12:operation soapAction="http://tempuri.org/IChatMemberService/AddChatForContact" style="document" />
       <wsdl:output>
-        <wsp:PolicyReference URI="#WSDualHttpBinding_IChatMemberService_AddContactInChat_output_policy" />
+        <wsp:PolicyReference URI="#WSDualHttpBinding_IChatMemberService_AddChatForContact_output_policy" />
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
@@ -3381,10 +3448,10 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="AddContactInChat">
-      <soap12:operation soapAction="http://tempuri.org/IMessageService/AddContactInChat" style="document" />
+    <wsdl:operation name="AddChatForContact">
+      <soap12:operation soapAction="http://tempuri.org/IMessageService/AddChatForContact" style="document" />
       <wsdl:output>
-        <wsp:PolicyReference URI="#WSDualHttpBinding_IMessageService_AddContactInChat_output_policy" />
+        <wsp:PolicyReference URI="#WSDualHttpBinding_IMessageService_AddChatForContact_output_policy" />
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>

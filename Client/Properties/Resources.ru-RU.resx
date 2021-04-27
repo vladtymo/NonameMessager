@@ -153,6 +153,9 @@
   <data name="ContactsDialogHeaderString" xml:space="preserve">
     <value>Контакты</value>
   </data>
+  <data name="DeleteChatButtonString" xml:space="preserve">
+    <value>Удалить и выйти</value>
+  </data>
   <data name="EditProfileDialogSetProfilePhotoButtonString" xml:space="preserve">
     <value>Выбрать фото</value>
   </data>
@@ -167,6 +170,9 @@
   </data>
   <data name="FailedContactDeletedString" xml:space="preserve">
     <value>Контакт не был удален.</value>
+  </data>
+  <data name="FailedContactInviteInChatString" xml:space="preserve">
+    <value>Контакт не был приглашён.</value>
   </data>
   <data name="FailedCreateChatString" xml:space="preserve">
     <value>Чат не был создан.</value>
@@ -197,6 +203,15 @@
   </data>
   <data name="InformationDialogOKButtonString" xml:space="preserve">
     <value>OK</value>
+  </data>
+  <data name="InviteContactDialogButtonAddString" xml:space="preserve">
+    <value>Добавить</value>
+  </data>
+  <data name="InviteContactDialogHeaderString" xml:space="preserve">
+    <value>Добавить участников</value>
+  </data>
+  <data name="InviteMembersButtonString" xml:space="preserve">
+    <value>Добавить участников</value>
   </data>
   <data name="JoinChatDialogHeaderChatsString" xml:space="preserve">
     <value>Чаты</value>
@@ -275,6 +290,9 @@
   </data>
   <data name="SuccessfulContactDeleteString" xml:space="preserve">
     <value>Контакт успешно удалён.</value>
+  </data>
+  <data name="SuccessfulContactInviteInChatString" xml:space="preserve">
+    <value>Контакт успешно приглашён.</value>
   </data>
   <data name="SuccessfulCreateChatString" xml:space="preserve">
     <value>Чат успешно создан.</value>
