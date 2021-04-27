@@ -223,6 +223,15 @@ namespace Client.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Сhat has&apos;t been deleted..
+        /// </summary>
+        public static string FailedDeleteChatString {
+            get {
+                return ResourceManager.GetString("FailedDeleteChatString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Join to chat failed..
         /// </summary>
         public static string FailedJoinToChatString {
@@ -543,6 +552,15 @@ namespace Client.Properties {
         public static string SuccessfulCreatePMChatString {
             get {
                 return ResourceManager.GetString("SuccessfulCreatePMChatString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Сhat has been deleted..
+        /// </summary>
+        public static string SuccessfulDeleteChatString {
+            get {
+                return ResourceManager.GetString("SuccessfulDeleteChatString", resourceCulture);
             }
         }
         

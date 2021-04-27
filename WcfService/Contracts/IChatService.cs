@@ -23,5 +23,8 @@ namespace WcfService
         IEnumerable<ChatDTO> SearchChats(string uniqueName);
         [OperationContract]
         void CreatePMChat(int clientId, int companionId, out int chatId);
+        [OperationContract]
+        void DeleteChat(int chatId, out bool isRemoved);
+
     }
 }

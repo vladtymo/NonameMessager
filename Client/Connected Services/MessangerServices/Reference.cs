@@ -676,6 +676,14 @@ namespace Client.MessangerServices {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatService/CreatePMChat", ReplyAction="http://tempuri.org/IChatService/CreatePMChatResponse")]
         [return: System.ServiceModel.MessageParameterAttribute(Name="chatId")]
         System.Threading.Tasks.Task<int> CreatePMChatAsync(int clientId, int companionId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatService/DeleteChat", ReplyAction="http://tempuri.org/IChatService/DeleteChatResponse")]
+        [return: System.ServiceModel.MessageParameterAttribute(Name="isRemoved")]
+        bool DeleteChat(int chatId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatService/DeleteChat", ReplyAction="http://tempuri.org/IChatService/DeleteChatResponse")]
+        [return: System.ServiceModel.MessageParameterAttribute(Name="isRemoved")]
+        System.Threading.Tasks.Task<bool> DeleteChatAsync(int chatId);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -692,6 +700,15 @@ namespace Client.MessangerServices {
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IChatService/TakeChat")]
         void TakeChat(Client.MessangerServices.ChatDTO chat, Client.MessangerServices.InfoFile photo);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IChatService/DeleteChatForAll")]
+        void DeleteChatForAll(int chatId);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IChatService/DeleteMessageForAll")]
+        void DeleteMessageForAll(int chatId, int messageId);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IChatService/AddContactInChat")]
+        void AddContactInChat(Client.MessangerServices.ChatDTO chat, Client.MessangerServices.InfoFile photo);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -769,6 +786,14 @@ namespace Client.MessangerServices {
         public System.Threading.Tasks.Task<int> CreatePMChatAsync(int clientId, int companionId) {
             return base.Channel.CreatePMChatAsync(clientId, companionId);
         }
+        
+        public bool DeleteChat(int chatId) {
+            return base.Channel.DeleteChat(chatId);
+        }
+        
+        public System.Threading.Tasks.Task<bool> DeleteChatAsync(int chatId) {
+            return base.Channel.DeleteChatAsync(chatId);
+        }
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -838,6 +863,15 @@ namespace Client.MessangerServices {
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IClientService/TakeChat")]
         void TakeChat(Client.MessangerServices.ChatDTO chat, Client.MessangerServices.InfoFile photo);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IClientService/DeleteChatForAll")]
+        void DeleteChatForAll(int chatId);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IClientService/DeleteMessageForAll")]
+        void DeleteMessageForAll(int chatId, int messageId);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IClientService/AddContactInChat")]
+        void AddContactInChat(Client.MessangerServices.ChatDTO chat, Client.MessangerServices.InfoFile photo);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -934,7 +968,7 @@ namespace Client.MessangerServices {
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="MessangerServices.IContactService")]
+    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="MessangerServices.IContactService", CallbackContract=typeof(Client.MessangerServices.IContactServiceCallback))]
     public interface IContactService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IContactService/AddContact", ReplyAction="http://tempuri.org/IContactService/AddContactResponse")]
@@ -957,30 +991,56 @@ namespace Client.MessangerServices {
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    public interface IContactServiceCallback {
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IContactService/TakeMessage")]
+        void TakeMessage(Client.MessangerServices.MessageDTO message, Client.MessangerServices.InfoFile photoClient);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IContactService/Joined")]
+        void Joined(Client.MessangerServices.ClientDTO client, int chatId, Client.MessangerServices.InfoFile photo);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IContactService/Left")]
+        void Left(int clientId, int chatId);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IContactService/TakeChat")]
+        void TakeChat(Client.MessangerServices.ChatDTO chat, Client.MessangerServices.InfoFile photo);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IContactService/DeleteChatForAll")]
+        void DeleteChatForAll(int chatId);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IContactService/DeleteMessageForAll")]
+        void DeleteMessageForAll(int chatId, int messageId);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IContactService/AddContactInChat")]
+        void AddContactInChat(Client.MessangerServices.ChatDTO chat, Client.MessangerServices.InfoFile photo);
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     public interface IContactServiceChannel : Client.MessangerServices.IContactService, System.ServiceModel.IClientChannel {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class ContactServiceClient : System.ServiceModel.ClientBase<Client.MessangerServices.IContactService>, Client.MessangerServices.IContactService {
+    public partial class ContactServiceClient : System.ServiceModel.DuplexClientBase<Client.MessangerServices.IContactService>, Client.MessangerServices.IContactService {
         
-        public ContactServiceClient() {
+        public ContactServiceClient(System.ServiceModel.InstanceContext callbackInstance) : 
+                base(callbackInstance) {
         }
         
-        public ContactServiceClient(string endpointConfigurationName) : 
-                base(endpointConfigurationName) {
+        public ContactServiceClient(System.ServiceModel.InstanceContext callbackInstance, string endpointConfigurationName) : 
+                base(callbackInstance, endpointConfigurationName) {
         }
         
-        public ContactServiceClient(string endpointConfigurationName, string remoteAddress) : 
-                base(endpointConfigurationName, remoteAddress) {
+        public ContactServiceClient(System.ServiceModel.InstanceContext callbackInstance, string endpointConfigurationName, string remoteAddress) : 
+                base(callbackInstance, endpointConfigurationName, remoteAddress) {
         }
         
-        public ContactServiceClient(string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) : 
-                base(endpointConfigurationName, remoteAddress) {
+        public ContactServiceClient(System.ServiceModel.InstanceContext callbackInstance, string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) : 
+                base(callbackInstance, endpointConfigurationName, remoteAddress) {
         }
         
-        public ContactServiceClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
-                base(binding, remoteAddress) {
+        public ContactServiceClient(System.ServiceModel.InstanceContext callbackInstance, System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
+                base(callbackInstance, binding, remoteAddress) {
         }
         
         public Client.MessangerServices.ClientDTO AddContact(int clientID, string uniqueNameContact) {
@@ -1055,6 +1115,15 @@ namespace Client.MessangerServices {
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IChatMemberService/TakeChat")]
         void TakeChat(Client.MessangerServices.ChatDTO chat, Client.MessangerServices.InfoFile photo);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IChatMemberService/DeleteChatForAll")]
+        void DeleteChatForAll(int chatId);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IChatMemberService/DeleteMessageForAll")]
+        void DeleteMessageForAll(int chatId, int messageId);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IChatMemberService/AddContactInChat")]
+        void AddContactInChat(Client.MessangerServices.ChatDTO chat, Client.MessangerServices.InfoFile photo);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -1149,6 +1218,15 @@ namespace Client.MessangerServices {
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IMessageService/TakeChat")]
         void TakeChat(Client.MessangerServices.ChatDTO chat, Client.MessangerServices.InfoFile photo);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IMessageService/DeleteChatForAll")]
+        void DeleteChatForAll(int chatId);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IMessageService/DeleteMessageForAll")]
+        void DeleteMessageForAll(int chatId, int messageId);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IMessageService/AddContactInChat")]
+        void AddContactInChat(Client.MessangerServices.ChatDTO chat, Client.MessangerServices.InfoFile photo);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]

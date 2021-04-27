@@ -443,6 +443,42 @@ namespace WcfService
             var result = repositories.ChatRepos.Get().Where(c => c.UniqueName.Contains(uniqueName) && !c.IsPM && !c.IsPrivate);
             return chatMapper.Map<IEnumerable<ChatDTO>>(result);
         }
+
+        public void DeleteChat(int chatId,out bool isRemoved)
+        {
+            var chat = repositories.ChatRepos.Get().FirstOrDefault(c => c.Id == chatId && !c.IsPM);
+            if (chat != null)
+            {
+                foreach (var item in TakeClients(chatId))
+                {
+                    foreach (var item2 in callbacks)
+                    {
+                        if (item2.ClientId == item.Id)
+                            try
+                            {
+                                item2.Callback.DeleteChatForAll(chatId);
+                            }
+                            catch (Exception)
+                            { }
+                    }
+                }
+                repositories.ChatRepos.Delete(chat);
+                var members = repositories.ChatMemberRepos.Get().Where(cm => cm.ChatId == chatId);
+                foreach (var item in members)
+                {
+                    repositories.ChatMemberRepos.Delete(item);
+                }
+                var messages = repositories.MessageRepos.Get().Where(m => m.ChatId == chatId);
+                foreach (var item in messages)
+                {
+                    repositories.MessageRepos.Delete(item);
+                }
+                isRemoved = true;
+                repositories.Save();
+            }
+            else
+                isRemoved = false;
+        }
         #endregion
         //--------------------------ChatMember Methods--------------------//
         #region

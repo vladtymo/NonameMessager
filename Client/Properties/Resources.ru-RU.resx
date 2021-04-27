@@ -171,6 +171,9 @@
   <data name="FailedCreateChatString" xml:space="preserve">
     <value>Чат не был создан.</value>
   </data>
+  <data name="FailedDeleteChatString" xml:space="preserve">
+    <value>Чат не был удален.</value>
+  </data>
   <data name="FailedJoinToChatString" xml:space="preserve">
     <value>Не удалось присоединиться к чату.</value>
   </data>
@@ -278,6 +281,9 @@
   </data>
   <data name="SuccessfulCreatePMChatString" xml:space="preserve">
     <value>Личный чат успешно создан.</value>
+  </data>
+  <data name="SuccessfulDeleteChatString" xml:space="preserve">
+    <value>Чат был удален.</value>
   </data>
   <data name="SuccessfulJoinToChatString" xml:space="preserve">
     <value>Вы успешно присоединились к чату.</value>
