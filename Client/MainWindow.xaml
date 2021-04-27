@@ -23,6 +23,28 @@
                 <DataTrigger Binding="{Binding ElementName=loginDialogHost, Path=IsOpen}" Value="False">
                     <Setter Property="IsEnabled" Value="True"></Setter>
                 </DataTrigger>
+                <DataTrigger Binding="{Binding ElementName=editProfileDialog, Path=IsOpen}" Value="True">
+                    <Setter Property="IsEnabled" Value="False"></Setter>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding ElementName=contactsDialog, Path=IsOpen}" Value="True">
+                    <Setter Property="IsEnabled" Value="False"></Setter>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding ElementName=addEditChatDialog, Path=IsOpen}" Value="True">
+                    <Setter Property="IsEnabled" Value="False"></Setter>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding ElementName=joinChatDialog, Path=IsOpen}" Value="True">
+                    <Setter Property="IsEnabled" Value="False"></Setter>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding ElementName=chatProfileDialog, Path=IsOpen}" Value="True">
+                    <Setter Property="IsEnabled" Value="False"></Setter>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding ElementName=chatViewChatInfoDialog, Path=IsOpen}" Value="True">
+                    <Setter Property="IsEnabled" Value="False"></Setter>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding ElementName=inviteContactDialog, Path=IsOpen}" Value="True">
+                    <Setter Property="IsEnabled" Value="False"></Setter>
+                </DataTrigger>
+
             </Style.Triggers>
         </Style>
     </Window.Style>
@@ -38,6 +60,27 @@
                 <Style TargetType="materialDesign:DrawerHost">
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding ElementName=loginDialogHost, Path=IsOpen}" Value="True">
+                            <Setter Property="IsLeftDrawerOpen" Value="False"></Setter>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding ElementName=editProfileDialog, Path=IsOpen}" Value="True">
+                            <Setter Property="IsLeftDrawerOpen" Value="False"></Setter>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding ElementName=contactsDialog, Path=IsOpen}" Value="True">
+                            <Setter Property="IsLeftDrawerOpen" Value="False"></Setter>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding ElementName=addEditChatDialog, Path=IsOpen}" Value="True">
+                            <Setter Property="IsLeftDrawerOpen" Value="False"></Setter>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding ElementName=joinChatDialog, Path=IsOpen}" Value="True">
+                            <Setter Property="IsLeftDrawerOpen" Value="False"></Setter>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding ElementName=chatProfileDialog, Path=IsOpen}" Value="True">
+                            <Setter Property="IsLeftDrawerOpen" Value="False"></Setter>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding ElementName=chatViewChatInfoDialog, Path=IsOpen}" Value="True">
+                            <Setter Property="IsLeftDrawerOpen" Value="False"></Setter>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding ElementName=inviteContactDialog, Path=IsOpen}" Value="True">
                             <Setter Property="IsLeftDrawerOpen" Value="False"></Setter>
                         </DataTrigger>
                     </Style.Triggers>
@@ -188,6 +231,7 @@
 
                     </Button>
 
+                    
                 </StackPanel>
             </materialDesign:DrawerHost.LeftDrawerContent>
 
@@ -207,27 +251,27 @@
                 <!--Login and Sign up dialog-->
                 <materialDesign:DialogHost Grid.Column="1" Name="loginDialogHost"
                          HorizontalAlignment="Center" 
-                            VerticalAlignment="Center" DialogTheme="Light"  IsOpen="{Binding IsOpenLoginRegistrationDialog}">
-
+                            VerticalAlignment="Center" DialogTheme="Light" IsOpen="{Binding IsOpenLoginRegistrationDialog}">
+                    
                     <materialDesign:DialogHost.DialogContent>
                         <Grid>
                             <materialDesign:Flipper  Style="{StaticResource MaterialDesignCardFlipper}"   >
                                 <!--Login-->
                                 <materialDesign:Flipper.FrontContent>
-                                    <Grid  Width="200" Height="200" Margin="20,10">
+                                    <Grid  Width="200" Height="220" Margin="20,10" >
 
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="Auto"></RowDefinition>
+                                            <RowDefinition Height="Auto"></RowDefinition>
+                                            <RowDefinition Height="Auto"></RowDefinition>
                                             <RowDefinition></RowDefinition>
                                             <RowDefinition></RowDefinition>
-                                            <RowDefinition></RowDefinition>
-                                            <RowDefinition ></RowDefinition>
 
                                         </Grid.RowDefinitions>
 
                                         <TextBlock FontSize="24" HorizontalAlignment="Center"  Grid.ColumnSpan="3" VerticalAlignment="Bottom" Margin="5" Foreground="{StaticResource PrimaryHueMidBrush}" Text="{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.LoginDialogHeaderLoginString, Mode=OneWay}"></TextBlock>
 
-                                        <TextBox Grid.Row="1"  VerticalAlignment="Bottom" Margin="5,0" Text="{Binding CurrentClient.Account.Email,UpdateSourceTrigger=PropertyChanged}">
+                                        <TextBox Grid.Row="1"  VerticalAlignment="Bottom" Margin="5,10" Text="{Binding CurrentClient.Account.Email,UpdateSourceTrigger=PropertyChanged}">
                                             <materialDesign:HintAssist.Hint>
                                                 <TextBlock>
                                         <Run Text="{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.EmailString, Mode=OneWay}"></Run><Run>/</Run><Run Text="{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.PhoneString, Mode=OneWay}"></Run>
@@ -235,7 +279,7 @@
                                             </materialDesign:HintAssist.Hint>
                                         </TextBox>
                                         <!--<PasswordBox Grid.Row="2"  VerticalAlignment="Bottom"  materialDesign:HintAssist.Hint="Password" Margin="5,5" ></PasswordBox>-->
-                                        <TextBox  Grid.Row="2"  VerticalAlignment="Bottom"  materialDesign:HintAssist.Hint="{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.PasswordString, Mode=OneWay}" Margin="5,5" Text="{Binding Password,UpdateSourceTrigger=PropertyChanged}" ></TextBox>
+                                        <TextBox  Grid.Row="2"  VerticalAlignment="Bottom"  materialDesign:HintAssist.Hint="{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.PasswordString, Mode=OneWay}" Margin="5,10" Text="{Binding Password,UpdateSourceTrigger=PropertyChanged}" ></TextBox>
 
                                         <Button Grid.Row="3" Margin="5,0"  Command="{Binding LoginCommand,UpdateSourceTrigger=PropertyChanged}" Content="{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.LoginDialogLoginButtonString, Mode=OneWay}"></Button>
                                         <Button Grid.Row="4" Margin="5,5" Style="{StaticResource MaterialDesignFlatButton}" Content="{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.LoginDialogGoToSignUpString, Mode=OneWay}"
@@ -287,7 +331,7 @@
                 </materialDesign:DialogHost>
 
                 <!--Eidt profile dialog-->
-                <materialDesign:DialogHost Grid.Column="1" 
+                <materialDesign:DialogHost Grid.Column="1" Name="editProfileDialog"
                          HorizontalAlignment="Center" 
                             VerticalAlignment="Center" DialogTheme="Light" IsOpen="{Binding IsOpenProfileDialog}">
 
@@ -364,7 +408,7 @@
                 </materialDesign:DialogHost>
 
                 <!--Contacts dialog-->
-                <materialDesign:DialogHost Grid.Column="1" 
+                <materialDesign:DialogHost Grid.Column="1" Name="contactsDialog"
                          HorizontalAlignment="Center" 
                             VerticalAlignment="Center" DialogTheme="Light" IsOpen="{Binding IsOpenContactsDialog}" >
                    
@@ -519,7 +563,7 @@
 
                 <!--Add/Edit chat dialog-->
                 <materialDesign:DialogHost Grid.Column="1" 
-                         HorizontalAlignment="Center" 
+                         HorizontalAlignment="Center" Name="addEditChatDialog"
                             VerticalAlignment="Center" IsOpen="{Binding IsOpenAddEditChatDialog}">
                    
                     <materialDesign:DialogHost.DialogContent>
@@ -633,7 +677,7 @@
 
                 <!--Join chat dialog-->
                 <materialDesign:DialogHost Grid.Column="1" 
-                         HorizontalAlignment="Center" 
+                         HorizontalAlignment="Center" Name="joinChatDialog"
                             VerticalAlignment="Center" DialogTheme="Light" IsOpen="{Binding IsOpenJoinToChatDialog}">
                     <materialDesign:DialogHost.DialogContent >
                         <Grid Width="350" Height="500"  >
@@ -732,7 +776,7 @@
 
                 <!--Chat view profile dialog-->
                 <materialDesign:DialogHost Grid.Column="1" 
-                         HorizontalAlignment="Center" 
+                         HorizontalAlignment="Center" Name="chatProfileDialog"
                             VerticalAlignment="Center" DialogTheme="Light" IsOpen="{Binding IsOpenProfileInfoDialog}">
                   
                     <materialDesign:DialogHost.DialogContent >
@@ -798,7 +842,7 @@
 
                 <!--Chat view chat info dialog-->
                 <materialDesign:DialogHost Grid.Column="1"  IsOpen="{Binding IsOpenChatInfoDialog}"
-                         HorizontalAlignment="Center" 
+                         HorizontalAlignment="Center" Name="chatViewChatInfoDialog"
                             VerticalAlignment="Center" DialogTheme="Light"  >
                
                     <materialDesign:DialogHost.DialogContent >
@@ -943,6 +987,105 @@
                     </materialDesign:DialogHost.DialogContent>
                 </materialDesign:DialogHost>
 
+                <!--Invite contact to chat dialog-->
+                <materialDesign:DialogHost Grid.Column="1" 
+                         HorizontalAlignment="Center" Name="inviteContactDialog"
+                            VerticalAlignment="Center" DialogTheme="Light"  IsOpen="{Binding IsOpenAddMembersForChatDialog}">
+
+                    <materialDesign:DialogHost.DialogContent>
+                        <Grid Width="300" Height="400">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Margin="15,5" FontSize="20" Foreground="{StaticResource PrimaryHueMidBrush}" VerticalAlignment="Center" Grid.ColumnSpan="2" Text="{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.InviteContactDialogHeaderString, Mode=OneWay}"></TextBlock>
+
+                            <TextBlock Grid.Row="1" Grid.ColumnSpan="2" Margin="15,5" Foreground="{StaticResource PrimaryHueMidBrush}" VerticalAlignment="Center">
+                                <Run Text="{Binding CountMembers}"></Run><Run>/</Run><Run Text="{Binding SelectedChat.MaxUsers}"></Run> <Run Text="{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.MembersString, Mode=OneWay}"></Run>
+                            </TextBlock>
+                            <Grid Grid.Row="2"  Margin="15,0,35,0" Grid.ColumnSpan="2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition  Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Button  Style="{DynamicResource MaterialDesignToolButton}" >
+                                    <materialDesign:PackIcon Kind="Magnify" Opacity=".56" RenderTransformOrigin="0.5,0.5" Height="20" Width="20" >
+                                        <materialDesign:PackIcon.RenderTransform>
+                                            <TransformGroup>
+                                                <ScaleTransform ScaleY="1" ScaleX="-1"/>
+                                                <SkewTransform AngleY="0" AngleX="0"/>
+                                                <RotateTransform Angle="0"/>
+                                                <TranslateTransform/>
+                                            </TransformGroup>
+                                        </materialDesign:PackIcon.RenderTransform>
+                                    </materialDesign:PackIcon>
+                                </Button>
+                                <TextBox
+                         Margin="0,0,10,0"
+                         Grid.Column="1"                         
+                         materialDesign:HintAssist.Hint="{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.SearchString, Mode=OneWay}"
+                         materialDesign:TextFieldAssist.HasClearButton="True"                                  
+                         VerticalAlignment="Center" FontSize="15"
+                                    Text="{Binding UniqueNameContactForInvite, UpdateSourceTrigger=PropertyChanged}"/>
+
+                            </Grid>
+                            <!--List of contacts-->
+                            <ListBox Grid.ColumnSpan="2" Grid.Row="3" Margin="25,10" ItemsSource="{Binding Contacts}" SelectedItem="{Binding SelectedClientForInvite}" >
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border TextBlock.FontSize="15">
+                                            <Grid >
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                                    <ColumnDefinition></ColumnDefinition>
+
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions>
+
+
+                                                    <RowDefinition></RowDefinition>
+                                                    <RowDefinition></RowDefinition>
+                                                    <RowDefinition></RowDefinition>
+                                                    <RowDefinition></RowDefinition>
+
+                                                    <RowDefinition></RowDefinition>
+                                                    <RowDefinition></RowDefinition>
+
+
+                                                </Grid.RowDefinitions>
+                                                <Ellipse Width="50" Height="50"  Grid.RowSpan="4" Grid.Row="1">
+                                                    <Ellipse.Fill>
+                                                        <ImageBrush ImageSource="{Binding Photo}"  Stretch="UniformToFill"/>
+                                                    </Ellipse.Fill>
+                                                </Ellipse>
+
+                                                <TextBlock Grid.Column="1" FontWeight="SemiBold"  Grid.RowSpan="3" Margin="15,0"  TextAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Bottom" Text="{Binding Name}"></TextBlock>
+                                                <TextBlock Grid.Column="1" Grid.Row="3" Margin="15,0" Grid.RowSpan="2" VerticalAlignment="Bottom"  TextAlignment="Left">
+                                                    <Run Text="@"/><Run Text="{Binding UniqueName}"/>
+
+                                                </TextBlock>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+
+                            </ListBox>
+                            <Button  Grid.Row="4" Margin="10,5" Content="{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.InviteContactDialogButtonAddString, Mode=OneWay}" Command="{Binding InviteContactCommand}"></Button>
+                            <Button Grid.Row="4" Grid.Column="1" Margin="10,5" Content="{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.CancelButtonString, Mode=OneWay}" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"></Button>
+
+                        </Grid>
+                    </materialDesign:DialogHost.DialogContent>
+                </materialDesign:DialogHost>
                 <!--______________Left part of window______________-->
                 <Grid>
                     <Grid.RowDefinitions>
@@ -1081,9 +1224,9 @@
 
                             <materialDesign:PopupBox Grid.Column="2" Grid.RowSpan="2" VerticalAlignment="Top"  Margin="0,10,0,0"
                             Style="{StaticResource MaterialDesignToolForegroundPopupBox}" 
-                             PopupHorizontalOffset="75" Padding="2,0">
-                                <StackPanel Width="170" >
-                                    <!--IsPM-->
+                             PopupHorizontalOffset="80" Padding="2,0">
+                                <StackPanel Width="180">
+                                    <!--Profile info button-->
                                     <Button Content="{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.ViewProfileButtonString, Mode=OneWay}" Command="{Binding ProfileInfoDialogOpenCommand, UpdateSourceTrigger=PropertyChanged}">
                                         <Button.Style>
                                             <Style BasedOn="{StaticResource MaterialDesignPopupBoxButton}" TargetType="Button">
@@ -1098,7 +1241,7 @@
                                             </Style>
                                         </Button.Style>
                                     </Button>
-                                    <!--!IsPM-->
+                                    <!--Chat info dialog-->
                                     <Button Content="{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.ViewChatInfoButtonString, Mode=OneWay}" Command="{Binding ChatInfoDialogOpenCommand}">
                                         <Button.Style>
                                             <Style BasedOn="{StaticResource MaterialDesignPopupBoxButton}" TargetType="Button">
@@ -1113,8 +1256,7 @@
                                             </Style>
                                         </Button.Style>
                                     </Button>
-
-
+                                    <!--Manage chat button-->
                                     <Button Content="{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.ManageChatButtonString, Mode=OneWay}" Command="{Binding ManageChatDialogOpenCommand}">
                                         <Button.Style>
                                         <Style BasedOn="{StaticResource MaterialDesignPopupBoxButton}" TargetType="Button">
@@ -1129,7 +1271,38 @@
                                         </Style>
                                         </Button.Style>
                                     </Button>
+                                    <!--Leave from chat button-->
                                     <Button Content="{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.LeaveTheChatButtonString, Mode=OneWay}" Command="{Binding LeaveFromChatCommand}" >
+                                        <Button.Style>
+                                            <Style BasedOn="{StaticResource MaterialDesignPopupBoxButton}" TargetType="Button">
+                                                <Style.Triggers>
+                                                    <DataTrigger  Binding="{Binding SelectedChat.IsPM}" Value="False">
+                                                        <Setter Property="Visibility" Value="Visible"></Setter>
+                                                    </DataTrigger>
+                                                    <DataTrigger  Binding="{Binding SelectedChat.IsPM}" Value="True">
+                                                        <Setter Property="Visibility" Value="Collapsed"></Setter>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Button.Style>
+                                    </Button>
+                                    <!--Delete chat button-->
+                                    <Button Content="{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.DeleteChatButtonString, Mode=OneWay}" Command="{Binding DeleteChatCommand}" >
+                                        <Button.Style>
+                                            <Style BasedOn="{StaticResource MaterialDesignPopupBoxButton}" TargetType="Button">
+                                                <Style.Triggers>
+                                                    <DataTrigger  Binding="{Binding SelectedChat.IsPM}" Value="False">
+                                                        <Setter Property="Visibility" Value="Visible"></Setter>
+                                                    </DataTrigger>
+                                                    <DataTrigger  Binding="{Binding SelectedChat.IsPM}" Value="True">
+                                                        <Setter Property="Visibility" Value="Collapsed"></Setter>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Button.Style>
+                                    </Button>
+                                    <!--Add members button-->
+                                    <Button Content="{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.InviteMembersButtonString, Mode=OneWay}" Command="{Binding InviteContactsDialogOpenCommand}" >
                                         <Button.Style>
                                             <Style BasedOn="{StaticResource MaterialDesignPopupBoxButton}" TargetType="Button">
                                                 <Style.Triggers>

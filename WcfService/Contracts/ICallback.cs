@@ -17,6 +17,6 @@ namespace WcfService
         [OperationContract(IsOneWay = true)]
         void DeleteMessageForAll(int chatId, int messageId);
         [OperationContract(IsOneWay = true)]
-        void AddContactInChat(ChatDTO chat, InfoFile photo);
+        void AddChatForContact(ChatDTO chat, InfoFile photo);
     }
 }

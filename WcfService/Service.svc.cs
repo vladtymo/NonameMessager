@@ -501,7 +501,7 @@ namespace WcfService
         public void JoinToChat(int clientId, string chatUniqueName, bool isAdmin, out ChatDTO newChat)
         {
             var chat = repositories.ChatRepos.Get().Where(c => c.UniqueName == chatUniqueName).FirstOrDefault();
-            if (chat != null && !IsThereClientInChat(clientId, chat.Id) && IsChatExist(chatUniqueName))
+            if (chat != null && !IsThereClientInChat(clientId, chat.Id) && IsChatExist(chatUniqueName) && chat.ChatMembers.Count()<chat.MaxUsers)
             {
                 repositories.ChatMemberRepos.Insert(new ChatMember() { ClientId = clientId, ChatId = chat.Id, IsAdmin = isAdmin, DateLastReadMessage = DateTime.Now });
                 repositories.Save();
@@ -551,6 +551,39 @@ namespace WcfService
             }
             else
                 result = false;
+        }
+        public void InviteContact(int chatId, int contactId,out bool result)
+        {
+            var chat = repositories.ChatRepos.Get().FirstOrDefault(c => c.Id == chatId && !c.IsPM);
+            var client = repositories.ClientRepos.Get().FirstOrDefault(c => c.Id == contactId);
+            var res=chat.ChatMembers.FirstOrDefault(cm => cm.ClientId == contactId);
+            if(chat!=null && client != null && !IsThereClientInChat(contactId, chatId) && chat.ChatMembers.Count() < chat.MaxUsers)
+            {
+                repositories.ChatMemberRepos.Insert(new ChatMember() { ClientId = contactId, ChatId = chat.Id, IsAdmin = false, DateLastReadMessage = DateTime.Now });
+                repositories.Save();
+                var clientCallback=callbacks.FirstOrDefault(c => c.ClientId == contactId);
+                if (clientCallback != null)
+                    clientCallback.Callback.AddChatForContact(chatMapper.Map<ChatDTO>(chat), GetChatPhoto(chat.Id));
+
+                foreach (var item in TakeClients(chat.Id))
+                {
+                    foreach (var item2 in callbacks)
+                    {
+                        if (item2.ClientId == item.Id && item2.ClientId != contactId)
+                            try
+                            {
+                                item2.Callback.Joined(clientMapper.Map<ClientDTO>(client), chat.Id, GetPhoto(contactId));
+                            }
+                            catch (Exception)
+                            { }
+                    }
+                }
+                result = true;
+            }
+            else
+            {
+                result = false;
+            }
         }
         public IEnumerable<ChatDTO> TakeChats(int clientId)
         {

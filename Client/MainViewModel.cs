@@ -67,6 +67,8 @@ namespace Client
         private ClientViewModel selectedContact;
         private ClientViewModel selectedClientForAdd;
 
+        private ClientViewModel selectedClientForInvite;
+
 
         private bool isOpenLoginRegistrationDialog;
         private bool isOpenProfileDialog;
@@ -76,6 +78,8 @@ namespace Client
 
         private bool isOpenJoinToChatDialog;
         private bool isOpenChatInfoDialog;
+
+        private bool isOpenAddMembersForChatDialog;
 
         private bool isAddChatDialog;
 
@@ -91,6 +95,7 @@ namespace Client
         private string textMessage;
         private string uniqueNameContact;
         private string uniqueNameChat;
+        private string uniqueNameContactForInvite;
 
         private int countMembers;
 
@@ -113,6 +118,7 @@ namespace Client
         public bool IsOpenInfoDialog { get { return isOpenInfoDialog; } set { SetProperty(ref isOpenInfoDialog, value); } }
         public bool IsOpenProfileInfoDialog { get { return isOpenProfileInfoDialog; } set { SetProperty(ref isOpenProfileInfoDialog, value); } }
 
+        public bool IsOpenAddMembersForChatDialog { get { return isOpenAddMembersForChatDialog; } set { SetProperty(ref isOpenAddMembersForChatDialog, value); } }
 
 
 
@@ -125,6 +131,8 @@ namespace Client
         public string Password { get => password; set => SetProperty(ref password, value); }
         public string TextMessage { get => textMessage; set => SetProperty(ref textMessage, value); }
         public string UniqueNameContact { get => uniqueNameContact; set => SetProperty(ref uniqueNameContact, value); }
+        public string UniqueNameContactForInvite { get => uniqueNameContactForInvite; set => SetProperty(ref uniqueNameContactForInvite, value); }
+
         public string UniqueNameChat { get => uniqueNameChat; set => SetProperty(ref uniqueNameChat, value); }
         public int CountMembers { get => countMembers; set => SetProperty(ref countMembers, value); }
 
@@ -142,6 +150,7 @@ namespace Client
         public ClientViewModel SelectedContact { get { return selectedContact; } set { SetProperty(ref selectedContact, value); } }
         public ClientViewModel SelectedClientForAdd { get { return selectedClientForAdd; } set { SetProperty(ref selectedClientForAdd, value); } }
 
+        public ClientViewModel SelectedClientForInvite { get { return selectedClientForInvite; } set { SetProperty(ref selectedClientForInvite, value); } }
 
 
         public Language SelectedLanguage { get { return selectedLanguage; } set { SetProperty(ref selectedLanguage, value); } }
@@ -149,7 +158,77 @@ namespace Client
 
 
         #endregion
+        #region Commands
+        private Command setProfileDialogOpenCommand;
+        private Command contactsDialogOpenCommand;
+        private Command chatAddDialogOpenCommand;
+        private Command joinToChatDialogOpenCommand;
+        private Command chatInfoDialogOpenCommand;
+        private Command manageChatDialogOpenCommand;
+        private Command profileInfoDialogOpenCommand;
+        private Command inviteContactsDialogOpenCommand;
 
+        private Command loginCommand;
+        private Command signUpCommand;
+        private Command exitCommand;
+        private Command closedCommand;
+
+        private Command setProfileCommand;
+        private Command setPhotoCommand;
+
+        private Command addContactCommand;
+        private Command deleteContactCommand;
+
+        private Command addChatCommand;
+        private Command setChatPhotoCommand;
+        private Command setChatPropertiesCommand;
+        private Command createOrSelectPMChatCommand;
+        private Command deleteChatCommand;
+
+        private Command inviteContactCommand;
+        private Command joinToChatCommand;
+        private Command leaveFromChatCommand;
+
+        private Command sendMessageCommand;
+
+
+
+        public ICommand SetProfileDialogOpenCommand => setProfileDialogOpenCommand;
+        public ICommand ContactsDialogOpenCommand => contactsDialogOpenCommand;
+        public ICommand ChatAddDialogOpenCommand => chatAddDialogOpenCommand;
+        public ICommand JoinToChatDialogOpenCommand => joinToChatDialogOpenCommand;
+        public ICommand ChatInfoDialogOpenCommand => chatInfoDialogOpenCommand;
+        public ICommand ManageChatDialogOpenCommand => manageChatDialogOpenCommand;
+        public ICommand ProfileInfoDialogOpenCommand => profileInfoDialogOpenCommand;
+        public ICommand InviteContactsDialogOpenCommand => inviteContactsDialogOpenCommand;
+
+
+        public ICommand LoginCommand => loginCommand;
+        public ICommand SignUpCommand => signUpCommand;
+        public ICommand ExitCommand => exitCommand;
+        public ICommand ClosedCommand => closedCommand;
+
+        public ICommand SetProfileCommand => setProfileCommand;
+        public ICommand SetPhotoCommand => setPhotoCommand;
+
+        public ICommand AddContactCommand => addContactCommand;
+        public ICommand DeleteContactCommand => deleteContactCommand;
+
+        public ICommand AddChatCommand => addChatCommand;
+        public ICommand SetChatPhotoCommand => setChatPhotoCommand;
+        public ICommand JoinToChatCommand => joinToChatCommand;
+        public ICommand SetChatPropertiesCommand => setChatPropertiesCommand;
+        public ICommand CreateOrSelectPMChatCommand => createOrSelectPMChatCommand;
+        public ICommand DeleteChatCommand => deleteChatCommand;
+        public ICommand LeaveFromChatCommand => leaveFromChatCommand;
+
+        public ICommand InviteContactCommand => inviteContactCommand;
+
+
+        public ICommand SendMessageCommand => sendMessageCommand;
+
+
+        #endregion
         public MainViewModel()
         {
             messageService = new MessageServiceClient(new InstanceContext(this));
@@ -178,6 +257,7 @@ namespace Client
             currentClient = new ClientViewModel() { Account = new AccountViewModel() };
             clientForChange = new ClientViewModel() { Account = new AccountViewModel() };
             chatForChange = new ChatViewModel();           
+          
             PropertyChanged += (sender, args) =>
             {
 
@@ -202,6 +282,7 @@ namespace Client
                         IsChatSelected = true;
                     }
                     deleteChatCommand.RaiseCanExecuteChanged();
+                    inviteContactsDialogOpenCommand.RaiseCanExecuteChanged();
                 }
                 else if(args.PropertyName == nameof(UniqueNameContact))
                 {
@@ -214,13 +295,16 @@ namespace Client
            
 
                 }
+                else if (args.PropertyName == nameof(UniqueNameContactForInvite))
+                {
+                    SearchContactsForInvite();
+                }
                 else if (args.PropertyName == nameof(UniqueNameChat))
                 {
                     if (String.IsNullOrEmpty(UniqueNameChat))
                         joinToChatChats.Clear();
                     else 
                     SearchToJoinChats();
-
                   
                 }
                 else if (args.PropertyName == nameof(TextMessage))
@@ -261,7 +345,10 @@ namespace Client
                     profileInfoDialogOpenCommand.RaiseCanExecuteChanged();
 
                 }
-
+                else if (args.PropertyName == nameof(SelectedClientForInvite))
+                {
+                    inviteContactCommand.RaiseCanExecuteChanged();
+                }
             };
 
             loginCommand = new DelegateCommand(Login);
@@ -277,6 +364,7 @@ namespace Client
             chatInfoDialogOpenCommand = new DelegateCommand(ShowChatInfo);
             profileInfoDialogOpenCommand = new DelegateCommand(ShowProfileInfo, () => OpponentClient != null);
             manageChatDialogOpenCommand = new DelegateCommand(ShowEditChatDialog);
+            inviteContactsDialogOpenCommand = new DelegateCommand(ShowAddMembersForChat, () => SelectedChat != null);
 
             setProfileCommand = new DelegateCommand(SetProfile);
             setPhotoCommand = new DelegateCommand(SetPhoto);
@@ -291,12 +379,11 @@ namespace Client
             setChatPhotoCommand = new DelegateCommand(SetChatPhoto);
             createOrSelectPMChatCommand = new DelegateCommand(CreateOrSelectPMChat, () => SelectedContact != null || SelectedClientForAdd != null);
             deleteChatCommand = new DelegateCommand(DeleteChat, () => SelectedChat != null);
+            inviteContactCommand = new DelegateCommand(InviteContact, () => SelectedClientForInvite != null);
 
             sendMessageCommand = new DelegateCommand(SendMessage, ()=>!string.IsNullOrEmpty(TextMessage));
            
-            IsOpenLoginRegistrationDialog = true;
-
-
+             IsOpenLoginRegistrationDialog = true;
             clientService.GetPathToPhotoAsync(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(Environment.CurrentDirectory).FullName).FullName).FullName, "WcfService"));
             InitializeLanguages();
             GetRegistry();
@@ -324,9 +411,12 @@ namespace Client
                     {
                         ReplacePMChatName(item);
                         var companion = mapper.Map<ClientViewModel>(chatMemberService.TakeClients(item.Id).FirstOrDefault(cm => cm.Id != CurrentClient.Id));
-                        var photo = clientService.GetPhotoAsync(companion.Id).Result;
-                        if (photo != null) 
-                            item.Photo = ToImage(photo.Data);
+                        if (companion != null)
+                        {
+                            var photo = clientService.GetPhotoAsync(companion.Id).Result;
+                            if (photo != null)
+                                item.Photo = ToImage(photo.Data);
+                        }
                     }
                     allChats.Add(item);
                     chats.Add(item);
@@ -714,6 +804,13 @@ namespace Client
         {
             IsOpenProfileInfoDialog = true;
         }
+       
+        public void ShowAddMembersForChat()
+        {
+            UniqueNameContact = String.Empty;
+            SearchContactsForInvite();
+            IsOpenAddMembersForChatDialog = true;
+        }
         public void Disconnect()
         {
             clientService.DisconnectAsync();
@@ -849,6 +946,26 @@ namespace Client
                 }
             }
         }
+        public void SearchContactsForInvite()
+        {
+            contacts.Clear();
+            if (String.IsNullOrEmpty(UniqueNameContact))
+            {
+                foreach (var item in allContacts)
+                {
+                    contacts.Add(item);
+                }
+            }
+            else
+            {
+                var res = allContacts.Where(c => c.UniqueName.Contains(UniqueNameContact));
+                foreach (var item in res)
+                {
+                  if(members.FirstOrDefault(m=>m.Id==item.Id)==null)                 
+                    contacts.Add(item);
+                }
+            }
+        }
         public void SearchClients()
         {
             if (!String.IsNullOrEmpty(UniqueNameContact))
@@ -857,7 +974,7 @@ namespace Client
                 var result = mapper.Map<IEnumerable<ClientViewModel>>(clientService.SearchClients(UniqueNameContact));
                 foreach (var item in result)
                 {
-                    if (allContacts.Where(c => c.Id == item.Id).FirstOrDefault() == null)
+                    if (allContacts.Where(c => c.Id == item.Id).FirstOrDefault() == null && item.Id!=CurrentClient.Id)
                     {
                         GetPhoto(item);
                         clientsForAdd.Add(item);
@@ -910,87 +1027,37 @@ namespace Client
         {
 
         }
-        public void AddContactInChat(ChatDTO chat, InfoFile photo)
+        public void AddChatForContact(ChatDTO chat, InfoFile photo)
         {
-
+            if (chat!=null& allChats.FirstOrDefault(c => c.Id == chat.Id) == null)
+            {
+                var newChat = mapper.Map<ChatViewModel>(chat);
+                if(photo!=null)
+                newChat.Photo = ToImage(photo.Data);
+                
+                allChats.Add(newChat);
+                Search();
+            }
         }
 
+        public void InviteContact()
+        {
+          if(chatMemberService.InviteContactAsync(SelectedChat.Id, SelectedClientForInvite.Id).Result)
+            {
+                OpenInfoDialog(Resources.SuccessfulContactInviteInChatString);             
+            }
+            else
+            {
+                OpenInfoDialog(Resources.FailedContactInviteInChatString);
+            }
+        }
 
 
         private void ReplacePMChatName(ChatViewModel chat)
         {
             chat.Name = chat.Name.Replace(CurrentClient.Name, "");
         }
-        #region Commands
-        private Command setProfileDialogOpenCommand;
-        private Command contactsDialogOpenCommand;
-        private Command chatAddDialogOpenCommand;
-        private Command joinToChatDialogOpenCommand;
-        private Command chatInfoDialogOpenCommand;
-        private Command manageChatDialogOpenCommand;
-        private Command profileInfoDialogOpenCommand;
-
-
-
-        private Command loginCommand;
-        private Command signUpCommand;
-        private Command exitCommand;
-        private Command closedCommand;
-
-        private Command setProfileCommand;
-        private Command setPhotoCommand;
-
-        private Command addContactCommand;
-        private Command deleteContactCommand;
-
-        private Command addChatCommand;
-        private Command setChatPhotoCommand;
-        private Command setChatPropertiesCommand;
-        private Command createOrSelectPMChatCommand;
-        private Command deleteChatCommand;
-
-        private Command joinToChatCommand;
-        private Command leaveFromChatCommand;
-
-        private Command sendMessageCommand;
-
-
-
-        public ICommand SetProfileDialogOpenCommand => setProfileDialogOpenCommand;
-        public ICommand ContactsDialogOpenCommand => contactsDialogOpenCommand;
-        public ICommand ChatAddDialogOpenCommand => chatAddDialogOpenCommand;
-        public ICommand JoinToChatDialogOpenCommand => joinToChatDialogOpenCommand;
-        public ICommand ChatInfoDialogOpenCommand => chatInfoDialogOpenCommand;
-        public ICommand ManageChatDialogOpenCommand => manageChatDialogOpenCommand;
-        public ICommand ProfileInfoDialogOpenCommand => profileInfoDialogOpenCommand;
-
-
-
-        public ICommand LoginCommand => loginCommand;
-        public ICommand SignUpCommand => signUpCommand;
-        public ICommand ExitCommand => exitCommand;
-        public ICommand ClosedCommand => closedCommand;
-
-        public ICommand SetProfileCommand => setProfileCommand;
-        public ICommand SetPhotoCommand => setPhotoCommand;
-
-        public ICommand AddContactCommand => addContactCommand;
-        public ICommand DeleteContactCommand => deleteContactCommand;
-
-        public ICommand AddChatCommand => addChatCommand;
-        public ICommand SetChatPhotoCommand => setChatPhotoCommand;
-        public ICommand JoinToChatCommand => joinToChatCommand;
-        public ICommand SetChatPropertiesCommand => setChatPropertiesCommand;
-        public ICommand CreateOrSelectPMChatCommand => createOrSelectPMChatCommand;
-        public ICommand DeleteChatCommand => deleteChatCommand;
-
-        public ICommand LeaveFromChatCommand => leaveFromChatCommand;
-
-
-        public ICommand SendMessageCommand => sendMessageCommand;
-
-
-        #endregion
+       
 
     }
     class Language : ViewModelBase
