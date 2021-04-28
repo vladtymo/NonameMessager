@@ -14,5 +14,8 @@ namespace WcfService
         void SendMessage(int clientId, int chatId, MessageInfo message);
         [OperationContract]
         IEnumerable<MessageDTO> TakeMessages(int chatId);
+
+        [OperationContract]
+        void DeleteMessageForAll(int messageId, out bool result);
     }
 }

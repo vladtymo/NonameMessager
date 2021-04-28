@@ -501,7 +501,7 @@ namespace WcfService
         public void JoinToChat(int clientId, string chatUniqueName, bool isAdmin, out ChatDTO newChat)
         {
             var chat = repositories.ChatRepos.Get().Where(c => c.UniqueName == chatUniqueName).FirstOrDefault();
-            if (chat != null && !IsThereClientInChat(clientId, chat.Id) && IsChatExist(chatUniqueName) && chat.ChatMembers.Count()<chat.MaxUsers)
+            if (chat != null && !IsThereClientInChat(clientId, chat.Id) && IsChatExist(chatUniqueName) && (chat.ChatMembers == null || chat.ChatMembers.Count()<chat.MaxUsers))
             {
                 repositories.ChatMemberRepos.Insert(new ChatMember() { ClientId = clientId, ChatId = chat.Id, IsAdmin = isAdmin, DateLastReadMessage = DateTime.Now });
                 repositories.Save();
@@ -632,6 +632,42 @@ namespace WcfService
         {
             var result = repositories.MessageRepos.Get().Where(c => c.ChatId == chatId);
             return messageMapper.Map<IEnumerable<MessageDTO>>(result);
+        }
+
+        public bool IsMessageExist(int messageId)
+        {
+            var message = repositories.MessageRepos.Get().Where(m => m.Id == messageId).FirstOrDefault();
+            if (message != null) return true;
+            return false;
+        }
+
+        public void DeleteMessageForAll(int messageId, out bool result)
+        {
+
+            if (IsMessageExist(messageId))
+            {
+                int chatId = repositories.MessageRepos.Get().FirstOrDefault(c => c.Id == messageId).ChatId;
+                repositories.MessageRepos.Delete(messageId);
+                repositories.Save();
+                result = true;
+                foreach (var item in TakeClients(chatId))
+                {
+                    foreach (var item2 in callbacks)
+                    {
+                        if (item2.ClientId == item.Id)
+                            try
+                            {
+                                item2.Callback.RemoveMessageForAll(chatId,messageId);
+                            }
+                            catch (Exception)
+                            { }
+                    }
+                }
+
+            }
+            else
+                result = false;
+
         }
         #endregion
     }
