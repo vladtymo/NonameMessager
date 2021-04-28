@@ -540,7 +540,7 @@
       </wsp:All>
     </wsp:ExactlyOne>
   </wsp:Policy>
-  <wsp:Policy wsu:Id="WSDualHttpBinding_IChatService_DeleteMessageForAll_output_policy">
+  <wsp:Policy wsu:Id="WSDualHttpBinding_IChatService_RemoveMessageForAll_output_policy">
     <wsp:ExactlyOne>
       <wsp:All>
         <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
@@ -1172,7 +1172,7 @@
       </wsp:All>
     </wsp:ExactlyOne>
   </wsp:Policy>
-  <wsp:Policy wsu:Id="WSDualHttpBinding_IClientService_DeleteMessageForAll_output_policy">
+  <wsp:Policy wsu:Id="WSDualHttpBinding_IClientService_RemoveMessageForAll_output_policy">
     <wsp:ExactlyOne>
       <wsp:All>
         <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
@@ -1574,7 +1574,7 @@
       </wsp:All>
     </wsp:ExactlyOne>
   </wsp:Policy>
-  <wsp:Policy wsu:Id="WSDualHttpBinding_IContactService_DeleteMessageForAll_output_policy">
+  <wsp:Policy wsu:Id="WSDualHttpBinding_IContactService_RemoveMessageForAll_output_policy">
     <wsp:ExactlyOne>
       <wsp:All>
         <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
@@ -2068,7 +2068,7 @@
       </wsp:All>
     </wsp:ExactlyOne>
   </wsp:Policy>
-  <wsp:Policy wsu:Id="WSDualHttpBinding_IChatMemberService_DeleteMessageForAll_output_policy">
+  <wsp:Policy wsu:Id="WSDualHttpBinding_IChatMemberService_RemoveMessageForAll_output_policy">
     <wsp:ExactlyOne>
       <wsp:All>
         <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
@@ -2286,6 +2286,52 @@
       </wsp:All>
     </wsp:ExactlyOne>
   </wsp:Policy>
+  <wsp:Policy wsu:Id="WSDualHttpBinding_IMessageService_DeleteMessageForAll_Input_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="Sequence" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="SequenceAcknowledgement" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="AckRequested" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="ChannelInstance" Namespace="http://schemas.microsoft.com/ws/2005/02/duplex" />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="WSDualHttpBinding_IMessageService_DeleteMessageForAll_output_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="Sequence" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="SequenceAcknowledgement" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="AckRequested" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="ChannelInstance" Namespace="http://schemas.microsoft.com/ws/2005/02/duplex" />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
   <wsp:Policy wsu:Id="WSDualHttpBinding_IMessageService_TakeMessage_output_policy">
     <wsp:ExactlyOne>
       <wsp:All>
@@ -2401,7 +2447,7 @@
       </wsp:All>
     </wsp:ExactlyOne>
   </wsp:Policy>
-  <wsp:Policy wsu:Id="WSDualHttpBinding_IMessageService_DeleteMessageForAll_output_policy">
+  <wsp:Policy wsu:Id="WSDualHttpBinding_IMessageService_RemoveMessageForAll_output_policy">
     <wsp:ExactlyOne>
       <wsp:All>
         <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
@@ -2511,8 +2557,8 @@
   <wsdl:message name="IChatService_DeleteChatForAll_OutputCallbackMessage">
     <wsdl:part name="parameters" element="tns:DeleteChatForAll" />
   </wsdl:message>
-  <wsdl:message name="IChatService_DeleteMessageForAll_OutputCallbackMessage">
-    <wsdl:part name="parameters" element="tns:DeleteMessageForAll" />
+  <wsdl:message name="IChatService_RemoveMessageForAll_OutputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:RemoveMessageForAll" />
   </wsdl:message>
   <wsdl:message name="IChatService_AddChatForContact_OutputCallbackMessage">
     <wsdl:part name="parameters" element="tns:AddChatForContact" />
@@ -2580,8 +2626,8 @@
   <wsdl:message name="IClientService_DeleteChatForAll_OutputCallbackMessage">
     <wsdl:part name="parameters" element="tns:DeleteChatForAll" />
   </wsdl:message>
-  <wsdl:message name="IClientService_DeleteMessageForAll_OutputCallbackMessage">
-    <wsdl:part name="parameters" element="tns:DeleteMessageForAll" />
+  <wsdl:message name="IClientService_RemoveMessageForAll_OutputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:RemoveMessageForAll" />
   </wsdl:message>
   <wsdl:message name="IClientService_AddChatForContact_OutputCallbackMessage">
     <wsdl:part name="parameters" element="tns:AddChatForContact" />
@@ -2619,8 +2665,8 @@
   <wsdl:message name="IContactService_DeleteChatForAll_OutputCallbackMessage">
     <wsdl:part name="parameters" element="tns:DeleteChatForAll" />
   </wsdl:message>
-  <wsdl:message name="IContactService_DeleteMessageForAll_OutputCallbackMessage">
-    <wsdl:part name="parameters" element="tns:DeleteMessageForAll" />
+  <wsdl:message name="IContactService_RemoveMessageForAll_OutputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:RemoveMessageForAll" />
   </wsdl:message>
   <wsdl:message name="IContactService_AddChatForContact_OutputCallbackMessage">
     <wsdl:part name="parameters" element="tns:AddChatForContact" />
@@ -2670,8 +2716,8 @@
   <wsdl:message name="IChatMemberService_DeleteChatForAll_OutputCallbackMessage">
     <wsdl:part name="parameters" element="tns:DeleteChatForAll" />
   </wsdl:message>
-  <wsdl:message name="IChatMemberService_DeleteMessageForAll_OutputCallbackMessage">
-    <wsdl:part name="parameters" element="tns:DeleteMessageForAll" />
+  <wsdl:message name="IChatMemberService_RemoveMessageForAll_OutputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:RemoveMessageForAll" />
   </wsdl:message>
   <wsdl:message name="IChatMemberService_AddChatForContact_OutputCallbackMessage">
     <wsdl:part name="parameters" element="tns:AddChatForContact" />
@@ -2684,6 +2730,12 @@
   </wsdl:message>
   <wsdl:message name="IMessageService_TakeMessages_OutputMessage">
     <wsdl:part name="parameters" element="tns:TakeMessagesResponse" />
+  </wsdl:message>
+  <wsdl:message name="IMessageService_DeleteMessageForAll_InputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteMessageForAll" />
+  </wsdl:message>
+  <wsdl:message name="IMessageService_DeleteMessageForAll_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteMessageForAllResponse" />
   </wsdl:message>
   <wsdl:message name="IMessageService_TakeMessage_OutputCallbackMessage">
     <wsdl:part name="parameters" element="tns:TakeMessage" />
@@ -2700,8 +2752,8 @@
   <wsdl:message name="IMessageService_DeleteChatForAll_OutputCallbackMessage">
     <wsdl:part name="parameters" element="tns:DeleteChatForAll" />
   </wsdl:message>
-  <wsdl:message name="IMessageService_DeleteMessageForAll_OutputCallbackMessage">
-    <wsdl:part name="parameters" element="tns:DeleteMessageForAll" />
+  <wsdl:message name="IMessageService_RemoveMessageForAll_OutputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:RemoveMessageForAll" />
   </wsdl:message>
   <wsdl:message name="IMessageService_AddChatForContact_OutputCallbackMessage">
     <wsdl:part name="parameters" element="tns:AddChatForContact" />
@@ -2750,8 +2802,8 @@
     <wsdl:operation name="DeleteChatForAll">
       <wsdl:output wsaw:Action="http://tempuri.org/IChatService/DeleteChatForAll" message="tns:IChatService_DeleteChatForAll_OutputCallbackMessage" />
     </wsdl:operation>
-    <wsdl:operation name="DeleteMessageForAll">
-      <wsdl:output wsaw:Action="http://tempuri.org/IChatService/DeleteMessageForAll" message="tns:IChatService_DeleteMessageForAll_OutputCallbackMessage" />
+    <wsdl:operation name="RemoveMessageForAll">
+      <wsdl:output wsaw:Action="http://tempuri.org/IChatService/RemoveMessageForAll" message="tns:IChatService_RemoveMessageForAll_OutputCallbackMessage" />
     </wsdl:operation>
     <wsdl:operation name="AddChatForContact">
       <wsdl:output wsaw:Action="http://tempuri.org/IChatService/AddChatForContact" message="tns:IChatService_AddChatForContact_OutputCallbackMessage" />
@@ -2805,8 +2857,8 @@
     <wsdl:operation name="DeleteChatForAll">
       <wsdl:output wsaw:Action="http://tempuri.org/IClientService/DeleteChatForAll" message="tns:IClientService_DeleteChatForAll_OutputCallbackMessage" />
     </wsdl:operation>
-    <wsdl:operation name="DeleteMessageForAll">
-      <wsdl:output wsaw:Action="http://tempuri.org/IClientService/DeleteMessageForAll" message="tns:IClientService_DeleteMessageForAll_OutputCallbackMessage" />
+    <wsdl:operation name="RemoveMessageForAll">
+      <wsdl:output wsaw:Action="http://tempuri.org/IClientService/RemoveMessageForAll" message="tns:IClientService_RemoveMessageForAll_OutputCallbackMessage" />
     </wsdl:operation>
     <wsdl:operation name="AddChatForContact">
       <wsdl:output wsaw:Action="http://tempuri.org/IClientService/AddChatForContact" message="tns:IClientService_AddChatForContact_OutputCallbackMessage" />
@@ -2840,8 +2892,8 @@
     <wsdl:operation name="DeleteChatForAll">
       <wsdl:output wsaw:Action="http://tempuri.org/IContactService/DeleteChatForAll" message="tns:IContactService_DeleteChatForAll_OutputCallbackMessage" />
     </wsdl:operation>
-    <wsdl:operation name="DeleteMessageForAll">
-      <wsdl:output wsaw:Action="http://tempuri.org/IContactService/DeleteMessageForAll" message="tns:IContactService_DeleteMessageForAll_OutputCallbackMessage" />
+    <wsdl:operation name="RemoveMessageForAll">
+      <wsdl:output wsaw:Action="http://tempuri.org/IContactService/RemoveMessageForAll" message="tns:IContactService_RemoveMessageForAll_OutputCallbackMessage" />
     </wsdl:operation>
     <wsdl:operation name="AddChatForContact">
       <wsdl:output wsaw:Action="http://tempuri.org/IContactService/AddChatForContact" message="tns:IContactService_AddChatForContact_OutputCallbackMessage" />
@@ -2883,8 +2935,8 @@
     <wsdl:operation name="DeleteChatForAll">
       <wsdl:output wsaw:Action="http://tempuri.org/IChatMemberService/DeleteChatForAll" message="tns:IChatMemberService_DeleteChatForAll_OutputCallbackMessage" />
     </wsdl:operation>
-    <wsdl:operation name="DeleteMessageForAll">
-      <wsdl:output wsaw:Action="http://tempuri.org/IChatMemberService/DeleteMessageForAll" message="tns:IChatMemberService_DeleteMessageForAll_OutputCallbackMessage" />
+    <wsdl:operation name="RemoveMessageForAll">
+      <wsdl:output wsaw:Action="http://tempuri.org/IChatMemberService/RemoveMessageForAll" message="tns:IChatMemberService_RemoveMessageForAll_OutputCallbackMessage" />
     </wsdl:operation>
     <wsdl:operation name="AddChatForContact">
       <wsdl:output wsaw:Action="http://tempuri.org/IChatMemberService/AddChatForContact" message="tns:IChatMemberService_AddChatForContact_OutputCallbackMessage" />
@@ -2897,6 +2949,10 @@
     <wsdl:operation name="TakeMessages">
       <wsdl:input wsaw:Action="http://tempuri.org/IMessageService/TakeMessages" message="tns:IMessageService_TakeMessages_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IMessageService/TakeMessagesResponse" message="tns:IMessageService_TakeMessages_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="DeleteMessageForAll">
+      <wsdl:input wsaw:Action="http://tempuri.org/IMessageService/DeleteMessageForAll" message="tns:IMessageService_DeleteMessageForAll_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IMessageService/DeleteMessageForAllResponse" message="tns:IMessageService_DeleteMessageForAll_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="TakeMessage">
       <wsdl:output wsaw:Action="http://tempuri.org/IMessageService/TakeMessage" message="tns:IMessageService_TakeMessage_OutputCallbackMessage" />
@@ -2913,8 +2969,8 @@
     <wsdl:operation name="DeleteChatForAll">
       <wsdl:output wsaw:Action="http://tempuri.org/IMessageService/DeleteChatForAll" message="tns:IMessageService_DeleteChatForAll_OutputCallbackMessage" />
     </wsdl:operation>
-    <wsdl:operation name="DeleteMessageForAll">
-      <wsdl:output wsaw:Action="http://tempuri.org/IMessageService/DeleteMessageForAll" message="tns:IMessageService_DeleteMessageForAll_OutputCallbackMessage" />
+    <wsdl:operation name="RemoveMessageForAll">
+      <wsdl:output wsaw:Action="http://tempuri.org/IMessageService/RemoveMessageForAll" message="tns:IMessageService_RemoveMessageForAll_OutputCallbackMessage" />
     </wsdl:operation>
     <wsdl:operation name="AddChatForContact">
       <wsdl:output wsaw:Action="http://tempuri.org/IMessageService/AddChatForContact" message="tns:IMessageService_AddChatForContact_OutputCallbackMessage" />
@@ -3035,10 +3091,10 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="DeleteMessageForAll">
-      <soap12:operation soapAction="http://tempuri.org/IChatService/DeleteMessageForAll" style="document" />
+    <wsdl:operation name="RemoveMessageForAll">
+      <soap12:operation soapAction="http://tempuri.org/IChatService/RemoveMessageForAll" style="document" />
       <wsdl:output>
-        <wsp:PolicyReference URI="#WSDualHttpBinding_IChatService_DeleteMessageForAll_output_policy" />
+        <wsp:PolicyReference URI="#WSDualHttpBinding_IChatService_RemoveMessageForAll_output_policy" />
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
@@ -3176,10 +3232,10 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="DeleteMessageForAll">
-      <soap12:operation soapAction="http://tempuri.org/IClientService/DeleteMessageForAll" style="document" />
+    <wsdl:operation name="RemoveMessageForAll">
+      <soap12:operation soapAction="http://tempuri.org/IClientService/RemoveMessageForAll" style="document" />
       <wsdl:output>
-        <wsp:PolicyReference URI="#WSDualHttpBinding_IClientService_DeleteMessageForAll_output_policy" />
+        <wsp:PolicyReference URI="#WSDualHttpBinding_IClientService_RemoveMessageForAll_output_policy" />
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
@@ -3262,10 +3318,10 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="DeleteMessageForAll">
-      <soap12:operation soapAction="http://tempuri.org/IContactService/DeleteMessageForAll" style="document" />
+    <wsdl:operation name="RemoveMessageForAll">
+      <soap12:operation soapAction="http://tempuri.org/IContactService/RemoveMessageForAll" style="document" />
       <wsdl:output>
-        <wsp:PolicyReference URI="#WSDualHttpBinding_IContactService_DeleteMessageForAll_output_policy" />
+        <wsp:PolicyReference URI="#WSDualHttpBinding_IContactService_RemoveMessageForAll_output_policy" />
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
@@ -3370,10 +3426,10 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="DeleteMessageForAll">
-      <soap12:operation soapAction="http://tempuri.org/IChatMemberService/DeleteMessageForAll" style="document" />
+    <wsdl:operation name="RemoveMessageForAll">
+      <soap12:operation soapAction="http://tempuri.org/IChatMemberService/RemoveMessageForAll" style="document" />
       <wsdl:output>
-        <wsp:PolicyReference URI="#WSDualHttpBinding_IChatMemberService_DeleteMessageForAll_output_policy" />
+        <wsp:PolicyReference URI="#WSDualHttpBinding_IChatMemberService_RemoveMessageForAll_output_policy" />
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
@@ -3403,6 +3459,17 @@
       </wsdl:input>
       <wsdl:output>
         <wsp:PolicyReference URI="#WSDualHttpBinding_IMessageService_TakeMessages_output_policy" />
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteMessageForAll">
+      <soap12:operation soapAction="http://tempuri.org/IMessageService/DeleteMessageForAll" style="document" />
+      <wsdl:input>
+        <wsp:PolicyReference URI="#WSDualHttpBinding_IMessageService_DeleteMessageForAll_Input_policy" />
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <wsp:PolicyReference URI="#WSDualHttpBinding_IMessageService_DeleteMessageForAll_output_policy" />
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
@@ -3441,10 +3508,10 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="DeleteMessageForAll">
-      <soap12:operation soapAction="http://tempuri.org/IMessageService/DeleteMessageForAll" style="document" />
+    <wsdl:operation name="RemoveMessageForAll">
+      <soap12:operation soapAction="http://tempuri.org/IMessageService/RemoveMessageForAll" style="document" />
       <wsdl:output>
-        <wsp:PolicyReference URI="#WSDualHttpBinding_IMessageService_DeleteMessageForAll_output_policy" />
+        <wsp:PolicyReference URI="#WSDualHttpBinding_IMessageService_RemoveMessageForAll_output_policy" />
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>

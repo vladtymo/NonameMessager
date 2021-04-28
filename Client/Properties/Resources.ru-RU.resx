@@ -180,6 +180,12 @@
   <data name="FailedDeleteChatString" xml:space="preserve">
     <value>Чат не был удален.</value>
   </data>
+  <data name="FailedDeleteMessageString" xml:space="preserve">
+    <value>Сообщение не было удалено.</value>
+  </data>
+  <data name="FailedDeleteMessage_NotYourMessageString" xml:space="preserve">
+    <value>Не твое сообщение.</value>
+  </data>
   <data name="FailedJoinToChatString" xml:space="preserve">
     <value>Не удалось присоединиться к чату.</value>
   </data>
@@ -305,6 +311,9 @@
   </data>
   <data name="SuccessfulJoinToChatString" xml:space="preserve">
     <value>Вы успешно присоединились к чату.</value>
+  </data>
+  <data name="SuccessfullDeleteMessageString" xml:space="preserve">
+    <value>Сообщение было удалено.</value>
   </data>
   <data name="SuccessfulLeaveFromChatString" xml:space="preserve">
     <value>Вы успешно покинули чат.</value>

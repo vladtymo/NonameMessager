@@ -180,6 +180,12 @@
   <data name="FailedDeleteChatString" xml:space="preserve">
     <value>Сhat has't been deleted.</value>
   </data>
+  <data name="FailedDeleteMessageString" xml:space="preserve">
+    <value>Message has't been deleted.</value>
+  </data>
+  <data name="FailedDeleteMessage_NotYourMessageString" xml:space="preserve">
+    <value>Not your message.</value>
+  </data>
   <data name="FailedJoinToChatString" xml:space="preserve">
     <value>Join to chat failed.</value>
   </data>
@@ -305,6 +311,9 @@
   </data>
   <data name="SuccessfulJoinToChatString" xml:space="preserve">
     <value>Join to chat successsfully.</value>
+  </data>
+  <data name="SuccessfullDeleteMessageString" xml:space="preserve">
+    <value>Message has been deleted. </value>
   </data>
   <data name="SuccessfulLeaveFromChatString" xml:space="preserve">
     <value>Leave from chat successsfully.</value>

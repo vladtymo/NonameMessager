@@ -68,6 +68,9 @@ namespace Client
         private ClientViewModel selectedClientForAdd;
 
         private ClientViewModel selectedClientForInvite;
+        private MessageViewModel selectedMessage;
+
+
 
 
         private bool isOpenLoginRegistrationDialog;
@@ -151,6 +154,7 @@ namespace Client
         public ClientViewModel SelectedClientForAdd { get { return selectedClientForAdd; } set { SetProperty(ref selectedClientForAdd, value); } }
 
         public ClientViewModel SelectedClientForInvite { get { return selectedClientForInvite; } set { SetProperty(ref selectedClientForInvite, value); } }
+        public MessageViewModel SelectedMessage { get { return selectedMessage; } set { SetProperty(ref selectedMessage, value); } }
 
 
         public Language SelectedLanguage { get { return selectedLanguage; } set { SetProperty(ref selectedLanguage, value); } }
@@ -190,6 +194,9 @@ namespace Client
         private Command leaveFromChatCommand;
 
         private Command sendMessageCommand;
+        private Command deleteMessageForAllCommand;
+
+
 
 
 
@@ -226,6 +233,8 @@ namespace Client
 
 
         public ICommand SendMessageCommand => sendMessageCommand;
+        public ICommand DeleteMessageForAllCommand => deleteMessageForAllCommand;
+
 
 
         #endregion
@@ -382,8 +391,11 @@ namespace Client
             inviteContactCommand = new DelegateCommand(InviteContact, () => SelectedClientForInvite != null);
 
             sendMessageCommand = new DelegateCommand(SendMessage, ()=>!string.IsNullOrEmpty(TextMessage));
-           
-             IsOpenLoginRegistrationDialog = true;
+            deleteMessageForAllCommand = new DelegateCommand(DeleteMessageForAll);
+
+
+
+            IsOpenLoginRegistrationDialog = true;
             clientService.GetPathToPhotoAsync(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(Environment.CurrentDirectory).FullName).FullName).FullName, "WcfService"));
             InitializeLanguages();
             GetRegistry();
@@ -760,6 +772,22 @@ namespace Client
             messageService.SendMessage(CurrentClient.Id, SelectedChat.Id, new MessageInfo() { Text = TextMessage });
             TextMessage = String.Empty;
         }
+
+        public void DeleteMessageForAll()
+        {
+            if (SelectedMessage.Client.Id == currentClient.Id)
+            {
+                if(messageService.DeleteMessageForAll(SelectedMessage.Id))
+                    OpenInfoDialog(Resources.SuccessfullDeleteMessageString);
+                else
+                    OpenInfoDialog(Resources.FailedDeleteMessageString);
+
+            }
+            else
+                OpenInfoDialog(Resources.FailedDeleteMessage_NotYourMessageString);
+        }
+
+
         public void OpenInfoDialog(string text)
         {
             TextForInfoDialog = text;
@@ -1023,8 +1051,12 @@ namespace Client
                 
         }
 
-        public void DeleteMessageForAll(int chatId, int messageId)
+        public void RemoveMessageForAll(int chatId, int messageId)
         {
+            if(SelectedChat.Id==chatId)
+            {
+                chatMessages.Remove(chatMessages.FirstOrDefault(c=>c.Id==messageId));
+            }
 
         }
         public void AddChatForContact(ChatDTO chat, InfoFile photo)
