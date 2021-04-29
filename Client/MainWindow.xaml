@@ -941,13 +941,13 @@
                                                 </Grid.RowDefinitions>
                                                 <Ellipse Width="45" Height="45" Grid.RowSpan="4" Grid.Row="1">
                                                     <Ellipse.Fill>
-                                                        <ImageBrush ImageSource="{Binding Photo}" Stretch="UniformToFill"/>
+                                                        <ImageBrush ImageSource="{Binding Client.Photo}" Stretch="UniformToFill"/>
                                                     </Ellipse.Fill>
                                                 </Ellipse>
 
-                                                <TextBlock Grid.Column="1" FontWeight="DemiBold" Grid.RowSpan="3" FontSize="14" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Bottom" Text="{Binding Name}"></TextBlock>
+                                                <TextBlock Grid.Column="1" FontWeight="DemiBold" Grid.RowSpan="3" FontSize="14" Margin="5,0" TextWrapping="Wrap" VerticalAlignment="Bottom" Text="{Binding Client.Name}"></TextBlock>
                                                 <TextBlock Grid.Column="1" Grid.Row="3" Margin="5,0" Grid.RowSpan="2" FontSize="13" VerticalAlignment="Bottom"  TextAlignment="Center" HorizontalAlignment="Left">
-                                        <Run Text="@"></Run><Run Text="{Binding UniqueName}"></Run>
+                                        <Run Text="@"></Run><Run Text="{Binding Client.UniqueName}"></Run>
                                                 </TextBlock>
                                             </Grid>
                                         </DataTemplate>
