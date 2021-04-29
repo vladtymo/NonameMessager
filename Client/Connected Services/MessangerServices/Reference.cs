@@ -576,6 +576,147 @@ namespace Client.MessangerServices {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="ChatMemberDTO", Namespace="http://schemas.datacontract.org/2004/07/WcfService")]
+    [System.SerializableAttribute()]
+    public partial class ChatMemberDTO : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private Client.MessangerServices.ChatDTO ChatField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int ChatIdField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private Client.MessangerServices.ClientDTO ClientField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int ClientIdField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.DateTime DateLastReadMessageField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int IdField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private bool IsAdminField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public Client.MessangerServices.ChatDTO Chat {
+            get {
+                return this.ChatField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.ChatField, value) != true)) {
+                    this.ChatField = value;
+                    this.RaisePropertyChanged("Chat");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int ChatId {
+            get {
+                return this.ChatIdField;
+            }
+            set {
+                if ((this.ChatIdField.Equals(value) != true)) {
+                    this.ChatIdField = value;
+                    this.RaisePropertyChanged("ChatId");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public Client.MessangerServices.ClientDTO Client {
+            get {
+                return this.ClientField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.ClientField, value) != true)) {
+                    this.ClientField = value;
+                    this.RaisePropertyChanged("Client");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int ClientId {
+            get {
+                return this.ClientIdField;
+            }
+            set {
+                if ((this.ClientIdField.Equals(value) != true)) {
+                    this.ClientIdField = value;
+                    this.RaisePropertyChanged("ClientId");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.DateTime DateLastReadMessage {
+            get {
+                return this.DateLastReadMessageField;
+            }
+            set {
+                if ((this.DateLastReadMessageField.Equals(value) != true)) {
+                    this.DateLastReadMessageField = value;
+                    this.RaisePropertyChanged("DateLastReadMessage");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int Id {
+            get {
+                return this.IdField;
+            }
+            set {
+                if ((this.IdField.Equals(value) != true)) {
+                    this.IdField = value;
+                    this.RaisePropertyChanged("Id");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public bool IsAdmin {
+            get {
+                return this.IsAdminField;
+            }
+            set {
+                if ((this.IsAdminField.Equals(value) != true)) {
+                    this.IsAdminField = value;
+                    this.RaisePropertyChanged("IsAdmin");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="MessageInfo", Namespace="http://schemas.datacontract.org/2004/07/WcfService")]
     [System.SerializableAttribute()]
     public partial class MessageInfo : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
@@ -690,10 +831,10 @@ namespace Client.MessangerServices {
     public interface IChatServiceCallback {
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IChatService/TakeMessage")]
-        void TakeMessage(Client.MessangerServices.MessageDTO message, Client.MessangerServices.InfoFile photoClient);
+        void TakeMessage(Client.MessangerServices.MessageDTO message);
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IChatService/Joined")]
-        void Joined(Client.MessangerServices.ClientDTO client, int chatId, Client.MessangerServices.InfoFile photo);
+        void Joined(Client.MessangerServices.ChatMemberDTO chatMember, int chatId, Client.MessangerServices.InfoFile photo);
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IChatService/Left")]
         void Left(int clientId, int chatId);
@@ -853,10 +994,10 @@ namespace Client.MessangerServices {
     public interface IClientServiceCallback {
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IClientService/TakeMessage")]
-        void TakeMessage(Client.MessangerServices.MessageDTO message, Client.MessangerServices.InfoFile photoClient);
+        void TakeMessage(Client.MessangerServices.MessageDTO message);
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IClientService/Joined")]
-        void Joined(Client.MessangerServices.ClientDTO client, int chatId, Client.MessangerServices.InfoFile photo);
+        void Joined(Client.MessangerServices.ChatMemberDTO chatMember, int chatId, Client.MessangerServices.InfoFile photo);
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IClientService/Left")]
         void Left(int clientId, int chatId);
@@ -994,10 +1135,10 @@ namespace Client.MessangerServices {
     public interface IContactServiceCallback {
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IContactService/TakeMessage")]
-        void TakeMessage(Client.MessangerServices.MessageDTO message, Client.MessangerServices.InfoFile photoClient);
+        void TakeMessage(Client.MessangerServices.MessageDTO message);
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IContactService/Joined")]
-        void Joined(Client.MessangerServices.ClientDTO client, int chatId, Client.MessangerServices.InfoFile photo);
+        void Joined(Client.MessangerServices.ChatMemberDTO chatMember, int chatId, Client.MessangerServices.InfoFile photo);
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IContactService/Left")]
         void Left(int clientId, int chatId);
@@ -1095,10 +1236,10 @@ namespace Client.MessangerServices {
         System.Threading.Tasks.Task<Client.MessangerServices.ChatDTO[]> TakeChatsAsync(int clientId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatMemberService/TakeClients", ReplyAction="http://tempuri.org/IChatMemberService/TakeClientsResponse")]
-        Client.MessangerServices.ClientDTO[] TakeClients(int chatId);
+        Client.MessangerServices.ChatMemberDTO[] TakeClients(int chatId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatMemberService/TakeClients", ReplyAction="http://tempuri.org/IChatMemberService/TakeClientsResponse")]
-        System.Threading.Tasks.Task<Client.MessangerServices.ClientDTO[]> TakeClientsAsync(int chatId);
+        System.Threading.Tasks.Task<Client.MessangerServices.ChatMemberDTO[]> TakeClientsAsync(int chatId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatMemberService/InviteContact", ReplyAction="http://tempuri.org/IChatMemberService/InviteContactResponse")]
         [return: System.ServiceModel.MessageParameterAttribute(Name="result")]
@@ -1113,10 +1254,10 @@ namespace Client.MessangerServices {
     public interface IChatMemberServiceCallback {
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IChatMemberService/TakeMessage")]
-        void TakeMessage(Client.MessangerServices.MessageDTO message, Client.MessangerServices.InfoFile photoClient);
+        void TakeMessage(Client.MessangerServices.MessageDTO message);
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IChatMemberService/Joined")]
-        void Joined(Client.MessangerServices.ClientDTO client, int chatId, Client.MessangerServices.InfoFile photo);
+        void Joined(Client.MessangerServices.ChatMemberDTO chatMember, int chatId, Client.MessangerServices.InfoFile photo);
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IChatMemberService/Left")]
         void Left(int clientId, int chatId);
@@ -1186,11 +1327,11 @@ namespace Client.MessangerServices {
             return base.Channel.TakeChatsAsync(clientId);
         }
         
-        public Client.MessangerServices.ClientDTO[] TakeClients(int chatId) {
+        public Client.MessangerServices.ChatMemberDTO[] TakeClients(int chatId) {
             return base.Channel.TakeClients(chatId);
         }
         
-        public System.Threading.Tasks.Task<Client.MessangerServices.ClientDTO[]> TakeClientsAsync(int chatId) {
+        public System.Threading.Tasks.Task<Client.MessangerServices.ChatMemberDTO[]> TakeClientsAsync(int chatId) {
             return base.Channel.TakeClientsAsync(chatId);
         }
         
@@ -1232,10 +1373,10 @@ namespace Client.MessangerServices {
     public interface IMessageServiceCallback {
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IMessageService/TakeMessage")]
-        void TakeMessage(Client.MessangerServices.MessageDTO message, Client.MessangerServices.InfoFile photoClient);
+        void TakeMessage(Client.MessangerServices.MessageDTO message);
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IMessageService/Joined")]
-        void Joined(Client.MessangerServices.ClientDTO client, int chatId, Client.MessangerServices.InfoFile photo);
+        void Joined(Client.MessangerServices.ChatMemberDTO chatMember, int chatId, Client.MessangerServices.InfoFile photo);
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IMessageService/Left")]
         void Left(int clientId, int chatId);

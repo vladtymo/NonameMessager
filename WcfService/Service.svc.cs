@@ -22,6 +22,7 @@ namespace WcfService
         private IMapper chatMapper;
         private IMapper contactMapper;
         private IMapper messageMapper;
+        private IMapper chatMemberMapper;
 
         private string pathToClientsPhoto;
         private string pathToChatsPhoto;
@@ -99,10 +100,28 @@ namespace WcfService
                     cfg.CreateMap<AccountDTO, Account>().ForMember(dst => dst.Password, opt => opt.Ignore());
                 });
             messageMapper = new Mapper(messageConfig);
+
+            IConfigurationProvider chatMemberConfig = new MapperConfiguration(
+                cfg =>
+                {
+                    // Entity to DTO
+                    cfg.CreateMap<ChatMember, ChatMemberDTO>().ForMember(dst => dst.Chat, opt => opt.Ignore());
+
+                    cfg.CreateMap<Client, ClientDTO>();
+
+                    cfg.CreateMap<Account, AccountDTO>().ForMember(dst => dst.Password, opt => opt.Ignore());
+
+                    cfg.CreateMap<ChatMemberDTO, ChatMember>().ForMember(dst => dst.Chat, opt => opt.Ignore());
+
+                    cfg.CreateMap<ClientDTO, Client>();
+
+                    cfg.CreateMap<AccountDTO, Account>().ForMember(dst => dst.Password, opt => opt.Ignore());
+                });
+            chatMemberMapper = new Mapper(chatMemberConfig);
         }
         private bool IsExistUniqueName(int id,string uniqueName, bool isClient)
         {
-            var client = repositories.ClientRepos.Get().Where(c => c.UniqueName == uniqueName && ((isClient && c.Id!=id)||!isClient) ).FirstOrDefault();
+            var client = repositories.ClientRepos.Get().Where(c => c.UniqueName == uniqueName && ((isClient && c.Id!=id) || !isClient) ).FirstOrDefault();
             var chat = repositories.ChatRepos.Get().Where(c => c.UniqueName == uniqueName && ((!isClient && c.Id != id) || isClient)).FirstOrDefault();
             if (client == null && chat == null)
                 return false;
@@ -453,7 +472,7 @@ namespace WcfService
                 {
                     foreach (var item2 in callbacks)
                     {
-                        if (item2.ClientId == item.Id)
+                        if (item2.ClientId == item.Client.Id)
                             try
                             {
                                 item2.Callback.DeleteChatForAll(chatId);
@@ -503,19 +522,19 @@ namespace WcfService
             var chat = repositories.ChatRepos.Get().Where(c => c.UniqueName == chatUniqueName).FirstOrDefault();
             if (chat != null && !IsThereClientInChat(clientId, chat.Id) && IsChatExist(chatUniqueName) && (chat.ChatMembers == null || chat.ChatMembers.Count()<chat.MaxUsers))
             {
-                repositories.ChatMemberRepos.Insert(new ChatMember() { ClientId = clientId, ChatId = chat.Id, IsAdmin = isAdmin, DateLastReadMessage = DateTime.Now });
+                var chatMember = new ChatMember() { ClientId = clientId, ChatId = chat.Id, IsAdmin = isAdmin, DateLastReadMessage = DateTime.Now };
+                repositories.ChatMemberRepos.Insert(chatMember);
                 repositories.Save();
                 newChat = chatMapper.Map<ChatDTO>(chat);
-                var client = clientMapper.Map<ClientDTO>(repositories.ClientRepos.Get().Where(c => c.Id == clientId).FirstOrDefault());
 
                 foreach (var item in TakeClients(chat.Id))
                 {
                     foreach (var item2 in callbacks)
                     {
-                        if (item2.ClientId == item.Id && item2.ClientId != clientId)
+                        if (item2.ClientId == item.Client.Id && item2.ClientId != clientId)
                         try
                         {
-                            item2.Callback.Joined(client, chat.Id, GetPhoto(clientId));
+                            item2.Callback.Joined(chatMemberMapper.Map<ChatMemberDTO>(chatMember), chat.Id, GetPhoto(clientId));
                         }
                         catch (Exception)
                         {}
@@ -535,7 +554,7 @@ namespace WcfService
                 {
                     foreach (var item2 in callbacks)
                     {
-                        if (item2.ClientId == item.Id && item2.ClientId != clientId)
+                        if (item2.ClientId == item.Client.Id && item2.ClientId != clientId)
                             try
                             {
                                 item2.Callback.Left(chatMember.Client.Id, chatMember.Chat.Id);
@@ -556,10 +575,11 @@ namespace WcfService
         {
             var chat = repositories.ChatRepos.Get().FirstOrDefault(c => c.Id == chatId && !c.IsPM);
             var client = repositories.ClientRepos.Get().FirstOrDefault(c => c.Id == contactId);
-            var res=chat.ChatMembers.FirstOrDefault(cm => cm.ClientId == contactId);
+            var res = chat.ChatMembers.FirstOrDefault(cm => cm.ClientId == contactId);
             if(chat!=null && client != null && !IsThereClientInChat(contactId, chatId) && chat.ChatMembers.Count() < chat.MaxUsers)
             {
-                repositories.ChatMemberRepos.Insert(new ChatMember() { ClientId = contactId, ChatId = chat.Id, IsAdmin = false, DateLastReadMessage = DateTime.Now });
+                var chatMember = new ChatMember() { ClientId = contactId, ChatId = chat.Id, IsAdmin = false, DateLastReadMessage = DateTime.Now };
+                repositories.ChatMemberRepos.Insert(chatMember);
                 repositories.Save();
                 var clientCallback=callbacks.FirstOrDefault(c => c.ClientId == contactId);
                 if (clientCallback != null)
@@ -569,10 +589,10 @@ namespace WcfService
                 {
                     foreach (var item2 in callbacks)
                     {
-                        if (item2.ClientId == item.Id && item2.ClientId != contactId)
+                        if (item2.ClientId == item.Client.Id && item2.ClientId != contactId)
                             try
                             {
-                                item2.Callback.Joined(clientMapper.Map<ClientDTO>(client), chat.Id, GetPhoto(contactId));
+                                item2.Callback.Joined(chatMemberMapper.Map<ChatMemberDTO>(chatMember), chat.Id, GetPhoto(contactId));
                             }
                             catch (Exception)
                             { }
@@ -590,10 +610,10 @@ namespace WcfService
             var result = repositories.ChatMemberRepos.Get().Where(c => c.ClientId == clientId).Select(c => c.Chat);
             return chatMapper.Map<IEnumerable<ChatDTO>>(result);
         }
-        public IEnumerable<ClientDTO> TakeClients(int chatId)
+        public IEnumerable<ChatMemberDTO> TakeClients(int chatId)
         {
-            var result = repositories.ChatMemberRepos.Get().Where(c => c.ChatId == chatId).Select(c => c.Client);
-            return clientMapper.Map<IEnumerable<ClientDTO>>(result);
+            var result = repositories.ChatMemberRepos.Get().Where(c => c.ChatId == chatId);
+            return chatMemberMapper.Map<IEnumerable<ChatMemberDTO>>(result);
         }
         #endregion
         //--------------------------Message Methods--------------------//
@@ -617,10 +637,10 @@ namespace WcfService
                 {
                     foreach (var item2 in callbacks)
                     {
-                        if(item2.ClientId == item.Id)
+                        if(item2.ClientId == item.Client.Id)
                             try
                             {
-                                item2.Callback.TakeMessage(messageMapper.Map<MessageDTO>(newMessage), GetPhoto(clientId));
+                                item2.Callback.TakeMessage(messageMapper.Map<MessageDTO>(newMessage));
                             }
                             catch (Exception)
                             {}
@@ -654,7 +674,7 @@ namespace WcfService
                 {
                     foreach (var item2 in callbacks)
                     {
-                        if (item2.ClientId == item.Id)
+                        if (item2.ClientId == item.Client.Id)
                             try
                             {
                                 item2.Callback.RemoveMessageForAll(chatId,messageId);

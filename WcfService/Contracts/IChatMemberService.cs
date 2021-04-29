@@ -17,7 +17,7 @@ namespace WcfService
         [OperationContract]
         IEnumerable<ChatDTO> TakeChats(int clientId);
         [OperationContract]
-        IEnumerable<ClientDTO> TakeClients(int chatId);
+        IEnumerable<ChatMemberDTO> TakeClients(int chatId);
 
         [OperationContract]
         void InviteContact(int chatId, int contactId, out bool result);

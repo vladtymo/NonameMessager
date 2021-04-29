@@ -23,7 +23,7 @@ namespace Client
         private readonly ICollection<ClientViewModel> allContacts = new ObservableCollection<ClientViewModel>();
         private readonly ICollection<ClientViewModel> clientsForAdd = new ObservableCollection<ClientViewModel>();
 
-        private readonly ICollection<ClientViewModel> members = new ObservableCollection<ClientViewModel>();
+        private readonly ICollection<ChatMemberViewModel> members = new ObservableCollection<ChatMemberViewModel>();
         private readonly ICollection<ChatViewModel> chats = new ObservableCollection<ChatViewModel>();
         private readonly ICollection<ChatViewModel> joinToChatChats = new ObservableCollection<ChatViewModel>();
 
@@ -36,7 +36,7 @@ namespace Client
         public IEnumerable<ClientViewModel> ClientsForAdd => clientsForAdd;
 
 
-        public IEnumerable<ClientViewModel> Members => members;
+        public IEnumerable<ChatMemberViewModel> Members => members;
         public IEnumerable<ChatViewModel> Chats => chats;
         public IEnumerable<ChatViewModel> AllChats => allChats;
         public IEnumerable<ChatViewModel> JoinToChatChats => joinToChatChats;
@@ -254,11 +254,13 @@ namespace Client
                     cfg.CreateMap<ClientDTO, ClientViewModel>();
                     cfg.CreateMap<ChatDTO, ChatViewModel>();
                     cfg.CreateMap<MessageDTO, MessageViewModel>();
+                    cfg.CreateMap<ChatMemberDTO, ChatMemberViewModel>();
 
                     cfg.CreateMap<AccountViewModel, AccountDTO>();
                     cfg.CreateMap<ClientViewModel, ClientDTO>();
                     cfg.CreateMap<ChatViewModel, ChatDTO>();
                     cfg.CreateMap<MessageViewModel, MessageDTO>();
+                    cfg.CreateMap<ChatMemberViewModel, ChatMemberDTO>();
                 });
 
             mapper = new Mapper(config);
@@ -286,8 +288,8 @@ namespace Client
                         IsChatSelected = false;
                     else
                     {
-                        TakeMessages();
                         TakeMembers();                      
+                        TakeMessages();
                         IsChatSelected = true;
                     }
                     deleteChatCommand.RaiseCanExecuteChanged();
@@ -700,9 +702,9 @@ namespace Client
             {
                 foreach (var item in result)
                 {
-                    Application.Current.Dispatcher.Invoke(() => { 
+                    Application.Current.Dispatcher.Invoke(() => {
+                        item.Client = members.FirstOrDefault(m => m.Client.Id == item.Client.Id).Client;
                         chatMessages.Add(item); 
-                        GetPhoto(item.Client);
                     });
                 }
             });
@@ -710,14 +712,14 @@ namespace Client
         public void TakeMembers()
         {
             members.Clear();
-            var result = mapper.Map<IEnumerable<ClientViewModel>>(chatMemberService.TakeClientsAsync(SelectedChat.Id).Result);
+            var result = mapper.Map<IEnumerable<ChatMemberViewModel>>(chatMemberService.TakeClientsAsync(SelectedChat.Id).Result);
             Task.Run(() =>
             {
                 foreach (var item in result)
                 {
                     Application.Current.Dispatcher.Invoke(() => { 
                         members.Add(item);
-                        GetPhoto(item);
+                        GetPhoto(item.Client);
                     });
                 }
             }).ContinueWith((res) =>
@@ -732,8 +734,8 @@ namespace Client
         }
         public void TakeOpponent()
         {
-            var opponent = members.Where(w => w.Id != CurrentClient.Id).FirstOrDefault();
-            OpponentClient = opponent;
+            var opponent = members.FirstOrDefault(w => w.Client.Id != CurrentClient.Id);
+            OpponentClient = opponent.Client;
 
         }
         public void AddContact()
@@ -874,13 +876,12 @@ namespace Client
             return tmp;
         }
 
-        public void TakeMessage(MessageDTO message, InfoFile photoClient)
+        public void TakeMessage(MessageDTO message)
         {
             if (SelectedChat.Id == message.ChatId)
             {
                 var mes = mapper.Map<MessageViewModel>(message);
-                if(photoClient!=null)
-                    mes.Client.Photo = ToImage(photoClient.Data);
+                mes.Client = members.FirstOrDefault(m => m.Client.Id == mes.Client.Id).Client;
                 chatMessages.Add(mes);
             }
         }
@@ -950,7 +951,10 @@ namespace Client
                 foreach (var item in result)
                 {
                     if (allChats.Where(c => c.Id == item.Id).FirstOrDefault() == null)
+                    {
+                        GetChatPhoto(item);
                         joinToChatChats.Add(item);
+                    }
                 }
             }
         }
@@ -989,7 +993,7 @@ namespace Client
                 var res = allContacts.Where(c => c.UniqueName.Contains(UniqueNameContact));
                 foreach (var item in res)
                 {
-                  if(members.FirstOrDefault(m=>m.Id==item.Id)==null)                 
+                  if(members.FirstOrDefault(m=>m.Client.Id==item.Id)==null)                 
                     contacts.Add(item);
                 }
             }
@@ -1010,13 +1014,13 @@ namespace Client
                 }
             }
         }
-        public void Joined(ClientDTO client, int chatId, InfoFile photo)
+        public void Joined(ChatMemberDTO chatMember, int chatId, InfoFile photo)
         {
             if (SelectedChat.Id == chatId)
             {
-                var cl = mapper.Map<ClientViewModel>(client);
+                var cl = mapper.Map<ChatMemberViewModel>(chatMember);
                 if (photo != null)
-                    cl.Photo = ToImage(photo.Data);
+                    cl.Client.Photo = ToImage(photo.Data);
                 members.Add(cl);
                 CountMembers = members.Count;
             }
@@ -1025,7 +1029,7 @@ namespace Client
         {
             if (SelectedChat.Id == chatId)
             {
-                members.Remove(mapper.Map<ClientViewModel>(members.Where(m => m.Id == clientId).FirstOrDefault()));
+                members.Remove(members.Where(m => m.Client.Id == clientId).FirstOrDefault());
                 CountMembers = members.Count;
             }
         }
@@ -1074,7 +1078,7 @@ namespace Client
 
         public void InviteContact()
         {
-          if(chatMemberService.InviteContactAsync(SelectedChat.Id, SelectedClientForInvite.Id).Result)
+            if(chatMemberService.InviteContactAsync(SelectedChat.Id, SelectedClientForInvite.Id).Result)
             {
                 OpenInfoDialog(Resources.SuccessfulContactInviteInChatString);             
             }
