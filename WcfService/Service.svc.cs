@@ -153,26 +153,26 @@ namespace WcfService
             else
                 return client.Id;
         }
-        public ClientDTO CreateNewClient(ClientDTO clientDTO, string password)
+        public ClientDTO CreateNewClient(ClientDTO client, string password)
         {
-            var id = IsExistClient(clientDTO);
-            if (id == -1 && !IsExistUniqueName(clientDTO.Id, clientDTO.UniqueName,true))
+            var id = IsExistClient(client);
+            if (id == -1 && !IsExistUniqueName(client.Id, client.UniqueName,true))
             {
-                clientDTO.Account.Password = password;
-                repositories.ClientRepos.Insert(clientMapper.Map<Client>(clientDTO));
+                client.Account.Password = password;
+                repositories.ClientRepos.Insert(clientMapper.Map<Client>(client));
                 repositories.Save();
-                repositories.ClientRepos.Get().FirstOrDefault(c=>c.UniqueName==clientDTO.UniqueName).AccountId = repositories.AccountRepos.Get().FirstOrDefault(a => a.Email == clientDTO.Account.Email).ClientId;
+                repositories.ClientRepos.Get().FirstOrDefault(c=>c.UniqueName==client.UniqueName).AccountId = repositories.AccountRepos.Get().FirstOrDefault(a => a.Email == client.Account.Email).ClientId;
                 repositories.Save();
-                ClientDTO addedClient = clientMapper.Map<ClientDTO>(repositories.ClientRepos.Get().FirstOrDefault(c => c.UniqueName == clientDTO.UniqueName));
+                ClientDTO addedClient = clientMapper.Map<ClientDTO>(repositories.ClientRepos.Get().FirstOrDefault(c => c.UniqueName == client.UniqueName));
                 callbacks.Add(new CallBack() { ClientId = addedClient.Id, Callback = OperationContext.Current.GetCallbackChannel<ICallback>()});
                 return addedClient;
             }
             else
                 return null;
         }
-        public ClientDTO GetClient(AccountDTO accountDTO, string password)
+        public ClientDTO GetClient(AccountDTO account, string password)
         {
-            var client = GetClientByAccount(accountDTO, password);
+            var client = GetClientByAccount(account, password);
             if (client != null)
             {
                 DirectoryInfo directory = new DirectoryInfo(pathToClientsPhoto);
@@ -216,6 +216,21 @@ namespace WcfService
                 }
                 catch (Exception) { }
             }
+
+            foreach (var item in callbacks)
+            {
+                if (item.ClientId != clientId)
+                {
+                    var contacts = TakeContacts(item.ClientId);
+                    if (contacts.FirstOrDefault(c => c.Id == clientId) != null)
+                        try
+                        {
+                            item.Callback.GetNewClientPhoto(clientId, info);
+                        }
+                        catch (Exception)
+                        { }
+                }
+            }
         }
         public void GetPathToPhoto(string pathToPhoto)
         {
@@ -245,22 +260,54 @@ namespace WcfService
             }
             return info;
         }
-        public bool SetProperties(ClientDTO clientDTO)
+        public void SetProperties(ClientDTO client, out bool result)
         {
-            var id = IsNotExistClient(clientDTO);
+            var id = IsNotExistClient(client);
             if (id == -1)
             {
-                var client = repositories.ClientRepos.Get().Where(c => c.Id == clientDTO.Id).FirstOrDefault();
-                client.Name = clientDTO.Name;
-                client.UniqueName = clientDTO.UniqueName;
-                client.Account.Email = clientDTO.Account.Email;
-                client.Account.Phone = clientDTO.Account.Phone;
-                repositories.ClientRepos.Update(client);
+                var oldClient = repositories.ClientRepos.Get().Where(c => c.Id == client.Id).FirstOrDefault();
+                var pmChats = repositories.ChatRepos.Get().Where(c => c.IsPM && c.ChatMembers.Where(cm => cm.Client.Id == oldClient.Id).Count() > 0);
+                foreach (var item in pmChats)
+                {
+                    item.Name = item.Name.Replace(oldClient.Name, client.Name);
+                    foreach (var item2 in callbacks)
+                    {
+                        if (item2.ClientId != client.Id)
+                        {
+                            var oponent = item.ChatMembers.FirstOrDefault(cm => cm.Client.Id != oldClient.Id);
+                            if (oponent != null)
+                                if (oponent.Client.Id == item2.ClientId)
+                                {
+                                    item2.Callback.SetNewPMChatProperties(chatMapper.Map<ChatDTO>(item));
+                                }
+                        }
+                    }
+                }
                 repositories.Save();
-                return true;
+                oldClient.Name = client.Name;
+                oldClient.UniqueName = client.UniqueName;
+                oldClient.Account.Email = client.Account.Email;
+                oldClient.Account.Phone = client.Account.Phone;
+                repositories.ClientRepos.Update(oldClient);
+                repositories.Save();
+                result = true;
+                foreach (var item in callbacks)
+                {
+                    if (item.ClientId != client.Id)
+                    {
+                        var contacts = TakeContacts(item.ClientId);
+                        if (contacts.FirstOrDefault(c => c.Id == client.Id) != null)
+                            try
+                            {
+                                item.Callback.GetNewClientProperties(clientMapper.Map<ClientDTO>(oldClient));
+                            }
+                            catch (Exception)
+                            { }
+                    }
+                }
             }
             else
-                return false;
+                result = false;
         }
         public void Disconnect()
         {
@@ -283,38 +330,31 @@ namespace WcfService
         #endregion
         //--------------------------Contacts Methods--------------------//
         #region
-        private bool IsContactExist(int clientID, string uniqueNameContact)
+        private bool IsContactExist(int clientID, int contactId)
         {
-            var contact = repositories.ContactRepos.Get().Where(c => c.ClientId == clientID && c.ContactClient.UniqueName == uniqueNameContact).FirstOrDefault();
+            var contact = repositories.ContactRepos.Get().Where(c => c.ClientId == clientID && c.ContactClient.Id == contactId).FirstOrDefault();
             if (contact == null)
             {
                 return false;
             }
             return true;
         }
-        private bool IsClientExist(string uniqueName)
+        public ClientDTO AddContact(int clientID, int contactId)
         {
-            var client = repositories.ClientRepos.Get().Where(c => c.UniqueName == uniqueName).FirstOrDefault();
-            if (client != null)
-                return true;
-            return false;
-        }
-        public ClientDTO AddContact(int clientID, string uniqueNameContact)
-        {
-            if (!IsContactExist(clientID, uniqueNameContact) && IsClientExist(uniqueNameContact))
+            if (!IsContactExist(clientID, contactId) && repositories.ClientRepos.Get().FirstOrDefault(c=>c.Id == contactId) != null)
             {
-                var contactClient = repositories.ClientRepos.Get().Where(c => c.UniqueName == uniqueNameContact).FirstOrDefault();
+                var contactClient = repositories.ClientRepos.Get().Where(c => c.Id == contactId).FirstOrDefault();
                 repositories.ContactRepos.Insert(new Contact() { ClientId = clientID, ContactClientId = contactClient.Id });
                 repositories.Save();
                 return contactMapper.Map<ClientDTO>(contactClient);
             }
             return null;
         }
-        public bool DeleteContact(int clientID, string uniqueNameContact)
+        public bool DeleteContact(int clientID, int contactId)
         {
-            if (IsContactExist(clientID, uniqueNameContact))
+            if (IsContactExist(clientID, contactId))
             {
-                var contactClient = repositories.ContactRepos.Get().Where(c => c.ClientId == clientID && c.ContactClient.UniqueName == uniqueNameContact).FirstOrDefault();
+                var contactClient = repositories.ContactRepos.Get().Where(c => c.ClientId == clientID && c.ContactClient.Id == contactId).FirstOrDefault();
                 repositories.ContactRepos.Delete(contactClient);
                 repositories.Save();
                 return true;
@@ -394,7 +434,7 @@ namespace WcfService
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
             return new string(Enumerable.Repeat(chars, length).Select(s => s[random.Next(s.Length)]).ToArray());
         }
-        public bool SetChatProperties(ChatDTO chatDTO)
+        public void SetChatProperties(ChatDTO chatDTO, out bool result)
         {
           
             if (!IsExistUniqueName(chatDTO.Id, chatDTO.UniqueName,false) && TakeClients(chatDTO.Id).Count()<=chatDTO.MaxUsers)
@@ -403,14 +443,22 @@ namespace WcfService
                 chat.Name = chatDTO.Name;
                 chat.UniqueName = chatDTO.UniqueName;
                 chat.MaxUsers = chatDTO.MaxUsers;
-                chat.IsPM = chatDTO.IsPM;
                 chat.IsPrivate = chatDTO.IsPrivate;
                 repositories.ChatRepos.Update(chat);
                 repositories.Save();
-                return true;
+                result = true;
+
+                foreach (var item in TakeClients(chat.Id))
+                {
+                    foreach (var item2 in callbacks)
+                    {
+                        if(item.Client.Id == item2.ClientId)
+                            item2.Callback.GetNewChatProperties(chatMapper.Map<ChatDTO>(chat));
+                    }
+                }
             }
             else
-                return false;
+                result = false;
         }
         public void SetChatPhoto(int chatId, InfoFile info)
         {
@@ -433,7 +481,16 @@ namespace WcfService
                 }
                 catch (Exception) { }
             }
+            foreach (var item in TakeClients(chatId))
+            {
+                foreach (var item2 in callbacks)
+                {
+                    if (item.Client.Id == item2.ClientId)
+                        item2.Callback.GetNewChatPhoto(chatId, info);
+                }
+            }
         }
+
         public InfoFile GetChatPhoto(int chatId)
         {
             DirectoryInfo di = new DirectoryInfo(pathToChatsPhoto);
