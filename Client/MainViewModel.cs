@@ -424,10 +424,10 @@ namespace Client
                     if (item.IsPM)
                     {
                         ReplacePMChatName(item);
-                        var companion = mapper.Map<ClientViewModel>(chatMemberService.TakeClients(item.Id).FirstOrDefault(cm => cm.Id != CurrentClient.Id));
+                        var companion = mapper.Map<ChatMemberViewModel>(chatMemberService.TakeClients(item.Id).FirstOrDefault(cm => cm.Id != CurrentClient.Id));
                         if (companion != null)
                         {
-                            var photo = clientService.GetPhotoAsync(companion.Id).Result;
+                            var photo = clientService.GetPhotoAsync(companion.Client.Id).Result;
                             if (photo != null)
                                 item.Photo = ToImage(photo.Data);
                         }
@@ -509,29 +509,32 @@ namespace Client
                 OpenInfoDialog(Resources.EmptyFieldsString);
                 return;
             }
-            if (clientService.SetPropertiesAsync(mapper.Map<ClientDTO>(ClientForChange)).Result)
+            if (CurrentClient != ClientForChange)
             {
-                if (CurrentClient.Photo != ClientForChange.Photo)
+                if (clientService.SetProperties(mapper.Map<ClientDTO>(ClientForChange)))
                 {
-                    InfoFile info = new InfoFile() { Name = ClientForChange.PhotoPath };
-                    using (FileStream fs = new FileStream(clientForChange.PhotoPath, FileMode.Open, FileAccess.Read))
+                    if (CurrentClient.Photo != ClientForChange.Photo)
                     {
-                        byte[] fileData = new byte[fs.Length];
-                        fs.Read(fileData, 0, fileData.Length);
-                        info.Data = fileData;
+                        InfoFile info = new InfoFile() { Name = ClientForChange.PhotoPath };
+                        using (FileStream fs = new FileStream(clientForChange.PhotoPath, FileMode.Open, FileAccess.Read))
+                        {
+                            byte[] fileData = new byte[fs.Length];
+                            fs.Read(fileData, 0, fileData.Length);
+                            info.Data = fileData;
+                        }
+                        clientService.SetPhotoAsync(clientForChange.Id, info);
+
+                        ClientForChange.Photo = ToImage(info.Data);
                     }
-                    clientService.SetPhotoAsync(clientForChange.Id, info);
-
-                    ClientForChange.Photo = ToImage(info.Data);            
+                    OpenInfoDialog(Resources.SuccessfulSetProfileString);
+                    CurrentClient = ClientForChange.Clone();
                 }
-                OpenInfoDialog(Resources.SuccessfulSetProfileString);
-                CurrentClient = ClientForChange.Clone();
-            }
-            else
-            {
-                OpenInfoDialog(Resources.FailedSetProfileString);
+                else
+                {
+                    OpenInfoDialog(Resources.FailedSetProfileString);
 
-                ClientForChange = CurrentClient.Clone();
+                    ClientForChange = CurrentClient.Clone();
+                }
             }
         }
     
@@ -632,7 +635,7 @@ namespace Client
         }
         public void SetChatProperties()
         {
-            if (chatService.SetChatPropertiesAsync(mapper.Map<ChatDTO>(ChatForChange)).Result)
+            if (chatService.SetChatProperties(mapper.Map<ChatDTO>(ChatForChange)))
             {
                 if (SelectedChat.Photo != ChatForChange.Photo)
                 {
@@ -643,18 +646,8 @@ namespace Client
                         fs.Read(fileData, 0, fileData.Length);
                         info.Data = fileData;
                     }
-                    chatService.SetChatPhotoAsync(SelectedChat.Id, info);
-
-                    ChatForChange.Photo = ToImage(info.Data);
+                    chatService.SetChatPhoto(SelectedChat.Id, info);
                 }
-
-                SelectedChat.Name = ChatForChange.Name;
-                SelectedChat.UniqueName = ChatForChange.UniqueName;
-                SelectedChat.MaxUsers = ChatForChange.MaxUsers;
-                SelectedChat.IsPrivate = ChatForChange.IsPrivate;
-                SelectedChat.IsPM=ChatForChange.IsPM;
-                SelectedChat.Photo = ChatForChange.Photo;
-                SelectedChat.PhotoPath = ChatForChange.PhotoPath;
                 OpenInfoDialog(Resources.SuccessfulSetChatPropertiesString);
             }
             else
@@ -740,7 +733,7 @@ namespace Client
         }
         public void AddContact()
         {
-            var result = mapper.Map<ClientViewModel>(contactService.AddContactAsync(CurrentClient.Id, SelectedClientForAdd.UniqueName).Result);
+            var result = mapper.Map<ClientViewModel>(contactService.AddContactAsync(CurrentClient.Id, SelectedClientForAdd.Id).Result);
             if (result != null)
             {
                 GetPhoto(result);
@@ -756,7 +749,7 @@ namespace Client
         }
         public void DeleteContact()
         {
-            if (contactService.DeleteContactAsync(CurrentClient.Id, SelectedContact.UniqueName).Result)
+            if (contactService.DeleteContactAsync(CurrentClient.Id, SelectedContact.Id).Result)
             {
                 allContacts.Remove(allContacts.Where(c => c.UniqueName == SelectedContact.UniqueName).FirstOrDefault());
                 SearchContacts();
@@ -1088,13 +1081,79 @@ namespace Client
             }
         }
 
+        public void GetNewClientProperties(ClientDTO client)
+        {
+            var newClient = mapper.Map<ClientViewModel>(client);
+            var contact = allContacts.FirstOrDefault(c => c.Id == newClient.Id);
+            if (contact != null)
+            {
+                SetClientProperties(contact, newClient);
+                if (OpponentClient != null && OpponentClient.Id == client.Id)
+                    SetClientProperties(OpponentClient, newClient);
+                SearchContacts();
+            }
+        }
+        public void GetNewClientPhoto(int clientId, InfoFile photo)
+        {
+            var contact = allContacts.FirstOrDefault(c => c.Id == clientId);
+            if (contact != null)
+            {
+                contact.Photo = ToImage(photo.Data);
+            }
+        }
+        public void SetNewPMChatProperties(ChatDTO chat)
+        {
+            var newChat = mapper.Map<ChatViewModel>(chat);
+            ReplacePMChatName(newChat);
+            chats.FirstOrDefault(c => c.Id == newChat.Id).Name = newChat.Name;
+        }
+
+        public void GetNewChatProperties(ChatDTO chat)
+        {
+            var newChat = mapper.Map<ChatViewModel>(chat);
+            var oldChat = allChats.FirstOrDefault(c => c.Id == newChat.Id);
+            if (oldChat != null)
+            {
+                if (SelectedChat == null || SelectedChat.Id != newChat.Id)
+                    SetChatProperties(oldChat, newChat);
+                else
+                {
+                    SetChatProperties(SelectedChat, newChat);
+                }
+            }
+        }
+        public void GetNewChatPhoto(int chatId, InfoFile photo)
+        {
+            var chat = allChats.FirstOrDefault(c => c.Id == chatId);
+            if (chat != null)
+            {
+                chat.Photo = ToImage(photo.Data);
+            }
+        }
+
+
+
+
+
 
         private void ReplacePMChatName(ChatViewModel chat)
         {
             chat.Name = chat.Name.Replace(CurrentClient.Name, "");
         }
-       
-
+        private void SetClientProperties(ClientViewModel oldProperties, ClientViewModel newProperties)
+        {
+            oldProperties.Name = newProperties.Name;
+            oldProperties.Account.Phone = newProperties.Account.Phone;
+            oldProperties.Account.Email = newProperties.Account.Email;
+            oldProperties.UniqueName = newProperties.UniqueName;
+        }
+        private void SetChatProperties(ChatViewModel oldProperties, ChatViewModel newProperties)
+        {
+            oldProperties.Name = newProperties.Name;
+            oldProperties.UniqueName = newProperties.UniqueName;
+            oldProperties.IsPrivate = newProperties.IsPrivate;
+            oldProperties.MaxUsers = newProperties.MaxUsers;
+        }
     }
     class Language : ViewModelBase
     {

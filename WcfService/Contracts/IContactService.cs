@@ -11,9 +11,9 @@ namespace WcfService
     public interface IContactService
     {
         [OperationContract]
-        ClientDTO AddContact(int clientID, string uniqueNameContact);
+        ClientDTO AddContact(int clientID, int contactId);
         [OperationContract]
-        bool DeleteContact(int clientID, string uniqueNameContact);
+        bool DeleteContact(int clientID, int contactId);
         [OperationContract]
         IEnumerable<ClientDTO> TakeContacts(int clientId);
     }

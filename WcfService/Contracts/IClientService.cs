@@ -11,11 +11,11 @@ namespace WcfService
     public interface IClientService
     {
         [OperationContract]
-        ClientDTO CreateNewClient(ClientDTO clientDTO, string password);
+        ClientDTO CreateNewClient(ClientDTO client, string password);
         [OperationContract]
-        ClientDTO GetClient(AccountDTO accountDTO, string password);
+        ClientDTO GetClient(AccountDTO account, string password);
         [OperationContract]
-        bool SetProperties(ClientDTO clientDTO);
+        void SetProperties(ClientDTO client, out bool result);
         [OperationContract]
         void SetPhoto(int clientId, InfoFile info);
         [OperationContract]

@@ -787,9 +787,11 @@ namespace Client.MessangerServices {
         System.Threading.Tasks.Task<Client.MessangerServices.ChatDTO> CreateNewChatAsync(Client.MessangerServices.ChatDTO newChatDTO);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatService/SetChatProperties", ReplyAction="http://tempuri.org/IChatService/SetChatPropertiesResponse")]
+        [return: System.ServiceModel.MessageParameterAttribute(Name="result")]
         bool SetChatProperties(Client.MessangerServices.ChatDTO chatDTO);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatService/SetChatProperties", ReplyAction="http://tempuri.org/IChatService/SetChatPropertiesResponse")]
+        [return: System.ServiceModel.MessageParameterAttribute(Name="result")]
         System.Threading.Tasks.Task<bool> SetChatPropertiesAsync(Client.MessangerServices.ChatDTO chatDTO);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatService/SetChatPhoto", ReplyAction="http://tempuri.org/IChatService/SetChatPhotoResponse")]
@@ -850,6 +852,21 @@ namespace Client.MessangerServices {
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IChatService/AddChatForContact")]
         void AddChatForContact(Client.MessangerServices.ChatDTO chat, Client.MessangerServices.InfoFile photo);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IChatService/GetNewClientProperties")]
+        void GetNewClientProperties(Client.MessangerServices.ClientDTO client);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IChatService/GetNewClientPhoto")]
+        void GetNewClientPhoto(int clientId, Client.MessangerServices.InfoFile photo);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IChatService/SetNewPMChatProperties")]
+        void SetNewPMChatProperties(Client.MessangerServices.ChatDTO chat);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IChatService/GetNewChatProperties")]
+        void GetNewChatProperties(Client.MessangerServices.ChatDTO chat);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IChatService/GetNewChatPhoto")]
+        void GetNewChatPhoto(int chatId, Client.MessangerServices.InfoFile photo);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -942,22 +959,24 @@ namespace Client.MessangerServices {
     public interface IClientService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IClientService/CreateNewClient", ReplyAction="http://tempuri.org/IClientService/CreateNewClientResponse")]
-        Client.MessangerServices.ClientDTO CreateNewClient(Client.MessangerServices.ClientDTO clientDTO, string password);
+        Client.MessangerServices.ClientDTO CreateNewClient(Client.MessangerServices.ClientDTO client, string password);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IClientService/CreateNewClient", ReplyAction="http://tempuri.org/IClientService/CreateNewClientResponse")]
-        System.Threading.Tasks.Task<Client.MessangerServices.ClientDTO> CreateNewClientAsync(Client.MessangerServices.ClientDTO clientDTO, string password);
+        System.Threading.Tasks.Task<Client.MessangerServices.ClientDTO> CreateNewClientAsync(Client.MessangerServices.ClientDTO client, string password);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IClientService/GetClient", ReplyAction="http://tempuri.org/IClientService/GetClientResponse")]
-        Client.MessangerServices.ClientDTO GetClient(Client.MessangerServices.AccountDTO accountDTO, string password);
+        Client.MessangerServices.ClientDTO GetClient(Client.MessangerServices.AccountDTO account, string password);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IClientService/GetClient", ReplyAction="http://tempuri.org/IClientService/GetClientResponse")]
-        System.Threading.Tasks.Task<Client.MessangerServices.ClientDTO> GetClientAsync(Client.MessangerServices.AccountDTO accountDTO, string password);
+        System.Threading.Tasks.Task<Client.MessangerServices.ClientDTO> GetClientAsync(Client.MessangerServices.AccountDTO account, string password);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IClientService/SetProperties", ReplyAction="http://tempuri.org/IClientService/SetPropertiesResponse")]
-        bool SetProperties(Client.MessangerServices.ClientDTO clientDTO);
+        [return: System.ServiceModel.MessageParameterAttribute(Name="result")]
+        bool SetProperties(Client.MessangerServices.ClientDTO client);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IClientService/SetProperties", ReplyAction="http://tempuri.org/IClientService/SetPropertiesResponse")]
-        System.Threading.Tasks.Task<bool> SetPropertiesAsync(Client.MessangerServices.ClientDTO clientDTO);
+        [return: System.ServiceModel.MessageParameterAttribute(Name="result")]
+        System.Threading.Tasks.Task<bool> SetPropertiesAsync(Client.MessangerServices.ClientDTO client);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IClientService/SetPhoto", ReplyAction="http://tempuri.org/IClientService/SetPhotoResponse")]
         void SetPhoto(int clientId, Client.MessangerServices.InfoFile info);
@@ -1013,6 +1032,21 @@ namespace Client.MessangerServices {
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IClientService/AddChatForContact")]
         void AddChatForContact(Client.MessangerServices.ChatDTO chat, Client.MessangerServices.InfoFile photo);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IClientService/GetNewClientProperties")]
+        void GetNewClientProperties(Client.MessangerServices.ClientDTO client);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IClientService/GetNewClientPhoto")]
+        void GetNewClientPhoto(int clientId, Client.MessangerServices.InfoFile photo);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IClientService/SetNewPMChatProperties")]
+        void SetNewPMChatProperties(Client.MessangerServices.ChatDTO chat);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IClientService/GetNewChatProperties")]
+        void GetNewChatProperties(Client.MessangerServices.ChatDTO chat);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IClientService/GetNewChatPhoto")]
+        void GetNewChatPhoto(int chatId, Client.MessangerServices.InfoFile photo);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -1043,28 +1077,28 @@ namespace Client.MessangerServices {
                 base(callbackInstance, binding, remoteAddress) {
         }
         
-        public Client.MessangerServices.ClientDTO CreateNewClient(Client.MessangerServices.ClientDTO clientDTO, string password) {
-            return base.Channel.CreateNewClient(clientDTO, password);
+        public Client.MessangerServices.ClientDTO CreateNewClient(Client.MessangerServices.ClientDTO client, string password) {
+            return base.Channel.CreateNewClient(client, password);
         }
         
-        public System.Threading.Tasks.Task<Client.MessangerServices.ClientDTO> CreateNewClientAsync(Client.MessangerServices.ClientDTO clientDTO, string password) {
-            return base.Channel.CreateNewClientAsync(clientDTO, password);
+        public System.Threading.Tasks.Task<Client.MessangerServices.ClientDTO> CreateNewClientAsync(Client.MessangerServices.ClientDTO client, string password) {
+            return base.Channel.CreateNewClientAsync(client, password);
         }
         
-        public Client.MessangerServices.ClientDTO GetClient(Client.MessangerServices.AccountDTO accountDTO, string password) {
-            return base.Channel.GetClient(accountDTO, password);
+        public Client.MessangerServices.ClientDTO GetClient(Client.MessangerServices.AccountDTO account, string password) {
+            return base.Channel.GetClient(account, password);
         }
         
-        public System.Threading.Tasks.Task<Client.MessangerServices.ClientDTO> GetClientAsync(Client.MessangerServices.AccountDTO accountDTO, string password) {
-            return base.Channel.GetClientAsync(accountDTO, password);
+        public System.Threading.Tasks.Task<Client.MessangerServices.ClientDTO> GetClientAsync(Client.MessangerServices.AccountDTO account, string password) {
+            return base.Channel.GetClientAsync(account, password);
         }
         
-        public bool SetProperties(Client.MessangerServices.ClientDTO clientDTO) {
-            return base.Channel.SetProperties(clientDTO);
+        public bool SetProperties(Client.MessangerServices.ClientDTO client) {
+            return base.Channel.SetProperties(client);
         }
         
-        public System.Threading.Tasks.Task<bool> SetPropertiesAsync(Client.MessangerServices.ClientDTO clientDTO) {
-            return base.Channel.SetPropertiesAsync(clientDTO);
+        public System.Threading.Tasks.Task<bool> SetPropertiesAsync(Client.MessangerServices.ClientDTO client) {
+            return base.Channel.SetPropertiesAsync(client);
         }
         
         public void SetPhoto(int clientId, Client.MessangerServices.InfoFile info) {
@@ -1113,16 +1147,16 @@ namespace Client.MessangerServices {
     public interface IContactService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IContactService/AddContact", ReplyAction="http://tempuri.org/IContactService/AddContactResponse")]
-        Client.MessangerServices.ClientDTO AddContact(int clientID, string uniqueNameContact);
+        Client.MessangerServices.ClientDTO AddContact(int clientID, int contactId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IContactService/AddContact", ReplyAction="http://tempuri.org/IContactService/AddContactResponse")]
-        System.Threading.Tasks.Task<Client.MessangerServices.ClientDTO> AddContactAsync(int clientID, string uniqueNameContact);
+        System.Threading.Tasks.Task<Client.MessangerServices.ClientDTO> AddContactAsync(int clientID, int contactId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IContactService/DeleteContact", ReplyAction="http://tempuri.org/IContactService/DeleteContactResponse")]
-        bool DeleteContact(int clientID, string uniqueNameContact);
+        bool DeleteContact(int clientID, int contactId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IContactService/DeleteContact", ReplyAction="http://tempuri.org/IContactService/DeleteContactResponse")]
-        System.Threading.Tasks.Task<bool> DeleteContactAsync(int clientID, string uniqueNameContact);
+        System.Threading.Tasks.Task<bool> DeleteContactAsync(int clientID, int contactId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IContactService/TakeContacts", ReplyAction="http://tempuri.org/IContactService/TakeContactsResponse")]
         Client.MessangerServices.ClientDTO[] TakeContacts(int clientId);
@@ -1154,6 +1188,21 @@ namespace Client.MessangerServices {
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IContactService/AddChatForContact")]
         void AddChatForContact(Client.MessangerServices.ChatDTO chat, Client.MessangerServices.InfoFile photo);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IContactService/GetNewClientProperties")]
+        void GetNewClientProperties(Client.MessangerServices.ClientDTO client);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IContactService/GetNewClientPhoto")]
+        void GetNewClientPhoto(int clientId, Client.MessangerServices.InfoFile photo);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IContactService/SetNewPMChatProperties")]
+        void SetNewPMChatProperties(Client.MessangerServices.ChatDTO chat);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IContactService/GetNewChatProperties")]
+        void GetNewChatProperties(Client.MessangerServices.ChatDTO chat);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IContactService/GetNewChatPhoto")]
+        void GetNewChatPhoto(int chatId, Client.MessangerServices.InfoFile photo);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -1184,20 +1233,20 @@ namespace Client.MessangerServices {
                 base(callbackInstance, binding, remoteAddress) {
         }
         
-        public Client.MessangerServices.ClientDTO AddContact(int clientID, string uniqueNameContact) {
-            return base.Channel.AddContact(clientID, uniqueNameContact);
+        public Client.MessangerServices.ClientDTO AddContact(int clientID, int contactId) {
+            return base.Channel.AddContact(clientID, contactId);
         }
         
-        public System.Threading.Tasks.Task<Client.MessangerServices.ClientDTO> AddContactAsync(int clientID, string uniqueNameContact) {
-            return base.Channel.AddContactAsync(clientID, uniqueNameContact);
+        public System.Threading.Tasks.Task<Client.MessangerServices.ClientDTO> AddContactAsync(int clientID, int contactId) {
+            return base.Channel.AddContactAsync(clientID, contactId);
         }
         
-        public bool DeleteContact(int clientID, string uniqueNameContact) {
-            return base.Channel.DeleteContact(clientID, uniqueNameContact);
+        public bool DeleteContact(int clientID, int contactId) {
+            return base.Channel.DeleteContact(clientID, contactId);
         }
         
-        public System.Threading.Tasks.Task<bool> DeleteContactAsync(int clientID, string uniqueNameContact) {
-            return base.Channel.DeleteContactAsync(clientID, uniqueNameContact);
+        public System.Threading.Tasks.Task<bool> DeleteContactAsync(int clientID, int contactId) {
+            return base.Channel.DeleteContactAsync(clientID, contactId);
         }
         
         public Client.MessangerServices.ClientDTO[] TakeContacts(int clientId) {
@@ -1273,6 +1322,21 @@ namespace Client.MessangerServices {
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IChatMemberService/AddChatForContact")]
         void AddChatForContact(Client.MessangerServices.ChatDTO chat, Client.MessangerServices.InfoFile photo);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IChatMemberService/GetNewClientProperties")]
+        void GetNewClientProperties(Client.MessangerServices.ClientDTO client);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IChatMemberService/GetNewClientPhoto")]
+        void GetNewClientPhoto(int clientId, Client.MessangerServices.InfoFile photo);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IChatMemberService/SetNewPMChatProperties")]
+        void SetNewPMChatProperties(Client.MessangerServices.ChatDTO chat);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IChatMemberService/GetNewChatProperties")]
+        void GetNewChatProperties(Client.MessangerServices.ChatDTO chat);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IChatMemberService/GetNewChatPhoto")]
+        void GetNewChatPhoto(int chatId, Client.MessangerServices.InfoFile photo);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -1392,6 +1456,21 @@ namespace Client.MessangerServices {
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IMessageService/AddChatForContact")]
         void AddChatForContact(Client.MessangerServices.ChatDTO chat, Client.MessangerServices.InfoFile photo);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IMessageService/GetNewClientProperties")]
+        void GetNewClientProperties(Client.MessangerServices.ClientDTO client);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IMessageService/GetNewClientPhoto")]
+        void GetNewClientPhoto(int clientId, Client.MessangerServices.InfoFile photo);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IMessageService/SetNewPMChatProperties")]
+        void SetNewPMChatProperties(Client.MessangerServices.ChatDTO chat);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IMessageService/GetNewChatProperties")]
+        void GetNewChatProperties(Client.MessangerServices.ChatDTO chat);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IMessageService/GetNewChatPhoto")]
+        void GetNewChatPhoto(int chatId, Client.MessangerServices.InfoFile photo);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
