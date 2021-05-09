@@ -165,6 +165,42 @@
   <data name="EmptyFieldsString" xml:space="preserve">
     <value>Ошибка. Не все поля были заполнены.</value>
   </data>
+  <data name="ErrorMessageInvalidChatMaxUsersNumber" xml:space="preserve">
+    <value>Число должно быть в диапазоне от 1 до 2000</value>
+  </data>
+  <data name="ErrorMessageInvalidEmailFormat" xml:space="preserve">
+    <value>Неверный формат эл. почты</value>
+  </data>
+  <data name="ErrorMessageInvalidPasswordFormat" xml:space="preserve">
+    <value>Неверный формат пароля</value>
+  </data>
+  <data name="ErrorMessageInvalidPhoneFormat" xml:space="preserve">
+    <value>Неверный формат номера телефона</value>
+  </data>
+  <data name="ErrorMessageRequiredChatMaxUsers" xml:space="preserve">
+    <value>Вы должны ввести максимальное кол-во участников</value>
+  </data>
+  <data name="ErrorMessageRequiredChatName" xml:space="preserve">
+    <value>Вы должны ввести имя</value>
+  </data>
+  <data name="ErrorMessageRequiredChatUniqueName" xml:space="preserve">
+    <value>Вы должны ввести уникальное имя</value>
+  </data>
+  <data name="ErrorMessageRequiredClientName" xml:space="preserve">
+    <value>Вы должны ввести имя</value>
+  </data>
+  <data name="ErrorMessageRequiredClientUniqueName" xml:space="preserve">
+    <value>Вы должны ввести уникальное имя</value>
+  </data>
+  <data name="ErrorMessageRequiredEmail" xml:space="preserve">
+    <value>Вы должны ввести эл. адрес</value>
+  </data>
+  <data name="ErrorMessageRequiredPassword" xml:space="preserve">
+    <value>Вы должны ввести пароль</value>
+  </data>
+  <data name="ErrorMessageRequiredPhone" xml:space="preserve">
+    <value>Вы должны ввести номер телефона</value>
+  </data>
   <data name="FailedContactAddString" xml:space="preserve">
     <value>Контакт не был добавлен.</value>
   </data>
@@ -260,6 +296,9 @@
   </data>
   <data name="LoginDialogLoginButtonString" xml:space="preserve">
     <value>Войти</value>
+  </data>
+  <data name="LoginDialogPasswordInfoString" xml:space="preserve">
+    <value>Минимум 8 символов, прописная буква, строчная буква, число и специальный символ</value>
   </data>
   <data name="LoginDialogSignUpButtonString" xml:space="preserve">
     <value>Регистрация</value>

@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 
 namespace Client
 {
-    public abstract class ViewModelBase : INotifyPropertyChanged
+    public abstract class ViewModelBase : PropertyValidateModel, INotifyPropertyChanged
     {
         /// <summary>
         /// Multicast event for property change notifications.
@@ -43,5 +43,14 @@ namespace Client
             if (eventHandler != null)
                 eventHandler(this, new PropertyChangedEventArgs(propertyName));
         }
+
+
+        /// <summary>
+        /// Bubbles up property changed events from a child viewmodel that implements {INotifyPropertyChanged} to the parent keeping
+        /// the naming hierarchy in place.
+        /// This is useful for nested view models. 
+        /// </summary>
+        /// <param name="property">Child property that is a viewmodel implementing INotifyPropertyChanged.</param>
+        /// <returns></returns>
     }
 }
