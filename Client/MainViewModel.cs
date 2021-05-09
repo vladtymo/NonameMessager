@@ -12,6 +12,8 @@ using System.ServiceModel;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Imaging;
+using System.ComponentModel.DataAnnotations;
+using System.Text.RegularExpressions;
 
 namespace Client
 {
@@ -131,6 +133,10 @@ namespace Client
 
         public string TextForInfoDialog { get { return textForInfoDialog; } set { SetProperty(ref textForInfoDialog, value); } }
 
+
+        [Required(ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "ErrorMessageRequiredPassword")]
+        [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&_-])[A-Za-z\d@$!%*?&_-]{8,}$",
+         ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "ErrorMessageInvalidPasswordFormat")]
         public string Password { get => password; set => SetProperty(ref password, value); }
         public string TextMessage { get => textMessage; set => SetProperty(ref textMessage, value); }
         public string UniqueNameContact { get => uniqueNameContact; set => SetProperty(ref uniqueNameContact, value); }
@@ -267,8 +273,9 @@ namespace Client
 
             currentClient = new ClientViewModel() { Account = new AccountViewModel() };
             clientForChange = new ClientViewModel() { Account = new AccountViewModel() };
-            chatForChange = new ChatViewModel();           
-          
+            chatForChange = new ChatViewModel();
+
+            
             PropertyChanged += (sender, args) =>
             {
 
@@ -403,7 +410,7 @@ namespace Client
             GetRegistry();
         }
 
-
+  
         public void Login()
         {
             if(string.IsNullOrEmpty(CurrentClient.Account.Email)||string.IsNullOrEmpty(Password))
@@ -415,6 +422,8 @@ namespace Client
             var result = mapper.Map<ClientViewModel>(clientService.GetClientAsync(mapper.Map<AccountDTO>(CurrentClient.Account), this.Password).Result);
             if (result != null)
             {
+                
+
                 CurrentClient = result;
                 IsOpenLoginRegistrationDialog = false;
                 GetPhoto();
@@ -570,7 +579,7 @@ namespace Client
         }
         public void CreateNewChat()
         {
-            if (string.IsNullOrEmpty(ChatForChange.Name) || string.IsNullOrEmpty(ChatForChange.UniqueName) || ChatForChange.MaxUsers < 1)
+            if (string.IsNullOrEmpty(ChatForChange.Name) || string.IsNullOrEmpty(ChatForChange.UniqueName) || ChatForChange.MaxUsers==null || ChatForChange.MaxUsers<1 || ChatForChange.MaxUsers>2000 )
             {
                 OpenInfoDialog(Resources.EmptyFieldsString);
                 return;
@@ -622,7 +631,7 @@ namespace Client
         }
         public void CreateOrSelectPMChat()
         {
-            var chatId = chatService.CreatePMChat(CurrentClient.Id, SelectedClientForAdd == null ? SelectedContact.Id : SelectedClientForAdd.Id);
+            var chatId = chatService.CreatePMChatAsync(CurrentClient.Id, SelectedClientForAdd == null ? SelectedContact.Id : SelectedClientForAdd.Id).Result;
             if (chatId != -1)
             {
                 SelectedChat = allChats.FirstOrDefault(ac => ac.Id == chatId);
@@ -635,6 +644,11 @@ namespace Client
         }
         public void SetChatProperties()
         {
+            if (string.IsNullOrEmpty(ChatForChange.Name) || string.IsNullOrEmpty(ChatForChange.UniqueName) || ChatForChange.MaxUsers == null ||   ChatForChange.MaxUsers < 1 || ChatForChange.MaxUsers > 2000 )
+            {
+                OpenInfoDialog(Resources.EmptyFieldsString);
+                return;
+            }
             if (chatService.SetChatProperties(mapper.Map<ChatDTO>(ChatForChange)))
             {
                 if (SelectedChat.Photo != ChatForChange.Photo)
@@ -1132,13 +1146,9 @@ namespace Client
         }
 
 
-
-
-
-
         private void ReplacePMChatName(ChatViewModel chat)
         {
-            chat.Name = chat.Name.Replace(CurrentClient.Name, "");
+            chat.Name = chat.Name.Remove(chat.Name.IndexOf(CurrentClient.Name), CurrentClient.Name.Length);
         }
         private void SetClientProperties(ClientViewModel oldProperties, ClientViewModel newProperties)
         {
