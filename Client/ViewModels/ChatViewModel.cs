@@ -34,7 +34,7 @@ namespace Client
 
         [Required(ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "ErrorMessageRequiredChatMaxUsers")]
         [Range(1,2000, ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "ErrorMessageInvalidChatMaxUsersNumber")]
-        public string MaxUsersString { get => maxUsersString; set { if (!IsTextAllowedInt(value)) { SetProperty(ref maxUsersString, null); SetProperty(ref maxUsers, null); } else { SetProperty(ref maxUsersString, value); SetProperty(ref maxUsers,int.Parse(value)); } } }
+        public string MaxUsersString { get => maxUsersString; set { if (!IsTextAllowedInt(value)) { SetProperty(ref maxUsersString, null); SetProperty(ref maxUsers, null); } else { if (int.TryParse(value, out int res)) { SetProperty(ref maxUsers, int.Parse(value)); SetProperty(ref maxUsersString, value); } } } }
         public bool IsPM { get => isPM; set => SetProperty(ref isPM, value); }
         public ChatViewModel Clone()
         {

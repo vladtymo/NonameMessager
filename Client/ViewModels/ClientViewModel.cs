@@ -19,6 +19,7 @@ namespace Client
         public string UniqueName { get => uniqueName; set => SetProperty(ref uniqueName, value); }
         public string PhotoPath { get => photoPath; set => SetProperty(ref photoPath, value); }
         public BitmapImage Photo { get => photo; set => SetProperty(ref photo, value); }
+        [ValidateObject]
         public AccountViewModel Account { get => account; set => SetProperty(ref account, value); }
 
         public ClientViewModel Clone()
