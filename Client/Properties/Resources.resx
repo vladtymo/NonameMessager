@@ -156,6 +156,9 @@
   <data name="DeleteChatButtonString" xml:space="preserve">
     <value>Leave and delete</value>
   </data>
+  <data name="DeleteMessageForAllButtonString" xml:space="preserve">
+    <value>Delete message for all</value>
+  </data>
   <data name="EditProfileDialogSetProfilePhotoButtonString" xml:space="preserve">
     <value>Select photo</value>
   </data>

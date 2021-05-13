@@ -178,6 +178,15 @@ namespace Client.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Delete message for all.
+        /// </summary>
+        public static string DeleteMessageForAllButtonString {
+            get {
+                return ResourceManager.GetString("DeleteMessageForAllButtonString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Select photo.
         /// </summary>
         public static string EditProfileDialogSetProfilePhotoButtonString {

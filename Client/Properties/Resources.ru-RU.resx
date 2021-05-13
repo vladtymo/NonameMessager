@@ -156,6 +156,9 @@
   <data name="DeleteChatButtonString" xml:space="preserve">
     <value>Удалить и выйти</value>
   </data>
+  <data name="DeleteMessageForAllButtonString" xml:space="preserve">
+    <value>Удалить сообщение для всех</value>
+  </data>
   <data name="EditProfileDialogSetProfilePhotoButtonString" xml:space="preserve">
     <value>Выбрать фото</value>
   </data>

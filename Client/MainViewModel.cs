@@ -133,6 +133,7 @@ namespace Client
 
         public string TextForInfoDialog { get { return textForInfoDialog; } set { SetProperty(ref textForInfoDialog, value); } }
 
+        private static readonly Regex passordRegex = new Regex(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&_-])[A-Za-z\d@$!%*?&_-]{8,}$");
 
         [Required(ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "ErrorMessageRequiredPassword")]
         [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&_-])[A-Za-z\d@$!%*?&_-]{8,}$",
@@ -144,6 +145,18 @@ namespace Client
 
         public string UniqueNameChat { get => uniqueNameChat; set => SetProperty(ref uniqueNameChat, value); }
         public int CountMembers { get => countMembers; set => SetProperty(ref countMembers, value); }
+
+        
+        
+        private bool isCorrectSignUpData;
+        public bool IsCorrectSignUpData { get { return isCorrectSignUpData; } set { SetProperty(ref isCorrectSignUpData, value); } }
+
+        private bool isCorrectUserInfo;
+        public bool IsCorrectUserInfo { get { return isCorrectUserInfo; } set { SetProperty(ref isCorrectUserInfo, value); } }
+
+        private bool isCorrectChatData;
+        public bool IsCorrectChatData { get { return isCorrectChatData; } set { SetProperty(ref isCorrectChatData, value); } }
+
 
 
 
@@ -202,8 +215,11 @@ namespace Client
         private Command sendMessageCommand;
         private Command deleteMessageForAllCommand;
 
+        private Command iValidateSignUpCommand;
 
-
+        private Command iValidateUserInfoCommand;
+        private Command iValidateChatInfoCommand;
+        
 
 
         public ICommand SetProfileDialogOpenCommand => setProfileDialogOpenCommand;
@@ -241,6 +257,10 @@ namespace Client
         public ICommand SendMessageCommand => sendMessageCommand;
         public ICommand DeleteMessageForAllCommand => deleteMessageForAllCommand;
 
+
+        public ICommand IValidateSignUpCommand => iValidateSignUpCommand;
+        public ICommand IValidateUserInfoCommand => iValidateUserInfoCommand;
+        public ICommand IValidateChatInfoCommand => iValidateChatInfoCommand;
 
 
         #endregion
@@ -367,10 +387,25 @@ namespace Client
                 {
                     inviteContactCommand.RaiseCanExecuteChanged();
                 }
+                else if (args.PropertyName == nameof(IsCorrectSignUpData))
+                {
+                    signUpCommand.RaiseCanExecuteChanged();
+
+                }
+                else if (args.PropertyName == nameof(IsCorrectUserInfo))
+                {
+                    setProfileCommand.RaiseCanExecuteChanged();
+                }
+                else if (args.PropertyName == nameof(IsCorrectChatData))
+                {
+                    setChatPropertiesCommand.RaiseCanExecuteChanged();
+                    addChatCommand.RaiseCanExecuteChanged();
+
+                }
             };
 
             loginCommand = new DelegateCommand(Login);
-            signUpCommand = new DelegateCommand(SignUp);
+            signUpCommand = new DelegateCommand(SignUp,() => IsCorrectSignUpData);
             exitCommand = new DelegateCommand(Exit);
             closedCommand = new DelegateCommand(Disconnect);
 
@@ -384,16 +419,16 @@ namespace Client
             manageChatDialogOpenCommand = new DelegateCommand(ShowEditChatDialog);
             inviteContactsDialogOpenCommand = new DelegateCommand(ShowAddMembersForChat, () => SelectedChat != null);
 
-            setProfileCommand = new DelegateCommand(SetProfile);
+            setProfileCommand = new DelegateCommand(SetProfile, () => IsCorrectUserInfo);
             setPhotoCommand = new DelegateCommand(SetPhoto);
             
             addContactCommand = new DelegateCommand(AddContact, () => SelectedClientForAdd!=null);
             deleteContactCommand = new DelegateCommand(DeleteContact, () => SelectedContact!=null);
             
-            addChatCommand = new DelegateCommand(CreateNewChat);
+            addChatCommand = new DelegateCommand(CreateNewChat, () => IsCorrectChatData);
             joinToChatCommand = new DelegateCommand(JoinToChat, ()=> SelectedChatForJoin!=null);
             leaveFromChatCommand = new DelegateCommand(LeaveFromChat);
-            setChatPropertiesCommand = new DelegateCommand(SetChatProperties);
+            setChatPropertiesCommand = new DelegateCommand(SetChatProperties, () => IsCorrectChatData);
             setChatPhotoCommand = new DelegateCommand(SetChatPhoto);
             createOrSelectPMChatCommand = new DelegateCommand(CreateOrSelectPMChat, () => SelectedContact != null || SelectedClientForAdd != null);
             deleteChatCommand = new DelegateCommand(DeleteChat, () => SelectedChat != null);
@@ -402,7 +437,9 @@ namespace Client
             sendMessageCommand = new DelegateCommand(SendMessage, ()=>!string.IsNullOrEmpty(TextMessage));
             deleteMessageForAllCommand = new DelegateCommand(DeleteMessageForAll);
 
-
+            iValidateSignUpCommand = new DelegateCommand(ValidateSignUp);
+            iValidateUserInfoCommand = new DelegateCommand(ValidateUserInfo);
+            iValidateChatInfoCommand = new DelegateCommand(ValidateChatInfo);
 
             IsOpenLoginRegistrationDialog = true;
             clientService.GetPathToPhotoAsync(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(Environment.CurrentDirectory).FullName).FullName).FullName, "WcfService"));
@@ -631,7 +668,7 @@ namespace Client
         }
         public void CreateOrSelectPMChat()
         {
-            var chatId = chatService.CreatePMChatAsync(CurrentClient.Id, SelectedClientForAdd == null ? SelectedContact.Id : SelectedClientForAdd.Id).Result;
+            var chatId = chatService.CreatePMChat(CurrentClient.Id, SelectedClientForAdd == null ? SelectedContact.Id : SelectedClientForAdd.Id);
             if (chatId != -1)
             {
                 SelectedChat = allChats.FirstOrDefault(ac => ac.Id == chatId);
@@ -711,6 +748,8 @@ namespace Client
                 {
                     Application.Current.Dispatcher.Invoke(() => {
                         item.Client = members.FirstOrDefault(m => m.Client.Id == item.Client.Id).Client;
+                        if (item.Client.Id == CurrentClient.Id)
+                            item.IsMyMessage = true;
                         chatMessages.Add(item); 
                     });
                 }
@@ -889,6 +928,8 @@ namespace Client
             {
                 var mes = mapper.Map<MessageViewModel>(message);
                 mes.Client = members.FirstOrDefault(m => m.Client.Id == mes.Client.Id).Client;
+                if (mes.Client.Id == CurrentClient.Id)
+                    mes.IsMyMessage = true;
                 chatMessages.Add(mes);
             }
         }
@@ -1145,10 +1186,75 @@ namespace Client
             }
         }
 
+        public bool IsPasswordCorrect()
+        {
+            return passordRegex.IsMatch(Password);
+        }
+        public bool Validate(object instanse)
+        {
+            if (instanse == null)
+                return false;
+
+            var results = new List<ValidationResult>();
+            var context = new System.ComponentModel.DataAnnotations.ValidationContext(instanse, null, null);
+            if (Validator.TryValidateObject(instanse, context, results, true))
+                return true;
+            return false;
+        }
+        public void ValidateSignUp()
+        {
+
+            if (CurrentClient != null && CurrentClient.Account != null && !String.IsNullOrEmpty(Password))
+            {
+                if (!Validate(CurrentClient) || !IsPasswordCorrect())
+                {
+                    IsCorrectSignUpData = false;
+                }
+                else
+                    IsCorrectSignUpData = true;
+            }
+            else
+                IsCorrectSignUpData = false;
+        }
+        public void ValidateUserInfo()
+
+        {
+
+            if (ClientForChange != null && ClientForChange.Account != null)
+            {
+
+                if (!Validate(ClientForChange))
+                {
+                    IsCorrectUserInfo = false;
+                }
+                else
+                    IsCorrectUserInfo = true;
+            }
+            else
+                IsCorrectUserInfo = false;
+        }
+        public void ValidateChatInfo()
+        {
+
+            if (ChatForChange != null)
+            {
+
+                if (!Validate(ChatForChange))
+                {
+                    IsCorrectChatData = false;
+                }
+                else
+                    IsCorrectChatData = true;
+            }
+            else
+                IsCorrectChatData = false;
+        }
+
 
         private void ReplacePMChatName(ChatViewModel chat)
         {
-            chat.Name = chat.Name.Remove(chat.Name.IndexOf(CurrentClient.Name), CurrentClient.Name.Length);
+            chat.Name = chat.Name.Replace(CurrentClient.Name, "");
+            //chat.Name = chat.Name.Remove(chat.Name.IndexOf(CurrentClient.Name), CurrentClient.Name.Length);
         }
         private void SetClientProperties(ClientViewModel oldProperties, ClientViewModel newProperties)
         {
@@ -1164,6 +1270,8 @@ namespace Client
             oldProperties.IsPrivate = newProperties.IsPrivate;
             oldProperties.MaxUsers = newProperties.MaxUsers;
         }
+
+
     }
     class Language : ViewModelBase
     {
