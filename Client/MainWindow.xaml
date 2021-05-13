@@ -555,7 +555,7 @@
 
                             </Grid>
                             <!--List of contacts-->
-                            <ListBox Grid.ColumnSpan="2" Grid.Row="2" Margin="25,10" ItemsSource="{Binding Contacts}" SelectedItem="{Binding SelectedContact}">
+                            <ListBox Grid.ColumnSpan="2" Grid.Row="2" Margin="25,10" ItemsSource="{Binding Contacts}" SelectedItem="{Binding SelectedContact}" ToolTip="{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.DoubleClickOnTheLisContactAndClientsString, Mode=OneWay}">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="MouseDoubleClick">
                                         <i:InvokeCommandAction Command="{Binding CreateOrSelectPMChatCommand}"/>
@@ -602,7 +602,7 @@
                             </ListBox>
                             <Separator Margin="25,5" Grid.ColumnSpan="2" Grid.Row="3"></Separator>
                             <!--List of clients-->
-                            <ListBox Grid.ColumnSpan="2" Grid.Row="4" Margin="25,10" ItemsSource="{Binding ClientsForAdd}" SelectedItem="{Binding SelectedClientForAdd}">
+                            <ListBox Grid.ColumnSpan="2" Grid.Row="4" Margin="25,10" ItemsSource="{Binding ClientsForAdd}" SelectedItem="{Binding SelectedClientForAdd}"  ToolTip="{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.DoubleClickOnTheLisContactAndClientsString, Mode=OneWay}">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="MouseDoubleClick">
                                         <i:InvokeCommandAction Command="{Binding CreateOrSelectPMChatCommand}"/>
@@ -1490,7 +1490,7 @@
                                                 <RowDefinition Height="Auto"></RowDefinition>
                                             </Grid.RowDefinitions>
                                             <TextBlock Margin="5,5,5,0" Foreground="#FFFFB773" Text="{Binding Client.Name}"></TextBlock>
-                                            <TextBlock Margin="5,5,5,0" Grid.Column="1" Foreground="#FFFFB773" Text="{Binding SendingTime,StringFormat=HH:MM}"></TextBlock>
+                                            <TextBlock Margin="5,5,5,0" Grid.Column="1" Foreground="#FFFFB773" Text="{Binding SendingTime,StringFormat=HH:mm}"></TextBlock>
                                             <TextBlock Grid.Row="1" Margin="5" TextWrapping="Wrap" Foreground="White" Text="{Binding Text}"></TextBlock>
                                         </Grid>
                                     </Border>
@@ -1522,6 +1522,10 @@
                                 </materialDesign:PopupBox.ToggleContent>
                                 <StackPanel Width="auto">
                                     <Button Content="{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.DeleteMessageForAllButtonString, Mode=OneWay}"  Command="{Binding DeleteMessageForAllCommand, UpdateSourceTrigger=PropertyChanged}"  >
+                                    </Button>
+                                    <Button Content="{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.CopyMessageButtonString, Mode=OneWay}"  Command="{Binding CopyMessageCommand, UpdateSourceTrigger=PropertyChanged}"  >
+                                    </Button>
+                                    <Button Content="{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.CopyTextMessageButtonString, Mode=OneWay}"  Command="{Binding CopyTextMessageCommand, UpdateSourceTrigger=PropertyChanged}"  >
                                     </Button>
                                 </StackPanel>
                             </materialDesign:PopupBox>

@@ -153,11 +153,20 @@
   <data name="ContactsDialogHeaderString" xml:space="preserve">
     <value>Контакты</value>
   </data>
+  <data name="CopyMessageButtonString" xml:space="preserve">
+    <value>Скопировать сообщение</value>
+  </data>
+  <data name="CopyTextMessageButtonString" xml:space="preserve">
+    <value>Копировать текст сообщения</value>
+  </data>
   <data name="DeleteChatButtonString" xml:space="preserve">
     <value>Удалить и выйти</value>
   </data>
   <data name="DeleteMessageForAllButtonString" xml:space="preserve">
     <value>Удалить сообщение для всех</value>
+  </data>
+  <data name="DoubleClickOnTheLisContactAndClientsString" xml:space="preserve">
+    <value>Дважды щелкните по клиенту для создания или перехода в личные сообщения.</value>
   </data>
   <data name="EditProfileDialogSetProfilePhotoButtonString" xml:space="preserve">
     <value>Выбрать фото</value>
@@ -223,7 +232,7 @@
     <value>Сообщение не было удалено.</value>
   </data>
   <data name="FailedDeleteMessage_NotYourMessageString" xml:space="preserve">
-    <value>Не твое сообщение.</value>
+    <value>Нельзя удалить не свое сообщение.</value>
   </data>
   <data name="FailedJoinToChatString" xml:space="preserve">
     <value>Не удалось присоединиться к чату.</value>
@@ -351,11 +360,11 @@
   <data name="SuccessfulDeleteChatString" xml:space="preserve">
     <value>Чат был удален.</value>
   </data>
+  <data name="SuccessfulDeleteMessageString" xml:space="preserve">
+    <value>Сообщение было удалено.</value>
+  </data>
   <data name="SuccessfulJoinToChatString" xml:space="preserve">
     <value>Вы успешно присоединились к чату.</value>
-  </data>
-  <data name="SuccessfullDeleteMessageString" xml:space="preserve">
-    <value>Сообщение было удалено.</value>
   </data>
   <data name="SuccessfulLeaveFromChatString" xml:space="preserve">
     <value>Вы успешно покинули чат.</value>

@@ -231,6 +231,44 @@ namespace WcfService
                         { }
                 }
             }
+            foreach (var item in callbacks)
+            {
+                if (item.ClientId != clientId)
+                {
+                    var chats = TakeChats(item.ClientId);
+                    foreach (var item2 in chats)
+                    {
+                        var members = TakeClients(item2.Id);
+                        foreach (var item3 in members)
+                        {
+                            if(item3.ClientId == clientId)
+                            try
+                            {
+                                item.Callback.GetNewClientPhoto(clientId, info);
+                            }
+                            catch (Exception)
+                            { }
+                        }
+                    }
+                    
+                }
+            }
+            var pmChats = repositories.ChatRepos.Get().Where(c => c.IsPM && c.ChatMembers.Where(cm => cm.Client.Id == clientId).Count() > 0);
+            foreach (var item in pmChats)
+            {
+                foreach (var item2 in callbacks)
+                {
+                    if (item2.ClientId != clientId)
+                    {
+                        var oponent = item.ChatMembers.FirstOrDefault(cm => cm.Client.Id != clientId);
+                        if (oponent != null)
+                            if (oponent.Client.Id == item2.ClientId)
+                            {
+                                item2.Callback.SetNewPMChatPhoto(item.Id, info);
+                            }
+                    }
+                }
+            }
         }
         public void GetPathToPhoto(string pathToPhoto)
         {
@@ -303,6 +341,28 @@ namespace WcfService
                             }
                             catch (Exception)
                             { }
+                    }
+                }
+                foreach (var item in callbacks)
+                {
+                    if (item.ClientId != client.Id)
+                    {
+                        var chats = TakeChats(item.ClientId);
+                        foreach (var item2 in chats)
+                        {
+                            var members = TakeClients(item2.Id);
+                            foreach (var item3 in members)
+                            {
+                                if(item3.ClientId == client.Id)
+                                try
+                                {
+                                    item.Callback.GetNewClientProperties(clientMapper.Map<ClientDTO>(oldClient));
+                                }
+                                catch (Exception)
+                                { }
+                            }
+                        }
+
                     }
                 }
             }

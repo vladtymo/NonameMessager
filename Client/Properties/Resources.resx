@@ -153,11 +153,20 @@
   <data name="ContactsDialogHeaderString" xml:space="preserve">
     <value>Contacts</value>
   </data>
+  <data name="CopyMessageButtonString" xml:space="preserve">
+    <value>Copy message</value>
+  </data>
+  <data name="CopyTextMessageButtonString" xml:space="preserve">
+    <value>Copy text of message</value>
+  </data>
   <data name="DeleteChatButtonString" xml:space="preserve">
     <value>Leave and delete</value>
   </data>
   <data name="DeleteMessageForAllButtonString" xml:space="preserve">
     <value>Delete message for all</value>
+  </data>
+  <data name="DoubleClickOnTheLisContactAndClientsString" xml:space="preserve">
+    <value>Double click on a customer to compose or go to private messages.</value>
   </data>
   <data name="EditProfileDialogSetProfilePhotoButtonString" xml:space="preserve">
     <value>Select photo</value>
@@ -223,7 +232,7 @@
     <value>Message has't been deleted.</value>
   </data>
   <data name="FailedDeleteMessage_NotYourMessageString" xml:space="preserve">
-    <value>Not your message.</value>
+    <value>You cannot delete a message that is not yours.</value>
   </data>
   <data name="FailedJoinToChatString" xml:space="preserve">
     <value>Join to chat failed.</value>
@@ -351,11 +360,11 @@
   <data name="SuccessfulDeleteChatString" xml:space="preserve">
     <value>Сhat has been deleted.</value>
   </data>
+  <data name="SuccessfulDeleteMessageString" xml:space="preserve">
+    <value>Message has been deleted. </value>
+  </data>
   <data name="SuccessfulJoinToChatString" xml:space="preserve">
     <value>Join to chat successsfully.</value>
-  </data>
-  <data name="SuccessfullDeleteMessageString" xml:space="preserve">
-    <value>Message has been deleted. </value>
   </data>
   <data name="SuccessfulLeaveFromChatString" xml:space="preserve">
     <value>Leave from chat successsfully.</value>

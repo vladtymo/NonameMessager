@@ -214,9 +214,10 @@ namespace Client
 
         private Command sendMessageCommand;
         private Command deleteMessageForAllCommand;
+        private Command copyMessageCommand;
+        private Command copyTextMessageCommand;
 
         private Command iValidateSignUpCommand;
-
         private Command iValidateUserInfoCommand;
         private Command iValidateChatInfoCommand;
         
@@ -256,6 +257,8 @@ namespace Client
 
         public ICommand SendMessageCommand => sendMessageCommand;
         public ICommand DeleteMessageForAllCommand => deleteMessageForAllCommand;
+        public ICommand CopyMessageCommand => copyMessageCommand;
+        public ICommand CopyTextMessageCommand => copyTextMessageCommand;
 
 
         public ICommand IValidateSignUpCommand => iValidateSignUpCommand;
@@ -308,6 +311,12 @@ namespace Client
                 {
                     EditLanguage();
 
+                }
+                else if (args.PropertyName == nameof(SelectedMessage))
+                {
+                    deleteMessageForAllCommand.RaiseCanExecuteChanged();
+                    copyMessageCommand.RaiseCanExecuteChanged();
+                    copyTextMessageCommand.RaiseCanExecuteChanged();
                 }
                 else if (args.PropertyName == nameof(SelectedChat))
                 {
@@ -435,7 +444,9 @@ namespace Client
             inviteContactCommand = new DelegateCommand(InviteContact, () => SelectedClientForInvite != null);
 
             sendMessageCommand = new DelegateCommand(SendMessage, ()=>!string.IsNullOrEmpty(TextMessage));
-            deleteMessageForAllCommand = new DelegateCommand(DeleteMessageForAll);
+            deleteMessageForAllCommand = new DelegateCommand(DeleteMessageForAll, ()=>SelectedMessage!=null);
+            copyMessageCommand = new DelegateCommand(CopyMessage, () => SelectedMessage != null);
+            copyTextMessageCommand = new DelegateCommand(CopyTextMessage, () => SelectedMessage != null);
 
             iValidateSignUpCommand = new DelegateCommand(ValidateSignUp);
             iValidateUserInfoCommand = new DelegateCommand(ValidateUserInfo);
@@ -470,7 +481,7 @@ namespace Client
                     if (item.IsPM)
                     {
                         ReplacePMChatName(item);
-                        var companion = mapper.Map<ChatMemberViewModel>(chatMemberService.TakeClients(item.Id).FirstOrDefault(cm => cm.Id != CurrentClient.Id));
+                        var companion = mapper.Map<ChatMemberViewModel>(chatMemberService.TakeClients(item.Id).FirstOrDefault(cm => cm.Client.Id != CurrentClient.Id));
                         if (companion != null)
                         {
                             var photo = clientService.GetPhotoAsync(companion.Client.Id).Result;
@@ -559,6 +570,7 @@ namespace Client
             {
                 if (clientService.SetProperties(mapper.Map<ClientDTO>(ClientForChange)))
                 {
+                    var member = members.FirstOrDefault(c => c.Client.Id == CurrentClient.Id);
                     if (CurrentClient.Photo != ClientForChange.Photo)
                     {
                         InfoFile info = new InfoFile() { Name = ClientForChange.PhotoPath };
@@ -571,9 +583,17 @@ namespace Client
                         clientService.SetPhotoAsync(clientForChange.Id, info);
 
                         ClientForChange.Photo = ToImage(info.Data);
+                        if (member != null)
+                        {
+                            member.Client.Photo = ToImage(info.Data);
+                        }
                     }
                     OpenInfoDialog(Resources.SuccessfulSetProfileString);
                     CurrentClient = ClientForChange.Clone();
+                    if (member != null)
+                    {
+                        SetClientProperties(member.Client, ClientForChange);
+                    }
                 }
                 else
                 {
@@ -759,23 +779,23 @@ namespace Client
         {
             members.Clear();
             var result = mapper.Map<IEnumerable<ChatMemberViewModel>>(chatMemberService.TakeClientsAsync(SelectedChat.Id).Result);
-            Task.Run(() =>
-            {
+            //Task.Run(() =>
+            //{
                 foreach (var item in result)
                 {
-                    Application.Current.Dispatcher.Invoke(() => { 
+                    //Application.Current.Dispatcher.Invoke(() => { 
                         members.Add(item);
                         GetPhoto(item.Client);
-                    });
+                    //});
                 }
-            }).ContinueWith((res) =>
-            {
-                Application.Current.Dispatcher.Invoke(() => {
+            //}).ContinueWith((res) =>
+            //{
+                //Application.Current.Dispatcher.Invoke(() => {
                     CountMembers = members.Count;
                 if (SelectedChat.IsPM) 
                     TakeOpponent();
-                });
-            });
+                //});
+            //});
 
         }
         public void TakeOpponent()
@@ -826,7 +846,7 @@ namespace Client
             if (SelectedMessage.Client.Id == currentClient.Id)
             {
                 if(messageService.DeleteMessageForAll(SelectedMessage.Id))
-                    OpenInfoDialog(Resources.SuccessfullDeleteMessageString);
+                    OpenInfoDialog(Resources.SuccessfulDeleteMessageString);
                 else
                     OpenInfoDialog(Resources.FailedDeleteMessageString);
 
@@ -834,7 +854,16 @@ namespace Client
             else
                 OpenInfoDialog(Resources.FailedDeleteMessage_NotYourMessageString);
         }
-
+        public void CopyMessage()
+        {
+            Clipboard.Clear();
+            Clipboard.SetText(SelectedMessage.ToString());
+        }
+        public void CopyTextMessage()
+        {
+            Clipboard.Clear();
+            Clipboard.SetText(SelectedMessage.Text);
+        }
 
         public void OpenInfoDialog(string text)
         {
@@ -1136,10 +1165,12 @@ namespace Client
             }
         }
 
+
         public void GetNewClientProperties(ClientDTO client)
         {
             var newClient = mapper.Map<ClientViewModel>(client);
             var contact = allContacts.FirstOrDefault(c => c.Id == newClient.Id);
+            var member = members.FirstOrDefault(c => c.Client.Id == newClient.Id);
             if (contact != null)
             {
                 SetClientProperties(contact, newClient);
@@ -1147,13 +1178,22 @@ namespace Client
                     SetClientProperties(OpponentClient, newClient);
                 SearchContacts();
             }
+            if (member != null)
+            {
+                SetClientProperties(member.Client, newClient);
+            }
         }
         public void GetNewClientPhoto(int clientId, InfoFile photo)
         {
-            var contact = allContacts.FirstOrDefault(c => c.Id == clientId);
+            var contact = contacts.FirstOrDefault(c => c.Id == clientId);
+            var member = members.FirstOrDefault(c => c.Client.Id == clientId);
             if (contact != null)
             {
                 contact.Photo = ToImage(photo.Data);
+            }
+            if (member != null)
+            {
+                member.Client.Photo = ToImage(photo.Data);
             }
         }
         public void SetNewPMChatProperties(ChatDTO chat)
@@ -1162,7 +1202,12 @@ namespace Client
             ReplacePMChatName(newChat);
             chats.FirstOrDefault(c => c.Id == newChat.Id).Name = newChat.Name;
         }
-
+        public void SetNewPMChatPhoto(int chatId, InfoFile photo)
+        {
+            var chat = chats.FirstOrDefault(c => c.Id == chatId);
+            if (chat != null)
+                chat.Photo = ToImage(photo.Data);
+        }
         public void GetNewChatProperties(ChatDTO chat)
         {
             var newChat = mapper.Map<ChatViewModel>(chat);

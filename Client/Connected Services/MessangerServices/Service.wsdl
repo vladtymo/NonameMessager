@@ -655,6 +655,29 @@
       </wsp:All>
     </wsp:ExactlyOne>
   </wsp:Policy>
+  <wsp:Policy wsu:Id="WSDualHttpBinding_IChatService_SetNewPMChatPhoto_output_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="Sequence" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="SequenceAcknowledgement" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="AckRequested" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="ChannelInstance" Namespace="http://schemas.microsoft.com/ws/2005/02/duplex" />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
   <wsp:Policy wsu:Id="WSDualHttpBinding_IChatService_GetNewChatProperties_output_policy">
     <wsp:ExactlyOne>
       <wsp:All>
@@ -1402,6 +1425,29 @@
       </wsp:All>
     </wsp:ExactlyOne>
   </wsp:Policy>
+  <wsp:Policy wsu:Id="WSDualHttpBinding_IClientService_SetNewPMChatPhoto_output_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="Sequence" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="SequenceAcknowledgement" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="AckRequested" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="ChannelInstance" Namespace="http://schemas.microsoft.com/ws/2005/02/duplex" />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
   <wsp:Policy wsu:Id="WSDualHttpBinding_IClientService_GetNewChatProperties_output_policy">
     <wsp:ExactlyOne>
       <wsp:All>
@@ -1897,6 +1943,29 @@
     </wsp:ExactlyOne>
   </wsp:Policy>
   <wsp:Policy wsu:Id="WSDualHttpBinding_IContactService_SetNewPMChatProperties_output_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="Sequence" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="SequenceAcknowledgement" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="AckRequested" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="ChannelInstance" Namespace="http://schemas.microsoft.com/ws/2005/02/duplex" />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="WSDualHttpBinding_IContactService_SetNewPMChatPhoto_output_policy">
     <wsp:ExactlyOne>
       <wsp:All>
         <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
@@ -2528,6 +2597,29 @@
       </wsp:All>
     </wsp:ExactlyOne>
   </wsp:Policy>
+  <wsp:Policy wsu:Id="WSDualHttpBinding_IChatMemberService_SetNewPMChatPhoto_output_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="Sequence" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="SequenceAcknowledgement" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="AckRequested" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="ChannelInstance" Namespace="http://schemas.microsoft.com/ws/2005/02/duplex" />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
   <wsp:Policy wsu:Id="WSDualHttpBinding_IChatMemberService_GetNewChatProperties_output_policy">
     <wsp:ExactlyOne>
       <wsp:All>
@@ -3022,6 +3114,29 @@
       </wsp:All>
     </wsp:ExactlyOne>
   </wsp:Policy>
+  <wsp:Policy wsu:Id="WSDualHttpBinding_IMessageService_SetNewPMChatPhoto_output_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="Sequence" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="SequenceAcknowledgement" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="AckRequested" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="ChannelInstance" Namespace="http://schemas.microsoft.com/ws/2005/02/duplex" />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
   <wsp:Policy wsu:Id="WSDualHttpBinding_IMessageService_GetNewChatProperties_output_policy">
     <wsp:ExactlyOne>
       <wsp:All>
@@ -3147,6 +3262,9 @@
   <wsdl:message name="IChatService_SetNewPMChatProperties_OutputCallbackMessage">
     <wsdl:part name="parameters" element="tns:SetNewPMChatProperties" />
   </wsdl:message>
+  <wsdl:message name="IChatService_SetNewPMChatPhoto_OutputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:SetNewPMChatPhoto" />
+  </wsdl:message>
   <wsdl:message name="IChatService_GetNewChatProperties_OutputCallbackMessage">
     <wsdl:part name="parameters" element="tns:GetNewChatProperties" />
   </wsdl:message>
@@ -3231,6 +3349,9 @@
   <wsdl:message name="IClientService_SetNewPMChatProperties_OutputCallbackMessage">
     <wsdl:part name="parameters" element="tns:SetNewPMChatProperties" />
   </wsdl:message>
+  <wsdl:message name="IClientService_SetNewPMChatPhoto_OutputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:SetNewPMChatPhoto" />
+  </wsdl:message>
   <wsdl:message name="IClientService_GetNewChatProperties_OutputCallbackMessage">
     <wsdl:part name="parameters" element="tns:GetNewChatProperties" />
   </wsdl:message>
@@ -3284,6 +3405,9 @@
   </wsdl:message>
   <wsdl:message name="IContactService_SetNewPMChatProperties_OutputCallbackMessage">
     <wsdl:part name="parameters" element="tns:SetNewPMChatProperties" />
+  </wsdl:message>
+  <wsdl:message name="IContactService_SetNewPMChatPhoto_OutputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:SetNewPMChatPhoto" />
   </wsdl:message>
   <wsdl:message name="IContactService_GetNewChatProperties_OutputCallbackMessage">
     <wsdl:part name="parameters" element="tns:GetNewChatProperties" />
@@ -3351,6 +3475,9 @@
   <wsdl:message name="IChatMemberService_SetNewPMChatProperties_OutputCallbackMessage">
     <wsdl:part name="parameters" element="tns:SetNewPMChatProperties" />
   </wsdl:message>
+  <wsdl:message name="IChatMemberService_SetNewPMChatPhoto_OutputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:SetNewPMChatPhoto" />
+  </wsdl:message>
   <wsdl:message name="IChatMemberService_GetNewChatProperties_OutputCallbackMessage">
     <wsdl:part name="parameters" element="tns:GetNewChatProperties" />
   </wsdl:message>
@@ -3401,6 +3528,9 @@
   </wsdl:message>
   <wsdl:message name="IMessageService_SetNewPMChatProperties_OutputCallbackMessage">
     <wsdl:part name="parameters" element="tns:SetNewPMChatProperties" />
+  </wsdl:message>
+  <wsdl:message name="IMessageService_SetNewPMChatPhoto_OutputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:SetNewPMChatPhoto" />
   </wsdl:message>
   <wsdl:message name="IMessageService_GetNewChatProperties_OutputCallbackMessage">
     <wsdl:part name="parameters" element="tns:GetNewChatProperties" />
@@ -3466,6 +3596,9 @@
     </wsdl:operation>
     <wsdl:operation name="SetNewPMChatProperties">
       <wsdl:output wsaw:Action="http://tempuri.org/IChatService/SetNewPMChatProperties" message="tns:IChatService_SetNewPMChatProperties_OutputCallbackMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SetNewPMChatPhoto">
+      <wsdl:output wsaw:Action="http://tempuri.org/IChatService/SetNewPMChatPhoto" message="tns:IChatService_SetNewPMChatPhoto_OutputCallbackMessage" />
     </wsdl:operation>
     <wsdl:operation name="GetNewChatProperties">
       <wsdl:output wsaw:Action="http://tempuri.org/IChatService/GetNewChatProperties" message="tns:IChatService_GetNewChatProperties_OutputCallbackMessage" />
@@ -3537,6 +3670,9 @@
     <wsdl:operation name="SetNewPMChatProperties">
       <wsdl:output wsaw:Action="http://tempuri.org/IClientService/SetNewPMChatProperties" message="tns:IClientService_SetNewPMChatProperties_OutputCallbackMessage" />
     </wsdl:operation>
+    <wsdl:operation name="SetNewPMChatPhoto">
+      <wsdl:output wsaw:Action="http://tempuri.org/IClientService/SetNewPMChatPhoto" message="tns:IClientService_SetNewPMChatPhoto_OutputCallbackMessage" />
+    </wsdl:operation>
     <wsdl:operation name="GetNewChatProperties">
       <wsdl:output wsaw:Action="http://tempuri.org/IClientService/GetNewChatProperties" message="tns:IClientService_GetNewChatProperties_OutputCallbackMessage" />
     </wsdl:operation>
@@ -3586,6 +3722,9 @@
     </wsdl:operation>
     <wsdl:operation name="SetNewPMChatProperties">
       <wsdl:output wsaw:Action="http://tempuri.org/IContactService/SetNewPMChatProperties" message="tns:IContactService_SetNewPMChatProperties_OutputCallbackMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SetNewPMChatPhoto">
+      <wsdl:output wsaw:Action="http://tempuri.org/IContactService/SetNewPMChatPhoto" message="tns:IContactService_SetNewPMChatPhoto_OutputCallbackMessage" />
     </wsdl:operation>
     <wsdl:operation name="GetNewChatProperties">
       <wsdl:output wsaw:Action="http://tempuri.org/IContactService/GetNewChatProperties" message="tns:IContactService_GetNewChatProperties_OutputCallbackMessage" />
@@ -3645,6 +3784,9 @@
     <wsdl:operation name="SetNewPMChatProperties">
       <wsdl:output wsaw:Action="http://tempuri.org/IChatMemberService/SetNewPMChatProperties" message="tns:IChatMemberService_SetNewPMChatProperties_OutputCallbackMessage" />
     </wsdl:operation>
+    <wsdl:operation name="SetNewPMChatPhoto">
+      <wsdl:output wsaw:Action="http://tempuri.org/IChatMemberService/SetNewPMChatPhoto" message="tns:IChatMemberService_SetNewPMChatPhoto_OutputCallbackMessage" />
+    </wsdl:operation>
     <wsdl:operation name="GetNewChatProperties">
       <wsdl:output wsaw:Action="http://tempuri.org/IChatMemberService/GetNewChatProperties" message="tns:IChatMemberService_GetNewChatProperties_OutputCallbackMessage" />
     </wsdl:operation>
@@ -3693,6 +3835,9 @@
     </wsdl:operation>
     <wsdl:operation name="SetNewPMChatProperties">
       <wsdl:output wsaw:Action="http://tempuri.org/IMessageService/SetNewPMChatProperties" message="tns:IMessageService_SetNewPMChatProperties_OutputCallbackMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SetNewPMChatPhoto">
+      <wsdl:output wsaw:Action="http://tempuri.org/IMessageService/SetNewPMChatPhoto" message="tns:IMessageService_SetNewPMChatPhoto_OutputCallbackMessage" />
     </wsdl:operation>
     <wsdl:operation name="GetNewChatProperties">
       <wsdl:output wsaw:Action="http://tempuri.org/IMessageService/GetNewChatProperties" message="tns:IMessageService_GetNewChatProperties_OutputCallbackMessage" />
@@ -3848,6 +3993,13 @@
       <soap12:operation soapAction="http://tempuri.org/IChatService/SetNewPMChatProperties" style="document" />
       <wsdl:output>
         <wsp:PolicyReference URI="#WSDualHttpBinding_IChatService_SetNewPMChatProperties_output_policy" />
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetNewPMChatPhoto">
+      <soap12:operation soapAction="http://tempuri.org/IChatService/SetNewPMChatPhoto" style="document" />
+      <wsdl:output>
+        <wsp:PolicyReference URI="#WSDualHttpBinding_IChatService_SetNewPMChatPhoto_output_policy" />
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
@@ -4027,6 +4179,13 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="SetNewPMChatPhoto">
+      <soap12:operation soapAction="http://tempuri.org/IClientService/SetNewPMChatPhoto" style="document" />
+      <wsdl:output>
+        <wsp:PolicyReference URI="#WSDualHttpBinding_IClientService_SetNewPMChatPhoto_output_policy" />
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="GetNewChatProperties">
       <soap12:operation soapAction="http://tempuri.org/IClientService/GetNewChatProperties" style="document" />
       <wsdl:output>
@@ -4145,6 +4304,13 @@
       <soap12:operation soapAction="http://tempuri.org/IContactService/SetNewPMChatProperties" style="document" />
       <wsdl:output>
         <wsp:PolicyReference URI="#WSDualHttpBinding_IContactService_SetNewPMChatProperties_output_policy" />
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetNewPMChatPhoto">
+      <soap12:operation soapAction="http://tempuri.org/IContactService/SetNewPMChatPhoto" style="document" />
+      <wsdl:output>
+        <wsp:PolicyReference URI="#WSDualHttpBinding_IContactService_SetNewPMChatPhoto_output_policy" />
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
@@ -4291,6 +4457,13 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="SetNewPMChatPhoto">
+      <soap12:operation soapAction="http://tempuri.org/IChatMemberService/SetNewPMChatPhoto" style="document" />
+      <wsdl:output>
+        <wsp:PolicyReference URI="#WSDualHttpBinding_IChatMemberService_SetNewPMChatPhoto_output_policy" />
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="GetNewChatProperties">
       <soap12:operation soapAction="http://tempuri.org/IChatMemberService/GetNewChatProperties" style="document" />
       <wsdl:output>
@@ -4405,6 +4578,13 @@
       <soap12:operation soapAction="http://tempuri.org/IMessageService/SetNewPMChatProperties" style="document" />
       <wsdl:output>
         <wsp:PolicyReference URI="#WSDualHttpBinding_IMessageService_SetNewPMChatProperties_output_policy" />
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetNewPMChatPhoto">
+      <soap12:operation soapAction="http://tempuri.org/IMessageService/SetNewPMChatPhoto" style="document" />
+      <wsdl:output>
+        <wsp:PolicyReference URI="#WSDualHttpBinding_IMessageService_SetNewPMChatPhoto_output_policy" />
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>

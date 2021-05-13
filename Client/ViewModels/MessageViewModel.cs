@@ -17,5 +17,9 @@ namespace Client
         public string Text { get => text; set => SetProperty(ref text, value); }
         public DateTime SendingTime { get => sendingTime; set => SetProperty(ref sendingTime, value); }
         public ClientViewModel Client { get => client; set => SetProperty(ref client, value); }
+        public override string ToString()
+        {
+            return $"{Client.Name}\t{SendingTime.ToShortTimeString()}\n{Text}";
+        }
     }
 }

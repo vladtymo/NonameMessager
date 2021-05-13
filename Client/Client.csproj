@@ -92,8 +92,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="PropertyValidateModel.cs" />
-    <Compile Include="ValidateObjectAttribute.cs" />
+    <Compile Include="Validation\PropertyValidateModel.cs" />
+    <Compile Include="Validation\ValidateObjectAttribute.cs" />
     <Compile Include="ViewModels\ChatMemberViewModel.cs" />
     <Compile Include="Connected Services\MessangerServices\Reference.cs">
       <AutoGen>True</AutoGen>
