@@ -555,7 +555,14 @@
 
                             </Grid>
                             <!--List of contacts-->
-                            <ListBox Grid.ColumnSpan="2" Grid.Row="2" Margin="25,10" ItemsSource="{Binding Contacts}" SelectedItem="{Binding SelectedContact}" ToolTip="{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.DoubleClickOnTheLisContactAndClientsString, Mode=OneWay}">
+                            <ListBox Grid.ColumnSpan="2" Grid.Row="2" Margin="25,10" ItemsSource="{Binding Contacts}" SelectedItem="{Binding SelectedContact}"  >
+                                <ListBox.ToolTip>
+                                    <ToolTip  ToolTipService.InitialShowDelay="3000"
+                                    ToolTipService.ShowDuration="4000"
+                                    ToolTipService.BetweenShowDelay="1000"  >
+                                        <TextBlock Text="{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.DoubleClickOnTheLisContactAndClientsString, Mode=OneWay}"  Width="200" TextWrapping="Wrap" ></TextBlock>
+                                    </ToolTip>
+                                </ListBox.ToolTip>
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="MouseDoubleClick">
                                         <i:InvokeCommandAction Command="{Binding CreateOrSelectPMChatCommand}"/>
@@ -602,7 +609,14 @@
                             </ListBox>
                             <Separator Margin="25,5" Grid.ColumnSpan="2" Grid.Row="3"></Separator>
                             <!--List of clients-->
-                            <ListBox Grid.ColumnSpan="2" Grid.Row="4" Margin="25,10" ItemsSource="{Binding ClientsForAdd}" SelectedItem="{Binding SelectedClientForAdd}"  ToolTip="{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.DoubleClickOnTheLisContactAndClientsString, Mode=OneWay}">
+                            <ListBox Grid.ColumnSpan="2" Grid.Row="4" Margin="25,10" ItemsSource="{Binding ClientsForAdd}" SelectedItem="{Binding SelectedClientForAdd}" >
+                                <ListBox.ToolTip>
+                                    <ToolTip  ToolTipService.InitialShowDelay="3000"
+                                    ToolTipService.ShowDuration="4000"
+                                    ToolTipService.BetweenShowDelay="1000"  ToolTipService.PlacementRectangle="150,125,0,0">
+                                        <TextBlock Text="{Binding Source={x:Static res:ResourceService.Current}, Path=Resources.DoubleClickOnTheLisContactAndClientsString, Mode=OneWay}"  Width="200" TextWrapping="Wrap" ></TextBlock>
+                                    </ToolTip>
+                                </ListBox.ToolTip>
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="MouseDoubleClick">
                                         <i:InvokeCommandAction Command="{Binding CreateOrSelectPMChatCommand}"/>
