@@ -25,7 +25,7 @@
   <xs:element name="SetChatPropertiesResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element minOccurs="0" name="SetChatPropertiesResult" type="xs:boolean" />
+        <xs:element minOccurs="0" name="result" type="xs:boolean" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -70,10 +70,139 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+  <xs:element name="CreatePMChat">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="clientId" type="xs:int" />
+        <xs:element minOccurs="0" name="companionId" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CreatePMChatResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="chatId" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DeleteChat">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="chatId" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DeleteChatResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="isRemoved" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="TakeMessage">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="message" nillable="true" type="q7:MessageDTO" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Joined">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="chatMember" nillable="true" type="q8:ChatMemberDTO" />
+        <xs:element minOccurs="0" name="chatId" type="xs:int" />
+        <xs:element xmlns:q9="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="photo" nillable="true" type="q9:InfoFile" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Left">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="clientId" type="xs:int" />
+        <xs:element minOccurs="0" name="chatId" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="TakeChat">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q10="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="chat" nillable="true" type="q10:ChatDTO" />
+        <xs:element xmlns:q11="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="photo" nillable="true" type="q11:InfoFile" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DeleteChatForAll">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="chatId" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RemoveMessageForAll">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="chatId" type="xs:int" />
+        <xs:element minOccurs="0" name="messageId" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="AddChatForContact">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q12="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="chat" nillable="true" type="q12:ChatDTO" />
+        <xs:element xmlns:q13="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="photo" nillable="true" type="q13:InfoFile" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetNewClientProperties">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q14="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="client" nillable="true" type="q14:ClientDTO" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetNewClientPhoto">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="clientId" type="xs:int" />
+        <xs:element xmlns:q15="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="photo" nillable="true" type="q15:InfoFile" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SetNewPMChatProperties">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q16="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="chat" nillable="true" type="q16:ChatDTO" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SetNewPMChatPhoto">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="chatId" type="xs:int" />
+        <xs:element xmlns:q17="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="photo" nillable="true" type="q17:InfoFile" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetNewChatProperties">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q18="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="chat" nillable="true" type="q18:ChatDTO" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetNewChatPhoto">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="chatId" type="xs:int" />
+        <xs:element xmlns:q19="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="photo" nillable="true" type="q19:InfoFile" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
   <xs:element name="CreateNewClient">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="clientDTO" nillable="true" type="q7:ClientDTO" />
+        <xs:element xmlns:q20="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="client" nillable="true" type="q20:ClientDTO" />
         <xs:element minOccurs="0" name="password" nillable="true" type="xs:string" />
       </xs:sequence>
     </xs:complexType>
@@ -81,14 +210,14 @@
   <xs:element name="CreateNewClientResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="CreateNewClientResult" nillable="true" type="q8:ClientDTO" />
+        <xs:element xmlns:q21="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="CreateNewClientResult" nillable="true" type="q21:ClientDTO" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="GetClient">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q9="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="accountDTO" nillable="true" type="q9:AccountDTO" />
+        <xs:element xmlns:q22="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="account" nillable="true" type="q22:AccountDTO" />
         <xs:element minOccurs="0" name="password" nillable="true" type="xs:string" />
       </xs:sequence>
     </xs:complexType>
@@ -96,21 +225,21 @@
   <xs:element name="GetClientResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q10="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="GetClientResult" nillable="true" type="q10:ClientDTO" />
+        <xs:element xmlns:q23="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="GetClientResult" nillable="true" type="q23:ClientDTO" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="SetProperties">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q11="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="clientDTO" nillable="true" type="q11:ClientDTO" />
+        <xs:element xmlns:q24="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="client" nillable="true" type="q24:ClientDTO" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="SetPropertiesResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element minOccurs="0" name="SetPropertiesResult" type="xs:boolean" />
+        <xs:element minOccurs="0" name="result" type="xs:boolean" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -118,7 +247,7 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" name="clientId" type="xs:int" />
-        <xs:element xmlns:q12="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="info" nillable="true" type="q12:InfoFile" />
+        <xs:element xmlns:q25="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="info" nillable="true" type="q25:InfoFile" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -137,7 +266,7 @@
   <xs:element name="GetPhotoResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q13="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="GetPhotoResult" nillable="true" type="q13:InfoFile" />
+        <xs:element xmlns:q26="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="GetPhotoResult" nillable="true" type="q26:InfoFile" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -173,32 +302,7 @@
   <xs:element name="SearchClientsResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q14="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="SearchClientsResult" nillable="true" type="q14:ArrayOfClientDTO" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="TakeMessage">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element xmlns:q15="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="message" nillable="true" type="q15:MessageDTO" />
-        <xs:element xmlns:q16="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="photoClient" nillable="true" type="q16:InfoFile" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="Joined">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element xmlns:q17="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="client" nillable="true" type="q17:ClientDTO" />
-        <xs:element minOccurs="0" name="chatId" type="xs:int" />
-        <xs:element xmlns:q18="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="photo" nillable="true" type="q18:InfoFile" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="Left">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element minOccurs="0" name="clientId" type="xs:int" />
-        <xs:element minOccurs="0" name="chatId" type="xs:int" />
+        <xs:element xmlns:q27="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="SearchClientsResult" nillable="true" type="q27:ArrayOfClientDTO" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -206,14 +310,14 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" name="clientID" type="xs:int" />
-        <xs:element minOccurs="0" name="uniqueNameContact" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="contactId" type="xs:int" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="AddContactResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q19="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="AddContactResult" nillable="true" type="q19:ClientDTO" />
+        <xs:element xmlns:q28="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="AddContactResult" nillable="true" type="q28:ClientDTO" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -221,7 +325,7 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" name="clientID" type="xs:int" />
-        <xs:element minOccurs="0" name="uniqueNameContact" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="contactId" type="xs:int" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -242,7 +346,7 @@
   <xs:element name="TakeContactsResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q20="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="TakeContactsResult" nillable="true" type="q20:ArrayOfClientDTO" />
+        <xs:element xmlns:q29="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="TakeContactsResult" nillable="true" type="q29:ArrayOfClientDTO" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -258,7 +362,7 @@
   <xs:element name="JoinToChatResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q21="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="newChat" nillable="true" type="q21:ChatDTO" />
+        <xs:element xmlns:q30="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="newChat" nillable="true" type="q30:ChatDTO" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -287,7 +391,7 @@
   <xs:element name="TakeChatsResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q22="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="TakeChatsResult" nillable="true" type="q22:ArrayOfChatDTO" />
+        <xs:element xmlns:q31="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="TakeChatsResult" nillable="true" type="q31:ArrayOfChatDTO" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -301,7 +405,22 @@
   <xs:element name="TakeClientsResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q23="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="TakeClientsResult" nillable="true" type="q23:ArrayOfClientDTO" />
+        <xs:element xmlns:q32="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="TakeClientsResult" nillable="true" type="q32:ArrayOfChatMemberDTO" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="InviteContact">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="chatId" type="xs:int" />
+        <xs:element minOccurs="0" name="contactId" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="InviteContactResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="result" type="xs:boolean" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -310,7 +429,7 @@
       <xs:sequence>
         <xs:element minOccurs="0" name="clientId" type="xs:int" />
         <xs:element minOccurs="0" name="chatId" type="xs:int" />
-        <xs:element xmlns:q24="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="message" nillable="true" type="q24:MessageInfo" />
+        <xs:element xmlns:q33="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="message" nillable="true" type="q33:MessageInfo" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -324,7 +443,21 @@
   <xs:element name="TakeMessagesResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q25="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="TakeMessagesResult" nillable="true" type="q25:ArrayOfMessageDTO" />
+        <xs:element xmlns:q34="http://schemas.datacontract.org/2004/07/WcfService" minOccurs="0" name="TakeMessagesResult" nillable="true" type="q34:ArrayOfMessageDTO" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DeleteMessageForAll">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="messageId" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DeleteMessageForAllResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="result" type="xs:boolean" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

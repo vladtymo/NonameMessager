@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace WcfService
 {
-    [ServiceContract]
+    [ServiceContract(CallbackContract = typeof(ICallback))]
     public interface IContactService
     {
         [OperationContract]
-        ClientDTO AddContact(int clientID, string uniqueNameContact);
+        ClientDTO AddContact(int clientID, int contactId);
         [OperationContract]
-        bool DeleteContact(int clientID, string uniqueNameContact);
+        bool DeleteContact(int clientID, int contactId);
         [OperationContract]
         IEnumerable<ClientDTO> TakeContacts(int clientId);
     }

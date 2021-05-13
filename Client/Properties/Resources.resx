@@ -153,6 +153,21 @@
   <data name="ContactsDialogHeaderString" xml:space="preserve">
     <value>Contacts</value>
   </data>
+  <data name="CopyMessageButtonString" xml:space="preserve">
+    <value>Copy message</value>
+  </data>
+  <data name="CopyTextMessageButtonString" xml:space="preserve">
+    <value>Copy text of message</value>
+  </data>
+  <data name="DeleteChatButtonString" xml:space="preserve">
+    <value>Leave and delete</value>
+  </data>
+  <data name="DeleteMessageForAllButtonString" xml:space="preserve">
+    <value>Delete message for all</value>
+  </data>
+  <data name="DoubleClickOnTheLisContactAndClientsString" xml:space="preserve">
+    <value>Double click on a customer to compose or go to private messages.</value>
+  </data>
   <data name="EditProfileDialogSetProfilePhotoButtonString" xml:space="preserve">
     <value>Select photo</value>
   </data>
@@ -162,14 +177,62 @@
   <data name="EmptyFieldsString" xml:space="preserve">
     <value>Error. Not all fields were filled.</value>
   </data>
+  <data name="ErrorMessageInvalidChatMaxUsersNumber" xml:space="preserve">
+    <value>Number must be in range 1 to 2000</value>
+  </data>
+  <data name="ErrorMessageInvalidEmailFormat" xml:space="preserve">
+    <value>Invalid email format</value>
+  </data>
+  <data name="ErrorMessageInvalidPasswordFormat" xml:space="preserve">
+    <value>Invalid format of password</value>
+  </data>
+  <data name="ErrorMessageInvalidPhoneFormat" xml:space="preserve">
+    <value>Invalid phone format</value>
+  </data>
+  <data name="ErrorMessageRequiredChatMaxUsers" xml:space="preserve">
+    <value>You must enter a max number of users</value>
+  </data>
+  <data name="ErrorMessageRequiredChatName" xml:space="preserve">
+    <value>You must enter name</value>
+  </data>
+  <data name="ErrorMessageRequiredChatUniqueName" xml:space="preserve">
+    <value>You must enter unique name</value>
+  </data>
+  <data name="ErrorMessageRequiredClientName" xml:space="preserve">
+    <value>You must enter name</value>
+  </data>
+  <data name="ErrorMessageRequiredClientUniqueName" xml:space="preserve">
+    <value>You must enter unique name</value>
+  </data>
+  <data name="ErrorMessageRequiredEmail" xml:space="preserve">
+    <value>You must enter email address</value>
+  </data>
+  <data name="ErrorMessageRequiredPassword" xml:space="preserve">
+    <value>You must enter a password</value>
+  </data>
+  <data name="ErrorMessageRequiredPhone" xml:space="preserve">
+    <value>You must enter phone number</value>
+  </data>
   <data name="FailedContactAddString" xml:space="preserve">
     <value>Contact could not be added.</value>
   </data>
   <data name="FailedContactDeletedString" xml:space="preserve">
     <value>Failed to delete contact.</value>
   </data>
+  <data name="FailedContactInviteInChatString" xml:space="preserve">
+    <value>Contact could not be invited.</value>
+  </data>
   <data name="FailedCreateChatString" xml:space="preserve">
     <value>Chat was not created.</value>
+  </data>
+  <data name="FailedDeleteChatString" xml:space="preserve">
+    <value>Сhat has't been deleted.</value>
+  </data>
+  <data name="FailedDeleteMessageString" xml:space="preserve">
+    <value>Message has't been deleted.</value>
+  </data>
+  <data name="FailedDeleteMessage_NotYourMessageString" xml:space="preserve">
+    <value>You cannot delete a message that is not yours.</value>
   </data>
   <data name="FailedJoinToChatString" xml:space="preserve">
     <value>Join to chat failed.</value>
@@ -194,6 +257,15 @@
   </data>
   <data name="InformationDialogOKButtonString" xml:space="preserve">
     <value>OK</value>
+  </data>
+  <data name="InviteContactDialogButtonAddString" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="InviteContactDialogHeaderString" xml:space="preserve">
+    <value>Add members</value>
+  </data>
+  <data name="InviteMembersButtonString" xml:space="preserve">
+    <value>Add members</value>
   </data>
   <data name="JoinChatDialogHeaderChatsString" xml:space="preserve">
     <value>Chats</value>
@@ -237,6 +309,9 @@
   <data name="LoginDialogLoginButtonString" xml:space="preserve">
     <value>Log in</value>
   </data>
+  <data name="LoginDialogPasswordInfoString" xml:space="preserve">
+    <value>Minimum 8 characters, uppercase letter, lowercase letter, number and special character</value>
+  </data>
   <data name="LoginDialogSignUpButtonString" xml:space="preserve">
     <value>Sign up</value>
   </data>
@@ -273,8 +348,20 @@
   <data name="SuccessfulContactDeleteString" xml:space="preserve">
     <value>Contact successfully delete.</value>
   </data>
+  <data name="SuccessfulContactInviteInChatString" xml:space="preserve">
+    <value>Contact successfully invited.</value>
+  </data>
   <data name="SuccessfulCreateChatString" xml:space="preserve">
     <value>Chat successsfully created.</value>
+  </data>
+  <data name="SuccessfulCreatePMChatString" xml:space="preserve">
+    <value>PM chat successsfully created.</value>
+  </data>
+  <data name="SuccessfulDeleteChatString" xml:space="preserve">
+    <value>Сhat has been deleted.</value>
+  </data>
+  <data name="SuccessfulDeleteMessageString" xml:space="preserve">
+    <value>Message has been deleted. </value>
   </data>
   <data name="SuccessfulJoinToChatString" xml:space="preserve">
     <value>Join to chat successsfully.</value>

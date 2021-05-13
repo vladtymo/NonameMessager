@@ -153,6 +153,21 @@
   <data name="ContactsDialogHeaderString" xml:space="preserve">
     <value>Контакты</value>
   </data>
+  <data name="CopyMessageButtonString" xml:space="preserve">
+    <value>Скопировать сообщение</value>
+  </data>
+  <data name="CopyTextMessageButtonString" xml:space="preserve">
+    <value>Копировать текст сообщения</value>
+  </data>
+  <data name="DeleteChatButtonString" xml:space="preserve">
+    <value>Удалить и выйти</value>
+  </data>
+  <data name="DeleteMessageForAllButtonString" xml:space="preserve">
+    <value>Удалить сообщение для всех</value>
+  </data>
+  <data name="DoubleClickOnTheLisContactAndClientsString" xml:space="preserve">
+    <value>Дважды щелкните по клиенту для создания или перехода в личные сообщения.</value>
+  </data>
   <data name="EditProfileDialogSetProfilePhotoButtonString" xml:space="preserve">
     <value>Выбрать фото</value>
   </data>
@@ -162,14 +177,62 @@
   <data name="EmptyFieldsString" xml:space="preserve">
     <value>Ошибка. Не все поля были заполнены.</value>
   </data>
+  <data name="ErrorMessageInvalidChatMaxUsersNumber" xml:space="preserve">
+    <value>Число должно быть в диапазоне от 1 до 2000</value>
+  </data>
+  <data name="ErrorMessageInvalidEmailFormat" xml:space="preserve">
+    <value>Неверный формат эл. почты</value>
+  </data>
+  <data name="ErrorMessageInvalidPasswordFormat" xml:space="preserve">
+    <value>Неверный формат пароля</value>
+  </data>
+  <data name="ErrorMessageInvalidPhoneFormat" xml:space="preserve">
+    <value>Неверный формат номера телефона</value>
+  </data>
+  <data name="ErrorMessageRequiredChatMaxUsers" xml:space="preserve">
+    <value>Вы должны ввести максимальное кол-во участников</value>
+  </data>
+  <data name="ErrorMessageRequiredChatName" xml:space="preserve">
+    <value>Вы должны ввести имя</value>
+  </data>
+  <data name="ErrorMessageRequiredChatUniqueName" xml:space="preserve">
+    <value>Вы должны ввести уникальное имя</value>
+  </data>
+  <data name="ErrorMessageRequiredClientName" xml:space="preserve">
+    <value>Вы должны ввести имя</value>
+  </data>
+  <data name="ErrorMessageRequiredClientUniqueName" xml:space="preserve">
+    <value>Вы должны ввести уникальное имя</value>
+  </data>
+  <data name="ErrorMessageRequiredEmail" xml:space="preserve">
+    <value>Вы должны ввести эл. адрес</value>
+  </data>
+  <data name="ErrorMessageRequiredPassword" xml:space="preserve">
+    <value>Вы должны ввести пароль</value>
+  </data>
+  <data name="ErrorMessageRequiredPhone" xml:space="preserve">
+    <value>Вы должны ввести номер телефона</value>
+  </data>
   <data name="FailedContactAddString" xml:space="preserve">
     <value>Контакт не был добавлен.</value>
   </data>
   <data name="FailedContactDeletedString" xml:space="preserve">
     <value>Контакт не был удален.</value>
   </data>
+  <data name="FailedContactInviteInChatString" xml:space="preserve">
+    <value>Контакт не был приглашён.</value>
+  </data>
   <data name="FailedCreateChatString" xml:space="preserve">
     <value>Чат не был создан.</value>
+  </data>
+  <data name="FailedDeleteChatString" xml:space="preserve">
+    <value>Чат не был удален.</value>
+  </data>
+  <data name="FailedDeleteMessageString" xml:space="preserve">
+    <value>Сообщение не было удалено.</value>
+  </data>
+  <data name="FailedDeleteMessage_NotYourMessageString" xml:space="preserve">
+    <value>Нельзя удалить не свое сообщение.</value>
   </data>
   <data name="FailedJoinToChatString" xml:space="preserve">
     <value>Не удалось присоединиться к чату.</value>
@@ -194,6 +257,15 @@
   </data>
   <data name="InformationDialogOKButtonString" xml:space="preserve">
     <value>OK</value>
+  </data>
+  <data name="InviteContactDialogButtonAddString" xml:space="preserve">
+    <value>Добавить</value>
+  </data>
+  <data name="InviteContactDialogHeaderString" xml:space="preserve">
+    <value>Добавить участников</value>
+  </data>
+  <data name="InviteMembersButtonString" xml:space="preserve">
+    <value>Добавить участников</value>
   </data>
   <data name="JoinChatDialogHeaderChatsString" xml:space="preserve">
     <value>Чаты</value>
@@ -237,6 +309,9 @@
   <data name="LoginDialogLoginButtonString" xml:space="preserve">
     <value>Войти</value>
   </data>
+  <data name="LoginDialogPasswordInfoString" xml:space="preserve">
+    <value>Минимум 8 символов, прописная буква, строчная буква, число и специальный символ</value>
+  </data>
   <data name="LoginDialogSignUpButtonString" xml:space="preserve">
     <value>Регистрация</value>
   </data>
@@ -273,8 +348,20 @@
   <data name="SuccessfulContactDeleteString" xml:space="preserve">
     <value>Контакт успешно удалён.</value>
   </data>
+  <data name="SuccessfulContactInviteInChatString" xml:space="preserve">
+    <value>Контакт успешно приглашён.</value>
+  </data>
   <data name="SuccessfulCreateChatString" xml:space="preserve">
     <value>Чат успешно создан.</value>
+  </data>
+  <data name="SuccessfulCreatePMChatString" xml:space="preserve">
+    <value>Личный чат успешно создан.</value>
+  </data>
+  <data name="SuccessfulDeleteChatString" xml:space="preserve">
+    <value>Чат был удален.</value>
+  </data>
+  <data name="SuccessfulDeleteMessageString" xml:space="preserve">
+    <value>Сообщение было удалено.</value>
   </data>
   <data name="SuccessfulJoinToChatString" xml:space="preserve">
     <value>Вы успешно присоединились к чату.</value>
